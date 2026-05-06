@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Envi Lee Brand Deal System™</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#04040a;--bg2:#07070f;--bg3:#0c0c18;--bg4:#101020;
+  --s1:#141428;--s2:#1a1a35;--s3:#202040;
+  --w:#f0f0ff;--w2:#d0d0ee;--w3:#a0a0cc;
+  --mu:#404068;--mu2:#606090;--mu3:#8080b0;
+  --b:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.1);--b3:rgba(255,255,255,0.18);
+
+  /* Gold accent — premium deals energy */
+  --g:#e8c76a;--g2:rgba(232,199,106,0.14);--g3:rgba(232,199,106,0.07);
+  --gd:rgba(232,199,106,0.3);
+
+  /* Status colors */
+  --live:#00c853;--live2:rgba(0,200,83,0.12);
+  --pend:#ff9800;--pend2:rgba(255,152,0,0.12);
+  --done:#6c6cff;--done2:rgba(108,108,255,0.12);
+  --decline:#ff4444;--decline2:rgba(255,68,68,0.1);
+
+  --r:8px;--r2:12px;--r3:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--w);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(232,199,106,0.04) 0%,transparent 55%),radial-gradient(ellipse at 70% 80%,rgba(108,108,255,0.04) 0%,transparent 55%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,199,106,0.01) 1px,transparent 1px),linear-gradient(90deg,rgba(232,199,106,0.01) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+
+/* TOP BAR */
+.topbar{position:sticky;top:0;z-index:500;background:rgba(4,4,10,0.97);border-bottom:0.5px solid rgba(232,199,106,0.15);padding:0 22px;height:56px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px)}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo-icon{width:26px;height:26px;background:var(--g);clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);animation:lgp 4s ease infinite;flex-shrink:0}
+@keyframes lgp{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3) drop-shadow(0 0 8px rgba(232,199,106,0.5))}}
+.logo-text{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--w);letter-spacing:-.2px}
+.logo-text em{font-style:normal;color:var(--g)}
+.logo-sub{font-size:9px;color:var(--mu2);letter-spacing:1px;text-transform:uppercase;margin-top:1px;font-family:'DM Mono',monospace}
+.topnav{display:flex;gap:2px}
+.tn{background:none;border:none;padding:6px 11px;border-radius:6px;font-size:11px;color:var(--mu2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tn:hover{background:var(--s1);color:var(--w)}
+.tn.on{background:var(--g2);color:var(--g);border:0.5px solid var(--gd)}
+.suite-link{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace;text-decoration:none;padding:5px 10px;border-radius:6px;border:0.5px solid var(--b);cursor:pointer;transition:all .2s}
+.suite-link:hover{background:var(--s1);color:var(--w3)}
+
+/* LAYOUT */
+.shell{display:flex;min-height:calc(100vh - 56px);position:relative;z-index:1}
+.sidebar{width:220px;background:var(--bg2);border-right:0.5px solid var(--b);padding:14px 10px;flex-shrink:0;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.slabel{font-size:9px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:1.2px;padding:12px 10px 5px;font-family:'DM Mono',monospace}
+.si{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--mu2);transition:all .2s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.si:hover{background:var(--s1);color:var(--w)}
+.si.on{background:var(--g2);color:var(--g);border:0.5px solid rgba(232,199,106,0.2)}
+.ntag{font-size:9px;padding:1px 5px;border-radius:5px;background:var(--g2);color:var(--g);border:0.5px solid var(--gd);margin-left:auto;font-family:'DM Mono',monospace}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;padding:26px}
+.pg{display:none;animation:pgIn .3s ease}
+.pg.on{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pg-title{font-family:'Syne',sans-serif;font-size:23px;font-weight:800;color:var(--w);margin-bottom:4px;letter-spacing:-.3px}
+.hi{color:var(--g)}
+.pg-sub{font-size:12px;color:var(--mu2);margin-bottom:22px;line-height:1.6}
+
+/* PANELS */
+.panel{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:16px}
+.panel.hi{border-color:rgba(232,199,106,0.25)}
+.ptitle{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--g);text-transform:uppercase;letter-spacing:.8px;margin-bottom:13px;padding-bottom:9px;border-bottom:0.5px solid var(--b)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--s1);border-radius:var(--r);padding:15px;border:0.5px solid var(--b);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),transparent)}
+.stat-n{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--w)}
+.stat-l{font-size:10px;color:var(--mu2);margin-top:3px;font-family:'DM Mono',monospace}
+.stat-g{font-size:10px;color:var(--g);margin-top:2px;font-family:'DM Mono',monospace}
+
+/* FORM */
+.inp{background:var(--bg3);border:0.5px solid var(--b);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%;transition:border .2s}
+.inp:focus{outline:none;border-color:var(--gd);box-shadow:0 0 0 3px var(--g3)}
+.inp::placeholder{color:var(--mu)}
+textarea.inp{resize:vertical;min-height:80px;line-height:1.6}
+.sel{background:var(--bg3);border:0.5px solid var(--b);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%}
+.sel:focus{outline:none;border-color:var(--gd)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+.fl{font-size:9px;font-weight:600;color:var(--mu3);text-transform:uppercase;letter-spacing:.7px;font-family:'DM Mono',monospace}
+
+/* BUTTONS */
+.btn{padding:8px 14px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--b2);background:var(--s2);color:var(--w2);transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--s3);border-color:var(--b3)}
+.btn.gold{background:var(--g);color:#000;border-color:var(--g);font-weight:700}
+.btn.gold:hover{background:#f0d48a}
+.btn.ou{background:transparent;border:0.5px solid var(--gd);color:var(--g)}
+.btn.ou:hover{background:var(--g2)}
+.btn.w100{width:100%}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* AI OUTPUT */
+.ai-out{background:var(--bg4);border:0.5px solid rgba(232,199,106,0.2);border-radius:var(--r2);padding:14px;display:none;margin-top:12px;animation:pgIn .35s ease}
+.ai-out.show{display:block}
+.ai-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--g);text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--g);animation:aip 1.8s ease infinite;flex-shrink:0}
+@keyframes aip{0%,100%{opacity:1}50%{opacity:.2}}
+.ai-text{font-size:12px;color:var(--w2);line-height:1.85;white-space:pre-wrap}
+.lbar{height:2px;background:var(--g3);overflow:hidden;margin:8px 0;display:none;border-radius:1px}
+.lbar.go{display:block}
+.lbar-fill{height:100%;background:linear-gradient(90deg,var(--g),#fff9c4,var(--g));background-size:200% 100%;animation:lm 1.6s linear infinite}
+@keyframes lm{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.fc{display:flex;flex-direction:column;gap:10px}
+.mb16{margin-bottom:16px}
+.mb24{margin-bottom:24px}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.w100{width:100%}
+
+/* DEAL CARDS */
+.deal-card{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:16px;transition:all .2s;cursor:pointer}
+.deal-card:hover{border-color:rgba(232,199,106,0.2)}
+.deal-card.active{border-color:rgba(0,200,83,0.25)}
+.deal-card.pending{border-color:rgba(255,152,0,0.25)}
+.deal-card.done{border-color:rgba(108,108,255,0.25)}
+.deal-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--w);margin-bottom:3px}
+.deal-type{font-size:10px;color:var(--mu3);font-family:'DM Mono',monospace;margin-bottom:10px}
+.deal-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--g)}
+.deal-meta{font-size:10px;color:var(--mu2);margin-top:2px;font-family:'DM Mono',monospace}
+.deal-deliverables{margin-top:10px;padding-top:10px;border-top:0.5px solid var(--b)}
+.del-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--mu2);padding:3px 0}
+.del-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* STATUS PILLS */
+.pill{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;font-family:'DM Mono',monospace}
+.pill-live{background:var(--live2);color:var(--live);border:0.5px solid rgba(0,200,83,0.25)}
+.pill-pend{background:var(--pend2);color:var(--pend);border:0.5px solid rgba(255,152,0,0.25)}
+.pill-done{background:var(--done2);color:#9090ff;border:0.5px solid rgba(108,108,255,0.25)}
+.pill-gold{background:var(--g2);color:var(--g);border:0.5px solid var(--gd)}
+.pill-mu{background:var(--s2);color:var(--mu3);border:0.5px solid var(--b)}
+.pill-decline{background:var(--decline2);color:#ff7070;border:0.5px solid rgba(255,68,68,0.2)}
+
+/* RATE TIERS */
+.rate-tier{background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:13px;transition:border .2s}
+.rate-tier:hover{border-color:rgba(232,199,106,0.2)}
+.rate-tier.featured{background:var(--g2);border-color:var(--gd)}
+.rate-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px}
+.rate-price{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--g);margin-bottom:4px}
+.rate-includes{font-size:10px;color:var(--mu2);line-height:1.7}
+
+/* CONTRACT SECTIONS */
+.contract-section{background:var(--bg3);border-left:2px solid var(--g);padding:12px 16px;margin-bottom:8px;border-radius:0 var(--r) var(--r) 0}
+.cs-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+.cs-text{font-size:12px;color:var(--w2);line-height:1.7}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--b)}
+.tbl td{font-size:12px;color:var(--w2);padding:10px 12px;border-bottom:0.5px solid var(--b)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--s1)}
+
+/* PROGRESS */
+.prog{margin-bottom:10px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.prog-lbl span:first-child{color:var(--mu2)}
+.prog-lbl span:last-child{color:var(--g);font-family:'DM Mono',monospace}
+.prog-bar{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g),#fff9c4);border-radius:2px}
+
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo-wrap">
+    <div class="logo-icon"></div>
+    <div>
+      <div class="logo-text">Brand Deal <em>System™</em></div>
+      <div class="logo-sub">Envi Lee AI Creator Suite · Deal management hub</div>
+    </div>
+  </div>
+  <nav class="topnav">
+    <button class="tn on" onclick="nav('dashboard')">Dashboard</button>
+    <button class="tn" onclick="nav('pitch')">Pitch Generator</button>
+    <button class="tn" onclick="nav('ratecard')">Rate Card</button>
+    <button class="tn" onclick="nav('contract')">Contracts</button>
+    <button class="tn" onclick="nav('tracker')">Deal Tracker</button>
+    <button class="tn" onclick="nav('media-kit')">Media Kit</button>
+    <button class="tn" onclick="nav('strategy')">Deal Strategy</button>
+  </nav>
+  <div class="suite-link" onclick="alert('Returns to Ecosystem Dashboard')">← Back to Suite</div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="slabel">Overview</div>
+    <button class="si on" onclick="side('dashboard',this)">◈ Dashboard</button>
+    <button class="si" onclick="side('deal-pipeline',this)">⬡ Deal Pipeline</button>
+
+    <div class="slabel">Create</div>
+    <button class="si" onclick="side('pitch-email',this)">⊳ Pitch Email Generator</button>
+    <button class="si" onclick="side('pitch-dm',this)">◎ DM Pitch Generator</button>
+    <button class="si" onclick="side('pitch-response',this)">⊹ Respond to Inquiry</button>
+    <button class="si" onclick="side('rate-builder',this)">◷ Rate Card Builder</button>
+    <button class="si" onclick="side('package-builder',this)">◌ Package Builder</button>
+
+    <div class="slabel">Contracts</div>
+    <button class="si" onclick="side('contract-gen',this)">⊞ Contract Generator<span class="ntag">AI</span></button>
+    <button class="si" onclick="side('contract-review',this)">◈ Contract Reviewer<span class="ntag">AI</span></button>
+    <button class="si" onclick="side('invoice-gen',this)">⊹ Invoice Generator</button>
+
+    <div class="slabel">Manage</div>
+    <button class="si" onclick="side('deal-tracker',this)">◷ All Deals</button>
+    <button class="si" onclick="side('deliverables',this)">◉ Deliverables</button>
+    <button class="si" onclick="side('payments',this)">◈ Payments</button>
+
+    <div class="slabel">Grow</div>
+    <button class="si" onclick="side('media-kit-builder',this)">⬡ Media Kit Builder<span class="ntag">AI</span></button>
+    <button class="si" onclick="side('brand-outreach',this)">⊳ Brand Outreach List</button>
+    <button class="si" onclick="side('deal-strategy',this)">◎ Deal Strategy<span class="ntag">AI</span></button>
+  </aside>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="pg on" id="pg-dashboard">
+      <div class="pg-title">Brand Deal <span class="hi">Dashboard</span></div>
+      <div class="pg-sub">Your complete brand deal operation — pitch brands, generate contracts, track deals, and get paid. All in one place.</div>
+      <div class="stats mb24">
+        <div class="stat"><div class="stat-n">$22.5k</div><div class="stat-l">Monthly deal value</div><div class="stat-g">↑ Active deals</div></div>
+        <div class="stat"><div class="stat-n">7</div><div class="stat-l">Active deals</div><div class="stat-g">↑ 3 new this month</div></div>
+        <div class="stat"><div class="stat-n">$8.4k</div><div class="stat-l">Pending payment</div><div class="stat-g">↑ 3 invoices out</div></div>
+        <div class="stat"><div class="stat-n">14</div><div class="stat-l">Completed deals</div><div class="stat-g">↑ $86k lifetime</div></div>
+      </div>
+      <div class="g2 mb24">
+        <div class="panel">
+          <div class="ptitle">Active deals pipeline</div>
+          <div class="fc">
+            <div class="deal-card active">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div><div class="deal-brand">FashionNova</div><div class="deal-type">Sponsored content · 4 posts/month</div></div>
+                <span class="pill pill-live">Active</span>
+              </div>
+              <div class="deal-val">$3,500<span style="font-size:11px;font-weight:400;color:var(--mu3)">/mo</span></div>
+              <div class="deal-deliverables">
+                <div class="del-item"><div class="del-dot" style="background:var(--live)"></div>2 TikTok videos — due May 15</div>
+                <div class="del-item"><div class="del-dot" style="background:var(--live)"></div>2 Instagram Reels — due May 22</div>
+              </div>
+            </div>
+            <div class="deal-card active">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div><div class="deal-brand">BooHoo Beauty</div><div class="deal-type">Brand ambassador · 2 posts/month</div></div>
+                <span class="pill pill-live">Active</span>
+              </div>
+              <div class="deal-val">$2,200<span style="font-size:11px;font-weight:400;color:var(--mu3)">/mo</span></div>
+            </div>
+            <div class="deal-card pending">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div><div class="deal-brand">Shein x Envi Lee</div><div class="deal-type">Collab campaign · Swimwear</div></div>
+                <span class="pill pill-pend">Negotiating</span>
+              </div>
+              <div class="deal-val">$5,800<span style="font-size:11px;font-weight:400;color:var(--mu3)"> flat</span></div>
+              <div class="deal-meta">Waiting on contract — last contact 2 days ago</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle">Quick actions</div>
+            <div class="g2">
+              <button class="btn gold" onclick="side('pitch-email',null);showPg('pitch-email')">Write pitch email ↗</button>
+              <button class="btn ou" onclick="side('contract-gen',null);showPg('contract-gen')">Generate contract ↗</button>
+              <button class="btn ou" onclick="side('rate-builder',null);showPg('rate-builder')">Build rate card ↗</button>
+              <button class="btn ou" onclick="side('media-kit-builder',null);showPg('media-kit-builder')">Build media kit ↗</button>
+              <button class="btn" onclick="side('deal-tracker',null);showPg('deal-tracker')">View all deals ↗</button>
+              <button class="btn" onclick="side('deal-strategy',null);showPg('deal-strategy')">Deal strategy ↗</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Monthly earnings breakdown</div>
+            <div class="prog"><div class="prog-lbl"><span>Sponsored posts</span><span>$12,400</span></div><div class="prog-bar"><div class="prog-fill" style="width:55%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Brand ambassador</span><span>$6,600</span></div><div class="prog-bar"><div class="prog-fill" style="width:29%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>UGC content packages</span><span>$2,400</span></div><div class="prog-bar"><div class="prog-fill" style="width:11%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Collaboration royalties</span><span>$1,100</span></div><div class="prog-bar"><div class="prog-fill" style="width:5%"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PITCH EMAIL GENERATOR -->
+    <div class="pg" id="pg-pitch-email">
+      <div class="pg-title">Pitch Email <span class="hi">Generator</span></div>
+      <div class="pg-sub">Write a professional, personalized brand pitch email in 60 seconds. Confident, not desperate — you're a business partner, not a fan.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Pitch details</div>
+          <div class="field"><div class="fl">Brand name</div><input class="inp" id="pe-brand" placeholder="e.g. FashionNova, Target, Nike, Shein"/></div>
+          <div class="field"><div class="fl">Brand's product / niche</div><input class="inp" id="pe-brand-niche" placeholder="e.g. women's fashion, beauty, athletic wear"/></div>
+          <div class="field"><div class="fl">Deal type you want</div>
+            <select class="sel" id="pe-deal-type">
+              <option>Sponsored content (paid posts)</option>
+              <option>Brand ambassador partnership</option>
+              <option>Collection collaboration</option>
+              <option>Affiliate partnership</option>
+              <option>UGC content package</option>
+              <option>Product gifting (no payment)</option>
+              <option>Event / activation appearance</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your platform & audience</div><input class="inp" id="pe-audience" placeholder="e.g. TikTok 85k · Instagram 42k · avg 8% engagement"/></div>
+          <div class="field"><div class="fl">Your niche & creator type</div><input class="inp" id="pe-niche" placeholder="e.g. POD fashion brand owner and AI influencer creator"/></div>
+          <div class="field"><div class="fl">Why THIS brand fits YOUR audience</div><input class="inp" id="pe-fit" placeholder="e.g. My audience is 80% Black women 25-40 who love fashion and luxury brands"/></div>
+          <div class="field"><div class="fl">Your rate ask (optional)</div><input class="inp" id="pe-rate" placeholder="e.g. $2,500 per post, $5k for 3-post campaign, open to discuss"/></div>
+          <div class="field"><div class="fl">Past brand experience (optional)</div><input class="inp" id="pe-past" placeholder="e.g. Previously worked with FashionNova, SheIn, 3 beauty brands"/></div>
+          <div class="field"><div class="fl">Pitch tone</div>
+            <select class="sel" id="pe-tone">
+              <option>Confident & professional — equal partners</option>
+              <option>Warm & personal — start a relationship</option>
+              <option>Bold & direct — get straight to the offer</option>
+              <option>Story-led — let the work speak first</option>
+            </select>
+          </div>
+          <div class="btn-row">
+            <button class="btn gold w100" onclick="genPitchEmail()">Generate pitch email ↗</button>
+          </div>
+          <div class="lbar mt8" id="pe-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="pe-out">
+            <div class="ai-lbl">Brand Pitch Email</div>
+            <div class="ai-text" id="pe-txt"></div>
+            <div class="btn-row">
+              <button class="btn gold" onclick="cp('pe-txt')">Copy email ↗</button>
+              <button class="btn ou" onclick="side('pitch-dm',null);showPg('pitch-dm')">Make it a DM ↗</button>
+              <button class="btn ou" onclick="side('contract-gen',null);showPg('contract-gen')">Write contract ↗</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle">What makes a winning pitch</div>
+            <div class="fc">
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--g)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px">Lead with THEM, not you</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Open by referencing something specific about the brand. Shows you're not copy-pasting 100 emails.</div></div>
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid rgba(108,108,255,0.6)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px">Numbers build trust</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Include specific audience size, engagement rate, and a past result — not just "I have a big following."</div></div>
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--live)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px">Keep it under 200 words</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Brand managers get 50+ pitches a day. Short and scannable wins. Save the detail for the follow-up.</div></div>
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--pend)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px">End with a clear next step</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">"Would you be open to a 15-min call?" or "I'd love to send over my media kit." — always drive an action.</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Pitch quick-starts</div>
+            <div class="fc">
+              <button class="btn" onclick="quickPitch('FashionNova','women\'s fast fashion','Sponsored content (paid posts)','TikTok 85k · Instagram 42k · 8% engagement','POD fashion brand owner and AI influencer creator','My audience is 80% Black women 25-40 who love fashion trends','$3,500 for 4-post monthly campaign','FashionNova, SheIn','Confident & professional — equal partners')">Fashion brand pitch ↗</button>
+              <button class="btn" onclick="quickPitch('Printify','POD fulfillment platform','Brand ambassador partnership','TikTok 85k · Instagram 42k · POD creator audience','POD business owner and course creator teaching others to use Printify','My entire audience is POD sellers — they are your perfect customer','$2,000/mo ambassador fee plus affiliate commission','multiple POD brands','Warm & personal — start a relationship')">Printify ambassador pitch ↗</button>
+              <button class="btn" onclick="quickPitch('Target','mass retail — fashion and home','UGC content package','AI influencer with 85k TikTok, known for luxury styling content','AI influencer and content creator producing cinematic videos','My AI content style aligns perfectly with Target\'s aspirational visual direction','$800 per UGC video, $3,500 for 5-video package','beauty and lifestyle brands','Bold & direct — get straight to the offer')">Target UGC pitch ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DM PITCH GENERATOR -->
+    <div class="pg" id="pg-pitch-dm">
+      <div class="pg-title">DM Pitch <span class="hi">Generator</span></div>
+      <div class="pg-sub">Write the perfect cold DM to a brand's Instagram or TikTok. Short, punchy, and designed to get a reply — not to close the deal in one message.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">DM setup</div>
+          <div class="field"><div class="fl">Brand / company</div><input class="inp" id="dm-brand" placeholder="e.g. @fashionnova, @skims, @gymshark"/></div>
+          <div class="field"><div class="fl">Platform you're DMing on</div>
+            <select class="sel" id="dm-platform">
+              <option>Instagram DM</option><option>TikTok DM</option><option>Twitter/X DM</option><option>LinkedIn message</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Deal type</div>
+            <select class="sel" id="dm-type">
+              <option>Collab / sponsored post</option><option>Brand ambassador</option><option>UGC package</option><option>Collection collab</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your audience size</div><input class="inp" id="dm-audience" placeholder="e.g. 85k TikTok, 42k Instagram"/></div>
+          <div class="field"><div class="fl">One thing you love about their brand</div><input class="inp" id="dm-love" placeholder="e.g. I've been buying your swim pieces for years, your new collection is everything"/></div>
+          <button class="btn gold w100 mt8" onclick="genDMPitch()">Generate DM pitch ↗</button>
+          <div class="lbar mt8" id="dm-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="dm-out"><div class="ai-lbl">DM Pitch</div><div class="ai-text" id="dm-txt"></div><button class="btn gold mt8" onclick="cp('dm-txt')">Copy DM ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">DM strategy</div>
+          <div class="fc">
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">3 sentences max</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Nobody reads a long DM from a stranger. Say who you are, why you're reaching out, and what you want them to do next.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">Don't pitch the deal in the DM</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">The goal of a DM is to get them to ask for your media kit or email. Close the deal in the email, not the DM.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">Engage before you DM</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Like their last 3 posts. Comment something genuine on their latest. Then DM 24h later — they'll recognize you.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">Follow up once</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">If no reply in 5 days, send one follow-up: "Hey [brand], just bumping this up — would love to connect!" Nothing more.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESPOND TO INQUIRY -->
+    <div class="pg" id="pg-pitch-response">
+      <div class="pg-title">Respond to <span class="hi">Inquiry</span></div>
+      <div class="pg-sub">A brand reached out to you — now respond professionally. Whether it's a collab offer, gifting request, or vague "let's work together" DM — AI writes your reply.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">What they sent you</div>
+          <div class="field"><div class="fl">Brand name</div><input class="inp" id="ri-brand" placeholder="e.g. Shein, Pretty Little Thing"/></div>
+          <div class="field"><div class="fl">Their message (paste it)</div><textarea class="inp" id="ri-msg" placeholder="Paste what they sent you here..."></textarea></div>
+          <div class="field"><div class="fl">Your response goal</div>
+            <select class="sel" id="ri-goal">
+              <option>Get more details before committing</option>
+              <option>Accept and move to contract</option>
+              <option>Negotiate a higher rate</option>
+              <option>Decline politely</option>
+              <option>Counter-propose a different deal type</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your rate (if negotiating)</div><input class="inp" id="ri-rate" placeholder="e.g. $3,000 per post — don't go below $2,500"/></div>
+          <button class="btn gold w100 mt8" onclick="genInquiryResponse()">Generate response ↗</button>
+          <div class="lbar mt8" id="ri-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="ri-out"><div class="ai-lbl">Your Response</div><div class="ai-text" id="ri-txt"></div><button class="btn gold mt8" onclick="cp('ri-txt')">Copy ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">How to handle common scenarios</div>
+          <div class="fc">
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">"We'd love to gift you products"</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Gifting only = no. Ask what their paid rate is. "I love your brand — do you have a budget for paid content alongside the gifting?"</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">"What are your rates?"</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Don't just send numbers. Ask about their campaign goals first — then tailor your package to what they need. Higher perceived value = higher rate.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">"Your rate is too high"</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Never drop your rate immediately. Ask what their budget is. Then offer a smaller deliverable at your rate — not a discount on the same work.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);margin-bottom:3px">"Can we do affiliate only?"</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Affiliate-only = no guaranteed payment. Decline or counter: "I do affiliate on top of a flat fee — I don't create content for free in exchange for potential commission."</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RATE CARD BUILDER -->
+    <div class="pg" id="pg-rate-builder">
+      <div class="pg-title">Rate Card <span class="hi">Builder</span></div>
+      <div class="pg-sub">Build a professional, complete rate card for all your platforms and deliverable types. Confidence comes from knowing your worth — this gives you the numbers.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Your profile</div>
+          <div class="field"><div class="fl">Creator name / brand</div><input class="inp" id="rc-name" placeholder="e.g. Envi Lee, @luxe.envi"/></div>
+          <div class="field"><div class="fl">Creator type</div>
+            <select class="sel" id="rc-type">
+              <option>POD brand owner + content creator</option>
+              <option>AI influencer + digital creator</option>
+              <option>Fashion & lifestyle creator</option>
+              <option>Business & entrepreneurship creator</option>
+              <option>Beauty & wellness creator</option>
+            </select>
+          </div>
+          <div class="g2">
+            <div class="field"><div class="fl">TikTok followers</div><input class="inp" id="rc-tiktok" type="number" placeholder="85000" value="85000"/></div>
+            <div class="field"><div class="fl">Instagram followers</div><input class="inp" id="rc-insta" type="number" placeholder="42000" value="42000"/></div>
+            <div class="field"><div class="fl">YouTube subscribers</div><input class="inp" id="rc-youtube" type="number" placeholder="12000" value="12000"/></div>
+            <div class="field"><div class="fl">Email list size</div><input class="inp" id="rc-email" type="number" placeholder="8000" value="8000"/></div>
+          </div>
+          <div class="field"><div class="fl">Average engagement rate</div>
+            <select class="sel" id="rc-engagement">
+              <option>3–5% (industry average)</option><option>5–8% (above average)</option>
+              <option>8–12% (high engagement)</option><option>12%+ (exceptional)</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Content speciality</div><input class="inp" id="rc-specialty" placeholder="e.g. AI-generated cinematic content, luxury fashion, POD business education"/></div>
+          <div class="field"><div class="fl">Target brand category</div>
+            <select class="sel" id="rc-target">
+              <option>Fashion & clothing</option><option>Beauty & skincare</option><option>Lifestyle & home</option>
+              <option>Business & tech tools</option><option>POD & print platforms</option><option>All categories</option>
+            </select>
+          </div>
+          <button class="btn gold w100 mt8" onclick="genRateCard()">Build my rate card ↗</button>
+          <div class="lbar mt8" id="rc-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="rc-out">
+            <div class="ai-lbl">Your Rate Card</div>
+            <div class="ai-text" id="rc-txt"></div>
+            <div class="btn-row">
+              <button class="btn gold" onclick="cp('rc-txt')">Copy rate card ↗</button>
+              <button class="btn ou" onclick="side('media-kit-builder',null);showPg('media-kit-builder')">Add to media kit ↗</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle">Standard rate ranges (by follower size)</div>
+            <div style="overflow-x:auto">
+              <table class="tbl" style="min-width:400px">
+                <thead><tr><th>Platform + size</th><th>Sponsored post</th><th>Ambassador</th></tr></thead>
+                <tbody>
+                  <tr><td style="color:var(--g)">TikTok 10–50k</td><td>$200–$800</td><td>$500–$2k/mo</td></tr>
+                  <tr><td style="color:var(--g)">TikTok 50–100k</td><td>$800–$2,000</td><td>$2–5k/mo</td></tr>
+                  <tr><td style="color:var(--g)">TikTok 100k–500k</td><td>$2,000–$8,000</td><td>$5–15k/mo</td></tr>
+                  <tr><td style="color:var(--mu3)">Instagram 10–50k</td><td>$300–$1,000</td><td>$800–$3k/mo</td></tr>
+                  <tr><td style="color:var(--mu3)">Instagram 50–100k</td><td>$1,000–$3,000</td><td>$3–8k/mo</td></tr>
+                  <tr><td>UGC (any size)</td><td>$500–$2,000</td><td>$2–5k retainer</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="font-size:10px;color:var(--mu);margin-top:8px;font-family:'DM Mono',monospace">Rates vary by niche, engagement, and production quality. AI content with cinematic quality can command 20–30% premium.</div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">What to include on a rate card</div>
+            <div style="font-size:11px;color:var(--mu3);line-height:2;font-family:'DM Mono',monospace">
+              ◈ Your name, handle, and niche<br>
+              ◈ Audience size per platform<br>
+              ◈ Engagement rate<br>
+              ◈ Per-deliverable pricing<br>
+              ◈ Package bundles (save brands money = get bigger deals)<br>
+              ◈ What's included (revisions, usage rights, exclusivity)<br>
+              ◈ What's NOT included (and costs extra)<br>
+              ◈ Turnaround time<br>
+              ◈ Past brand logos (social proof)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PACKAGE BUILDER -->
+    <div class="pg" id="pg-package-builder">
+      <div class="pg-title">Package <span class="hi">Builder</span></div>
+      <div class="pg-sub">Bundle your services into 3 tiers — Starter, Standard, and Premium. Packages sell better than à la carte. Brands feel like they're getting a deal, you make more.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Package setup</div>
+          <div class="field"><div class="fl">Primary platform</div>
+            <select class="sel" id="pkg-platform">
+              <option>TikTok + Instagram</option><option>TikTok only</option><option>Instagram only</option><option>All platforms</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Content you create</div><textarea class="inp" id="pkg-content" placeholder="e.g. TikTok videos, Instagram Reels, UGC, talking head, product showcases, cinematic lifestyle content..."></textarea></div>
+          <div class="field"><div class="fl">Your monthly capacity</div>
+            <select class="sel" id="pkg-capacity">
+              <option>2–4 pieces per month</option><option>4–8 pieces per month</option><option>8–12 pieces per month</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Target brand budget range</div>
+            <select class="sel" id="pkg-budget">
+              <option>$500–$2k/month (emerging brands)</option>
+              <option>$2k–$8k/month (mid-size brands)</option>
+              <option>$8k–$20k/month (established brands)</option>
+            </select>
+          </div>
+          <button class="btn gold w100 mt8" onclick="genPackages()">Build my 3-tier packages ↗</button>
+          <div class="lbar mt8" id="pkg-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="pkg-out"><div class="ai-lbl">Your Package Tiers</div><div class="ai-text" id="pkg-txt"></div><button class="btn gold mt8" onclick="cp('pkg-txt')">Copy packages ↗</button></div>
+        </div>
+        <div>
+          <div class="ptitle" style="color:var(--g);font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.8px;padding-bottom:9px;border-bottom:0.5px solid var(--b);margin-bottom:14px">Example 3-tier structure</div>
+          <div class="fc">
+            <div class="rate-tier"><div class="rate-name">Starter Package</div><div class="rate-price">$1,500<span style="font-size:12px;font-weight:400;color:var(--mu3)">/mo</span></div><div class="rate-includes">2 TikTok videos · 2 Instagram Stories<br>Basic usage rights · 14-day turnaround</div></div>
+            <div class="rate-tier featured"><div class="rate-name">Standard Package <span class="pill pill-gold">Most Popular</span></div><div class="rate-price">$3,500<span style="font-size:12px;font-weight:400;color:var(--mu3)">/mo</span></div><div class="rate-includes">4 TikToks + 2 Reels + 4 Stories<br>Full usage rights · 1 revision · 7-day turnaround<br>Monthly performance report</div></div>
+            <div class="rate-tier"><div class="rate-name">Premium Package</div><div class="rate-price">$7,500<span style="font-size:12px;font-weight:400;color:var(--mu3)">/mo</span></div><div class="rate-includes">8 TikToks + 4 Reels + 8 Stories + 1 YouTube<br>Full usage rights · Exclusivity in niche<br>Strategy session · Priority turnaround</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRACT GENERATOR -->
+    <div class="pg" id="pg-contract-gen">
+      <div class="pg-title">Contract <span class="hi">Generator</span></div>
+      <div class="pg-sub">AI writes a professional brand deal contract in minutes — covering scope, deliverables, payment terms, usage rights, exclusivity, and kill fees. Protect yourself every time.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Contract details</div>
+          <div class="g2">
+            <div class="field"><div class="fl">Your legal name / brand</div><input class="inp" id="cg-creator" placeholder="e.g. Envi Lee / Envi Lee Studios LLC"/></div>
+            <div class="field"><div class="fl">Brand / company name</div><input class="inp" id="cg-brand" placeholder="e.g. FashionNova Inc."/></div>
+          </div>
+          <div class="field"><div class="fl">Deliverables (be specific)</div><textarea class="inp" id="cg-deliverables" placeholder="e.g. 4 TikTok videos (30-60 sec), 2 Instagram Reels, 1 Instagram static post — all featuring [Brand] Spring 2026 collection..."></textarea></div>
+          <div class="g2">
+            <div class="field"><div class="fl">Total payment ($)</div><input class="inp" id="cg-payment" type="number" placeholder="e.g. 3500"/></div>
+            <div class="field"><div class="fl">Payment schedule</div>
+              <select class="sel" id="cg-payment-schedule">
+                <option>50% upfront, 50% on delivery</option>
+                <option>100% upfront before work begins</option>
+                <option>100% on delivery</option>
+                <option>Net 30 after delivery</option>
+                <option>Monthly recurring</option>
+              </select>
+            </div>
+          </div>
+          <div class="g2">
+            <div class="field"><div class="fl">Campaign start date</div><input class="inp" id="cg-start" type="date"/></div>
+            <div class="field"><div class="fl">Campaign end / post date</div><input class="inp" id="cg-end" type="date"/></div>
+          </div>
+          <div class="field"><div class="fl">Usage rights granted</div>
+            <select class="sel" id="cg-usage">
+              <option>Social media only (creator's channels)</option>
+              <option>Brand's social media (6 months)</option>
+              <option>Paid advertising rights (6 months)</option>
+              <option>Full buyout — brand owns content</option>
+              <option>Organic only — no paid ads allowed</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Exclusivity clause</div>
+            <select class="sel" id="cg-exclusivity">
+              <option>No exclusivity</option>
+              <option>Category exclusivity for 30 days</option>
+              <option>Category exclusivity for 60 days</option>
+              <option>Category exclusivity for 90 days</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Revisions allowed</div>
+            <select class="sel" id="cg-revisions">
+              <option>1 round of revisions included</option>
+              <option>2 rounds of revisions included</option>
+              <option>No revisions — delivered as-is</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Kill fee (if brand cancels)</div>
+            <select class="sel" id="cg-killfee">
+              <option>50% kill fee if cancelled after work starts</option>
+              <option>25% kill fee if cancelled before work starts</option>
+              <option>100% non-refundable deposit</option>
+              <option>No kill fee clause</option>
+            </select>
+          </div>
+          <button class="btn gold w100 mt8" onclick="genContract()">Generate contract ↗</button>
+          <div class="lbar mt8" id="cg-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="cg-out">
+            <div class="ai-lbl">Brand Deal Contract</div>
+            <div class="ai-text" id="cg-txt"></div>
+            <div class="btn-row">
+              <button class="btn gold" onclick="cp('cg-txt')">Copy contract ↗</button>
+            </div>
+            <div style="margin-top:10px;padding:8px 12px;background:var(--g3);border-radius:var(--r);border:0.5px solid var(--gd)"><div style="font-size:10px;color:var(--mu3);line-height:1.6">This contract is AI-generated for reference only. For deals over $5,000 or complex partnerships, have a lawyer review before signing.</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle">What every contract must have</div>
+            <div class="fc">
+              <div class="contract-section"><div class="cs-label">Deliverables</div><div class="cs-text">Exactly what you're making — platform, format, length, quantity, post dates</div></div>
+              <div class="contract-section"><div class="cs-label">Payment terms</div><div class="cs-text">Total amount, deposit %, due dates, what happens if they don't pay</div></div>
+              <div class="contract-section"><div class="cs-label">Usage rights</div><div class="cs-text">Where they can use your content — social only, paid ads, forever vs timed</div></div>
+              <div class="contract-section"><div class="cs-label">Revision policy</div><div class="cs-text">How many rounds, what counts as a revision, timeline for feedback</div></div>
+              <div class="contract-section"><div class="cs-label">Exclusivity (if any)</div><div class="cs-text">Can you work with competitors? For how long? What counts as a competitor?</div></div>
+              <div class="contract-section"><div class="cs-label">Kill fee</div><div class="cs-text">What happens if they cancel — you must be paid for time spent</div></div>
+              <div class="contract-section"><div class="cs-label">FTC disclosure</div><div class="cs-text">Required #ad or #sponsored disclosure — protects both parties legally</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRACT REVIEWER -->
+    <div class="pg" id="pg-contract-review">
+      <div class="pg-title">Contract <span class="hi">Reviewer</span></div>
+      <div class="pg-sub">Paste any brand deal contract and AI will flag red flags, missing clauses, unfair terms, and what to negotiate before signing.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Paste their contract</div>
+          <div class="field"><div class="fl">Contract text</div><textarea class="inp" id="cr-contract" style="min-height:200px" placeholder="Paste the full contract text here...&#10;&#10;AI will review it for:&#10;• Red flags and unfair terms&#10;• Missing clauses that protect you&#10;• Payment terms that need negotiation&#10;• Usage rights that could hurt you&#10;• What to push back on"></textarea></div>
+          <div class="field"><div class="fl">Your deal context (optional)</div><input class="inp" id="cr-context" placeholder="e.g. $5k deal, TikTok content, fashion brand, 2-month campaign"/></div>
+          <button class="btn gold w100 mt8" onclick="genContractReview()">Review this contract ↗</button>
+          <div class="lbar mt8" id="cr-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="cr-out"><div class="ai-lbl">Contract Review</div><div class="ai-text" id="cr-txt"></div><button class="btn gold mt8" onclick="cp('cr-txt')">Copy review notes ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Common contract red flags</div>
+          <div class="fc">
+            <div style="padding:11px 13px;background:var(--decline2);border-radius:var(--r);border:0.5px solid rgba(255,68,68,0.2)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#ff9090;margin-bottom:3px">Perpetual usage rights</div><div style="font-size:11px;color:var(--mu3)">They own your content forever for any purpose. Push for 1-2 year limit and specific platform restrictions.</div></div>
+            <div style="padding:11px 13px;background:var(--decline2);border-radius:var(--r);border:0.5px solid rgba(255,68,68,0.2)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#ff9090;margin-bottom:3px">No kill fee clause</div><div style="font-size:11px;color:var(--mu3)">If they can cancel anytime with no penalty, you could do 80% of the work and get nothing. Always require a kill fee.</div></div>
+            <div style="padding:11px 13px;background:var(--pend2);border-radius:var(--r);border:0.5px solid rgba(255,152,0,0.2)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#ffa040;margin-bottom:3px">Unlimited revisions</div><div style="font-size:11px;color:var(--mu3)">If the contract says "revisions until brand is satisfied" — that's unlimited free labor. Cap it at 2 rounds max.</div></div>
+            <div style="padding:11px 13px;background:var(--pend2);border-radius:var(--r);border:0.5px solid rgba(255,152,0,0.2)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#ffa040;margin-bottom:3px">Exclusivity without extra pay</div><div style="font-size:11px;color:var(--mu3)">Exclusivity means you can't work with competitors. That costs you money — charge 25-50% extra for it.</div></div>
+            <div style="padding:11px 13px;background:var(--pend2);border-radius:var(--r);border:0.5px solid rgba(255,152,0,0.2)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#ffa040;margin-bottom:3px">Payment "on performance"</div><div style="font-size:11px;color:var(--mu3)">Never accept deals where full payment depends on views or results. Charge a flat fee — you can't control algorithms.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INVOICE GENERATOR -->
+    <div class="pg" id="pg-invoice-gen">
+      <div class="pg-title">Invoice <span class="hi">Generator</span></div>
+      <div class="pg-sub">Generate a professional invoice to send after completing brand deal work. Clear, formal, and impossible to dispute.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Invoice details</div>
+          <div class="g2">
+            <div class="field"><div class="fl">Your business name</div><input class="inp" id="inv-creator" placeholder="Envi Lee Studios LLC"/></div>
+            <div class="field"><div class="fl">Client / brand name</div><input class="inp" id="inv-client" placeholder="FashionNova Inc."/></div>
+            <div class="field"><div class="fl">Invoice date</div><input class="inp" id="inv-date" type="date"/></div>
+            <div class="field"><div class="fl">Due date</div><input class="inp" id="inv-due" type="date"/></div>
+          </div>
+          <div class="field"><div class="fl">Services rendered</div><textarea class="inp" id="inv-services" placeholder="e.g. 4 TikTok sponsored videos for Spring 2026 campaign, 2 Instagram Reels..."></textarea></div>
+          <div class="g2">
+            <div class="field"><div class="fl">Total amount ($)</div><input class="inp" id="inv-amount" type="number" placeholder="3500"/></div>
+            <div class="field"><div class="fl">Amount already paid ($)</div><input class="inp" id="inv-paid" type="number" placeholder="1750 (if 50% deposit)"/></div>
+          </div>
+          <div class="field"><div class="fl">Payment method</div>
+            <select class="sel" id="inv-method">
+              <option>Bank transfer (ACH)</option><option>PayPal</option><option>Stripe</option><option>Venmo Business</option><option>Wire transfer</option>
+            </select>
+          </div>
+          <button class="btn gold w100 mt8" onclick="genInvoice()">Generate invoice ↗</button>
+          <div class="lbar mt8" id="inv-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="inv-out"><div class="ai-lbl">Invoice</div><div class="ai-text" id="inv-txt"></div><button class="btn gold mt8" onclick="cp('inv-txt')">Copy invoice ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Invoice quick-starts</div>
+          <div class="fc">
+            <button class="btn" onclick="quickInvoice('Envi Lee Studios LLC','FashionNova Inc.','4 TikTok sponsored videos (30-60 sec) for Spring 2026 campaign, 2 Instagram Reels','3500','1750','Bank transfer (ACH)')">FashionNova final invoice ↗</button>
+            <button class="btn" onclick="quickInvoice('Envi Lee Studios LLC','Shein Collaboration','Swimwear campaign: 6 TikTok videos, 4 Instagram Reels, 1 YouTube Short','5800','0','Wire transfer')">Shein full invoice ↗</button>
+          </div>
+          <div style="margin-top:14px;padding:12px;background:var(--g3);border-radius:var(--r);border:0.5px solid var(--gd)">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--g);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px">Invoice tips</div>
+            <div style="font-size:11px;color:var(--mu3);line-height:1.9">
+              ◈ Always send an invoice — even for small deals<br>
+              ◈ Net 14 is standard for creators (not Net 30)<br>
+              ◈ Include a late fee clause (1.5%/month)<br>
+              ◈ Keep a copy of every invoice you send<br>
+              ◈ Follow up if unpaid after 7 days
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEAL TRACKER -->
+    <div class="pg" id="pg-deal-tracker">
+      <div class="pg-title">All <span class="hi">Deals</span></div>
+      <div class="pg-sub">Every brand deal — active, pending, completed, and declined — in one place.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="display:flex;gap:6px" id="deal-filter-chips">
+          <span style="padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;background:var(--g2);border:0.5px solid var(--gd);color:var(--g)">All</span>
+          <span style="padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;background:var(--s2);border:0.5px solid var(--b);color:var(--mu2)">Active</span>
+          <span style="padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;background:var(--s2);border:0.5px solid var(--b);color:var(--mu2)">Pending</span>
+          <span style="padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;background:var(--s2);border:0.5px solid var(--b);color:var(--mu2)">Completed</span>
+        </div>
+        <button class="btn gold" onclick="side('pitch-email',null);showPg('pitch-email')">+ New deal</button>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="tbl">
+          <thead><tr><th>Brand</th><th>Type</th><th>Value</th><th>Deliverables</th><th>Next due</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--w);font-weight:500">FashionNova</td><td style="color:var(--mu3)">Sponsored · Monthly</td><td style="color:var(--g);font-family:'DM Mono',monospace">$3,500/mo</td><td style="color:var(--mu3)">4 posts</td><td style="color:var(--pend);font-family:'DM Mono',monospace">May 15</td><td><span class="pill pill-live">Active</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Manage</button></td></tr>
+            <tr><td style="color:var(--w);font-weight:500">BooHoo Beauty</td><td style="color:var(--mu3)">Ambassador · Monthly</td><td style="color:var(--g);font-family:'DM Mono',monospace">$2,200/mo</td><td style="color:var(--mu3)">2 posts</td><td style="color:var(--pend);font-family:'DM Mono',monospace">May 20</td><td><span class="pill pill-live">Active</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Manage</button></td></tr>
+            <tr><td style="color:var(--w);font-weight:500">Shein x Envi Lee</td><td style="color:var(--mu3)">Collaboration flat</td><td style="color:var(--g);font-family:'DM Mono',monospace">$5,800</td><td style="color:var(--mu3)">Campaign TBD</td><td style="color:var(--mu)">Negotiating</td><td><span class="pill pill-pend">Pending</span></td><td><button class="btn gold" style="font-size:10px;padding:4px 8px">Follow up</button></td></tr>
+            <tr><td style="color:var(--w);font-weight:500">PLT Summer</td><td style="color:var(--mu3)">Sponsored · One-time</td><td style="color:var(--g);font-family:'DM Mono',monospace">$1,800</td><td style="color:var(--mu3)">2 posts</td><td style="color:var(--mu)">Sent contract</td><td><span class="pill pill-pend">Pending</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Manage</button></td></tr>
+            <tr style="opacity:.6"><td style="color:var(--w);font-weight:500">H&M Beauty</td><td style="color:var(--mu3)">UGC package</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">$2,400</td><td style="color:var(--mu3)">6 UGC videos</td><td style="color:var(--mu)">Apr 30</td><td><span class="pill pill-done">Completed</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Invoice</button></td></tr>
+            <tr style="opacity:.6"><td style="color:var(--w);font-weight:500">Nike Wmns</td><td style="color:var(--mu3)">Gifting only</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">$0</td><td style="color:var(--mu3)">1 post</td><td style="color:var(--mu)">—</td><td><span class="pill pill-decline">Declined</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Re-pitch</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DELIVERABLES TRACKER -->
+    <div class="pg" id="pg-deliverables">
+      <div class="pg-title">Deliverables <span class="hi">Tracker</span></div>
+      <div class="pg-sub">Track every piece of content you owe across all active deals. Never miss a deadline.</div>
+      <div class="stats mb24">
+        <div class="stat"><div class="stat-n">8</div><div class="stat-l">Due this month</div><div class="stat-g">↑ 2 overdue</div></div>
+        <div class="stat"><div class="stat-n">3</div><div class="stat-l">In progress</div></div>
+        <div class="stat"><div class="stat-n">5</div><div class="stat-l">Completed</div></div>
+        <div class="stat"><div class="stat-n">2</div><div class="stat-l">Awaiting approval</div></div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="tbl">
+          <thead><tr><th>Deliverable</th><th>Brand</th><th>Due date</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--w)">TikTok video 1 of 4</td><td style="color:var(--mu3)">FashionNova</td><td style="color:var(--live);font-family:'DM Mono',monospace">May 15</td><td><span class="pill pill-pend">In progress</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Mark done</button></td></tr>
+            <tr><td style="color:var(--w)">TikTok video 2 of 4</td><td style="color:var(--mu3)">FashionNova</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">May 18</td><td><span class="pill pill-mu">Not started</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Start</button></td></tr>
+            <tr><td style="color:var(--w)">Instagram Reel 1 of 2</td><td style="color:var(--mu3)">BooHoo Beauty</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">May 20</td><td><span class="pill pill-mu">Not started</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Start</button></td></tr>
+            <tr><td style="color:var(--w)">TikTok video 3 of 4</td><td style="color:var(--mu3)">FashionNova</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">May 22</td><td><span class="pill pill-mu">Not started</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Start</button></td></tr>
+            <tr style="opacity:.6"><td style="color:var(--w)">UGC Video pack (6)</td><td style="color:var(--mu3)">H&M Beauty</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">Apr 30</td><td><span class="pill pill-done">Approved</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Invoice</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div class="pg" id="pg-payments">
+      <div class="pg-title">Payments <span class="hi">Tracker</span></div>
+      <div class="pg-sub">Track all incoming payments — what's been paid, what's outstanding, and what's overdue.</div>
+      <div class="stats mb24">
+        <div class="stat"><div class="stat-n">$12.4k</div><div class="stat-l">Received this month</div><div class="stat-g">↑ On track</div></div>
+        <div class="stat"><div class="stat-n">$8.4k</div><div class="stat-l">Outstanding</div><div class="stat-g" style="color:var(--pend)">↑ 3 invoices</div></div>
+        <div class="stat"><div class="stat-n">$1.8k</div><div class="stat-l">Overdue</div><div class="stat-g" style="color:var(--decline)">↑ Follow up</div></div>
+        <div class="stat"><div class="stat-n">$86k</div><div class="stat-l">Lifetime earned</div><div class="stat-g">↑ All time</div></div>
+      </div>
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="tbl">
+          <thead><tr><th>Brand</th><th>Invoice</th><th>Amount</th><th>Due</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--w)">FashionNova</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">INV-2026-031</td><td style="color:var(--g);font-family:'DM Mono',monospace">$1,750</td><td style="color:var(--live)">May 1</td><td><span class="pill pill-live">Paid</span></td><td>—</td></tr>
+            <tr><td style="color:var(--w)">BooHoo Beauty</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">INV-2026-032</td><td style="color:var(--g);font-family:'DM Mono',monospace">$2,200</td><td style="color:var(--pend)">May 10</td><td><span class="pill pill-pend">Pending</span></td><td><button class="btn" style="font-size:10px;padding:4px 8px">Follow up</button></td></tr>
+            <tr><td style="color:var(--w)">H&M Beauty</td><td style="color:var(--mu3);font-family:'DM Mono',monospace">INV-2026-030</td><td style="color:var(--g);font-family:'DM Mono',monospace">$2,400</td><td style="color:var(--decline)">Apr 30</td><td><span class="pill pill-decline">Overdue</span></td><td><button class="btn gold" style="font-size:10px;padding:4px 8px">Chase payment</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MEDIA KIT BUILDER -->
+    <div class="pg" id="pg-media-kit-builder">
+      <div class="pg-title">Media Kit <span class="hi">Builder</span></div>
+      <div class="pg-sub">AI writes your complete media kit in minutes — audience stats, demographics, content categories, past partnerships, and packages. Send it to every brand you pitch.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Your details</div>
+          <div class="field"><div class="fl">Your name / creator brand</div><input class="inp" id="mk-name" placeholder="e.g. Envi Lee — @luxe.envi"/></div>
+          <div class="field"><div class="fl">One-sentence bio</div><input class="inp" id="mk-bio" placeholder="e.g. POD brand founder, AI influencer creator, and luxury lifestyle content educator"/></div>
+          <div class="field"><div class="fl">Audience demographics</div><textarea class="inp" id="mk-demographics" placeholder="e.g. 78% women · 68% Black women · Age 22-38 · US, UK, Canada · income $45k+ · interests: fashion, entrepreneurship, AI tools..."></textarea></div>
+          <div class="g2">
+            <div class="field"><div class="fl">TikTok</div><input class="inp" id="mk-tiktok" placeholder="85k followers · 8% eng"/></div>
+            <div class="field"><div class="fl">Instagram</div><input class="inp" id="mk-insta" placeholder="42k followers · 6% eng"/></div>
+            <div class="field"><div class="fl">YouTube</div><input class="inp" id="mk-yt" placeholder="12k subs"/></div>
+            <div class="field"><div class="fl">Email list</div><input class="inp" id="mk-email" placeholder="8k subscribers"/></div>
+          </div>
+          <div class="field"><div class="fl">Content categories you create</div><input class="inp" id="mk-content" placeholder="e.g. fashion, AI content, POD business, luxury lifestyle, entrepreneurship"/></div>
+          <div class="field"><div class="fl">Past brand partnerships</div><input class="inp" id="mk-past" placeholder="e.g. FashionNova, BooHoo Beauty, H&M, multiple beauty & fashion brands"/></div>
+          <div class="field"><div class="fl">A notable result or win</div><input class="inp" id="mk-result" placeholder="e.g. TikTok for FashionNova reached 2.3M views, 14k link clicks"/></div>
+          <button class="btn gold w100 mt8" onclick="genMediaKit()">Generate media kit ↗</button>
+          <div class="lbar mt8" id="mk-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="mk-out">
+            <div class="ai-lbl">Your Media Kit</div>
+            <div class="ai-text" id="mk-txt"></div>
+            <div class="btn-row"><button class="btn gold" onclick="cp('mk-txt')">Copy full media kit ↗</button><button class="btn ou" onclick="side('rate-builder',null);showPg('rate-builder')">Add rate card ↗</button></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">What a great media kit includes</div>
+          <div class="fc">
+            <div class="contract-section"><div class="cs-label">Hero section</div><div class="cs-text">Your name, best photo, one-line bio, and what makes you unique</div></div>
+            <div class="contract-section"><div class="cs-label">Audience stats</div><div class="cs-text">Follower count per platform, engagement rate, monthly reach, total impressions</div></div>
+            <div class="contract-section"><div class="cs-label">Audience demographics</div><div class="cs-text">Gender split, age range, location, income level, interests — brands need this to say yes</div></div>
+            <div class="contract-section"><div class="cs-label">Content categories</div><div class="cs-text">What you make, what topics you cover, and the visual style of your content</div></div>
+            <div class="contract-section"><div class="cs-label">Past partnerships</div><div class="cs-text">Brand logos + a 1-line result for each — "2.3M views for FashionNova"</div></div>
+            <div class="contract-section"><div class="cs-label">Services & packages</div><div class="cs-text">What you offer and at what price — make it easy to buy</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRAND OUTREACH -->
+    <div class="pg" id="pg-brand-outreach">
+      <div class="pg-title">Brand <span class="hi">Outreach List</span></div>
+      <div class="pg-sub">AI generates a targeted list of brands that are a perfect fit for your audience and content style — with contact strategy for each.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Build my outreach list</div>
+          <div class="field"><div class="fl">Your niche & audience</div><input class="inp" id="bo-niche" placeholder="e.g. POD fashion, AI content creation, luxury lifestyle for Black women"/></div>
+          <div class="field"><div class="fl">Brand category you want to target</div>
+            <select class="sel" id="bo-category">
+              <option>Fashion & clothing (fast fashion)</option>
+              <option>Fashion & clothing (premium/luxury)</option>
+              <option>Beauty & skincare</option>
+              <option>Business tools & SaaS</option>
+              <option>POD & print platforms</option>
+              <option>Lifestyle & home</option>
+              <option>Fitness & wellness</option>
+              <option>All categories that fit</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Deal budget range you want</div>
+            <select class="sel" id="bo-budget">
+              <option>$500–$2k per deal</option>
+              <option>$2k–$5k per deal</option>
+              <option>$5k–$15k per deal</option>
+              <option>$15k+ (enterprise brands)</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your audience size</div><input class="inp" id="bo-size" placeholder="e.g. 85k TikTok, 42k Instagram"/></div>
+          <button class="btn gold w100 mt8" onclick="genOutreachList()">Generate my brand list ↗</button>
+          <div class="lbar mt8" id="bo-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="bo-out"><div class="ai-lbl">Brand Outreach List</div><div class="ai-text" id="bo-txt"></div><div class="btn-row"><button class="btn gold" onclick="cp('bo-txt')">Copy list ↗</button><button class="btn ou" onclick="side('pitch-email',null);showPg('pitch-email')">Start pitching ↗</button></div></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">How to approach brand outreach</div>
+          <div class="fc">
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--g)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:3px">Volume is a system, not a spray</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Target 10 brands/week. Research each one before pitching. Personalization beats volume every time.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid rgba(108,108,255,0.6)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:3px">Find the right contact</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Search "[Brand] influencer marketing manager" on LinkedIn. Don't email the general contact form — it disappears.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--live)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:3px">Track your follow-ups</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Follow up once after 5 days. Most deals close on the 2nd or 3rd contact, not the first.</div></div>
+            <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--pend)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:3px">Create FOMO</div><div style="font-size:11px;color:var(--mu3);line-height:1.6">Mention other brands you work with. "I'm currently in conversations with 2 fashion brands this quarter." Scarcity closes deals.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEAL STRATEGY -->
+    <div class="pg" id="pg-deal-strategy">
+      <div class="pg-title">Deal <span class="hi">Strategy</span></div>
+      <div class="pg-sub">AI analyzes your current deal situation and tells you exactly what to do next to hit your income goals from brand partnerships.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Tell me your situation</div>
+          <div class="field"><div class="fl">Current monthly deal income</div><input class="inp" id="ds-current" placeholder="e.g. $5,000/month from 3 active deals"/></div>
+          <div class="field"><div class="fl">Monthly deal income goal</div><input class="inp" id="ds-goal" placeholder="e.g. $20,000/month within 6 months"/></div>
+          <div class="field"><div class="fl">Your audience size</div><input class="inp" id="ds-audience" placeholder="e.g. TikTok 85k, Instagram 42k"/></div>
+          <div class="field"><div class="fl">Your niche</div><input class="inp" id="ds-niche" placeholder="e.g. POD fashion brand owner and AI influencer creator"/></div>
+          <div class="field"><div class="fl">What's not working</div><textarea class="inp" id="ds-challenge" placeholder="e.g. I'm getting ghosted after pitching, brands offer gifting only, I don't know my rates, I close deals but can't retain them long-term..."></textarea></div>
+          <div class="field"><div class="fl">What's working</div><input class="inp" id="ds-working" placeholder="e.g. I get replies from most brands I pitch, my content quality is strong..."/></div>
+          <button class="btn gold w100 mt8" onclick="genDealStrategy()">Get my deal strategy ↗</button>
+          <div class="lbar mt8" id="ds-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="ds-out"><div class="ai-lbl">Your Deal Strategy</div><div class="ai-text" id="ds-txt"></div><button class="btn gold mt8" onclick="cp('ds-txt')">Copy strategy ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Deal income benchmarks</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+            <div style="padding:10px 13px;background:var(--bg3);border-radius:var(--r)"><div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--mu3)">10–50k followers</span><span style="font-size:12px;font-weight:600;color:var(--w);font-family:'Syne',sans-serif">$500–$3k/month</span></div></div>
+            <div style="padding:10px 13px;background:var(--bg3);border-radius:var(--r)"><div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--mu3)">50–100k followers</span><span style="font-size:12px;font-weight:600;color:var(--g);font-family:'Syne',sans-serif">$3k–$15k/month</span></div></div>
+            <div style="padding:10px 13px;background:var(--g2);border-radius:var(--r);border:0.5px solid var(--gd)"><div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--g)">85k + AI content quality</span><span style="font-size:12px;font-weight:600;color:var(--g);font-family:'Syne',sans-serif">$10k–$25k/month</span></div></div>
+            <div style="padding:10px 13px;background:var(--bg3);border-radius:var(--r)"><div style="display:flex;justify-content:space-between"><span style="font-size:11px;color:var(--mu3)">100k–500k followers</span><span style="font-size:12px;font-weight:600;color:var(--w);font-family:'Syne',sans-serif">$15k–$60k/month</span></div></div>
+          </div>
+          <div style="padding:12px;background:var(--g3);border-radius:var(--r);border:0.5px solid var(--gd)">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--g);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px">Envi Lee's path to $20k/month</div>
+            <div style="font-size:11px;color:var(--mu3);line-height:1.9">
+              ◈ 2 monthly ambassador deals at $3,500 = $7k<br>
+              ◈ 2 monthly sponsored content deals at $2,500 = $5k<br>
+              ◈ 1 UGC retainer at $3,500 = $3.5k<br>
+              ◈ 1 collab campaign per quarter ($5,800 ÷ 3) = $1.9k<br>
+              ◈ Misc. one-off deals = $2.6k<br>
+              <strong style="color:var(--g)">Total: $20k/month</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
+
+async function ai(prompt,txtId,lbarId,outId){
+  const txt=document.getElementById(txtId),lb=lbarId?document.getElementById(lbarId):null,out=outId?document.getElementById(outId):null;
+  if(lb)lb.classList.add('go');
+  if(txt)txt.textContent='Generating…';
+  if(out){out.style.display='block';out.classList.add('show')}
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(txt)txt.textContent=d.content&&d.content[0]?d.content[0].text:'Generation failed. Please try again.';
+  }catch(e){if(txt)txt.textContent='Connection error. Please try again.'}
+  if(lb)lb.classList.remove('go');
+}
+function g(id){return document.getElementById(id)?.value||''}
+function cp(id){const el=document.getElementById(id);if(el&&navigator.clipboard)navigator.clipboard.writeText(el.textContent).then(()=>{const o=el.style.color;el.style.color='var(--g)';setTimeout(()=>el.style.color=o,700)})}
+
+async function genPitchEmail(){
+  const brand=g('pe-brand')||'the brand',brandNiche=g('pe-brand-niche'),dealType=g('pe-deal-type'),audience=g('pe-audience'),niche=g('pe-niche'),fit=g('pe-fit'),rate=g('pe-rate'),past=g('pe-past'),tone=g('pe-tone');
+  await ai(`You are a talent manager writing a brand pitch email for Envi Lee — a POD brand owner, AI influencer creator, and luxury lifestyle content creator.\n\nPitching to: ${brand} (${brandNiche||'fashion/lifestyle brand'})\nDeal type: ${dealType}\nEnvi Lee's audience: ${audience||'TikTok 85k, Instagram 42k, ~8% engagement'}\nHer creator type: ${niche||'POD brand owner and AI influencer creator'}\nWhy this brand fits: ${fit||'strong audience alignment with brand\'s target demographic'}\nRate ask: ${rate||'open to discuss'}\nPast experience: ${past||'multiple brand partnerships'}\nTone: ${tone}\n\nWrite a complete pitch email:\n\nSUBJECT LINE: (compelling, specific — not "collaboration opportunity")\n\nEMAIL:\n- Opening line: something specific about ${brand} that shows she's done her homework\n- Who Envi Lee is: 2 sentences max\n- Why she's reaching out to ${brand} specifically: authentic connection\n- What she offers: specific deliverables and reach\n- 1 piece of social proof (past result or stat)\n- The ask: clear deal type and rate\n- Next step: single clear CTA\n- Sign off\n\nTone: ${tone}. She is an equal business partner, not a fan. Professional, warm, and confident. Under 220 words total. Make the subject line and opening impossible to ignore.`,'pe-txt','pe-lbar','pe-out');
+}
+function quickPitch(brand,brandNiche,dealType,audience,niche,fit,rate,past,tone){
+  document.getElementById('pe-brand').value=brand;
+  document.getElementById('pe-brand-niche').value=brandNiche;
+  document.getElementById('pe-deal-type').value=dealType;
+  document.getElementById('pe-audience').value=audience;
+  document.getElementById('pe-niche').value=niche;
+  document.getElementById('pe-fit').value=fit;
+  document.getElementById('pe-rate').value=rate;
+  document.getElementById('pe-past').value=past;
+  document.getElementById('pe-tone').value=tone;
+  genPitchEmail();
+}
+async function genDMPitch(){
+  const brand=g('dm-brand'),platform=g('dm-platform'),type=g('dm-type'),audience=g('dm-audience'),love=g('dm-love');
+  await ai(`Write a short, effective cold DM pitch for Envi Lee to send to ${brand||'a fashion brand'} on ${platform}.\n\nDeal type: ${type}\nHer audience: ${audience||'85k TikTok, 42k Instagram'}\nWhat she loves about the brand: ${love||'she genuinely loves their aesthetic and products'}\n\nRules:\n- MAX 3 sentences\n- Warm and genuine, not salesy\n- Don't pitch rates in the DM\n- End with a soft ask to connect further\n- Must sound like a real person, not a template\n\nWrite ONLY the DM text — no preamble. Under 80 words.`,'dm-txt','dm-lbar','dm-out');
+}
+async function genInquiryResponse(){
+  const brand=g('ri-brand')||'the brand',msg=g('ri-msg')||'they reached out about a collaboration',goal=g('ri-goal'),rate=g('ri-rate');
+  await ai(`Write a professional response from Envi Lee to a brand inquiry.\n\nBrand: ${brand}\nWhat they sent: "${msg}"\nResponse goal: ${goal}\nEnvi Lee's rate/position: ${rate||'her standard rates'}\n\nWrite the complete response:\n- Address their message directly\n- Execute the goal (${goal})\n- Maintain confidence — she doesn't negotiate against herself\n- Clear next step\n\nIf negotiating higher rate: don't drop immediately, ask what their budget is first, then position value.\nIf declining: be warm and leave the door open for future.\nIf accepting: move to next step (media kit, contract, call).\n\nUnder 180 words. Professional but human.`,'ri-txt','ri-lbar','ri-out');
+}
+async function genRateCard(){
+  const name=g('rc-name')||'Envi Lee',type=g('rc-type'),tiktok=g('rc-tiktok')||'85000',insta=g('rc-insta')||'42000',yt=g('rc-youtube')||'12000',email=g('rc-email')||'8000',engagement=g('rc-engagement'),specialty=g('rc-specialty'),target=g('rc-target');
+  await ai(`Build a complete, professional rate card for ${name}.\n\nCreator type: ${type}\nTikTok: ${tiktok} followers\nInstagram: ${insta} followers\nYouTube: ${yt} subscribers\nEmail: ${email} subscribers\nEngagement: ${engagement}\nContent specialty: ${specialty||'fashion, AI content, POD business'}\nTarget brands: ${target}\n\nFormat the full rate card:\n\n${name.toUpperCase()} — CREATOR RATE CARD\n\nPLATFORM RATES:\n\nTIKTOK:\n• Single sponsored video (60s): $[X]\n• 2-video package: $[X] (save [X]%)\n• Monthly retainer (4 videos): $[X]\n\nINSTAGRAM:\n• Single Reel: $[X]\n• Reel + Feed post combo: $[X]\n• Stories package (6 stories): $[X]\n• Monthly retainer (2 Reels + 4 Stories): $[X]\n\nMULTI-PLATFORM PACKAGES:\n• Starter (TikTok + Instagram): $[X]/mo\n• Standard (full platform presence): $[X]/mo\n• Premium (all platforms + YouTube): $[X]/mo\n\nUGC CONTENT (brand-owned):\n• Single UGC video: $[X]\n• 5-video pack: $[X]\n• Monthly UGC retainer: $[X]\n\nCOLLABORATION:\n• Co-designed collection: Starting at $[X] + [X]% royalty\n• Brand ambassador (quarterly): $[X]\n\nADD-ONS:\n• Usage rights for paid ads: +[X]%\n• Category exclusivity: +[X]%\n• Rush turnaround (<5 days): +[X]%\n• Extra revision round: $[X]\n\nSTANDARD TERMS:\n• [Include payment terms, revision policy, content ownership]\n\nBase rates on industry standards for her exact follower counts. She creates AI-generated cinematic content — that's a premium. Set rates that are strong and reflect quality. Under 400 words.`,'rc-txt','rc-lbar','rc-out');
+}
+async function genPackages(){
+  const platform=g('pkg-platform'),content=g('pkg-content'),capacity=g('pkg-capacity'),budget=g('pkg-budget');
+  await ai(`Build 3-tier content packages for Envi Lee to pitch to brands.\n\nPlatforms: ${platform}\nContent types she creates: ${content||'TikTok videos, Instagram Reels, UGC content, lifestyle content'}\nMonthly capacity: ${capacity}\nTarget brand budget: ${budget}\n\nCreate 3 clear tiers:\n\nPACKAGE 1 — [STARTER NAME] — $[X]/month\nIncludes: [list deliverables]\nPlatforms: [which ones]\nTurnaround: [X days]\nUsage rights: [what's included]\nBest for: [type of brand]\n\nPACKAGE 2 — [STANDARD NAME] — $[X]/month [MOST POPULAR]\nIncludes: [more deliverables]\nPlatforms: [more]\nTurnaround: [X days]\nUsage rights: [included]\nBonus: [what makes this tier special]\nBest for: [type of brand]\n\nPACKAGE 3 — [PREMIUM NAME] — $[X]/month\nIncludes: [full deliverables]\nPlatforms: [all]\nTurnaround: [X days]\nUsage rights: [full]\nExclusive: [what they get exclusively]\nBest for: [type of brand]\n\nADD-ONS (available to any tier):\n[3-4 specific add-ons with prices]\n\nMake prices strong. Bundle savings should make Package 2 look like the obvious choice. Under 350 words.`,'pkg-txt','pkg-lbar','pkg-out');
+}
+async function genContract(){
+  const creator=g('cg-creator')||'Envi Lee Studios LLC',brand=g('cg-brand')||'Brand Name',deliverables=g('cg-deliverables'),payment=g('cg-payment')||'3500',schedule=g('cg-payment-schedule'),start=g('cg-start'),end=g('cg-end'),usage=g('cg-usage'),exclusivity=g('cg-exclusivity'),revisions=g('cg-revisions'),killfee=g('cg-killfee');
+  await ai(`Write a professional brand deal contract between a content creator and a brand.\n\nCREATOR: ${creator}\nBRAND/CLIENT: ${brand}\nDELIVERABLES: ${deliverables||'content as discussed'}\nTOTAL PAYMENT: $${payment}\nPAYMENT SCHEDULE: ${schedule}\nCAMPAIGN DATES: ${start||'TBD'} to ${end||'TBD'}\nUSAGE RIGHTS: ${usage}\nEXCLUSIVITY: ${exclusivity}\nREVISIONS: ${revisions}\nKILL FEE: ${killfee}\n\nWrite a complete, professional contract with these sections. Use plain language — not overly legal, but clear and binding:\n\nBRAND PARTNERSHIP AGREEMENT\n\n1. PARTIES — who is signing\n2. SCOPE OF WORK — exact deliverables, platforms, specifications\n3. TIMELINE — start date, delivery dates, posting dates\n4. COMPENSATION — amount, payment schedule, payment method, late fee\n5. USAGE RIGHTS — exactly where and how long brand can use the content\n6. EXCLUSIVITY — category, duration, what counts as a competitor\n7. REVISIONS — how many, timeframe for feedback, what counts as a revision\n8. KILL FEE — what happens if brand cancels after work begins\n9. FTC DISCLOSURE — creator will disclose #ad or #sponsored as required\n10. INTELLECTUAL PROPERTY — creator retains ownership unless full buyout\n11. GOVERNING LAW — standard clause\n12. SIGNATURES — both parties\n\nUse [CREATOR NAME], [BRAND NAME], [DATE] placeholders where appropriate. Under 600 words.`,'cg-txt','cg-lbar','cg-out');
+}
+async function genContractReview(){
+  const contract=g('cr-contract'),context=g('cr-context');
+  await ai(`You are a creator-side contract lawyer reviewing a brand deal agreement.\n\nContext: ${context||'brand deal contract review'}\n\nContract to review:\n---\n${contract||'No contract provided — please provide contract text'}\n---\n\nProvide a thorough review:\n\nOVERALL VERDICT: [Safe to sign / Needs negotiation / Do not sign]\n\nRED FLAGS:\n[List any terms that significantly favor the brand or could harm the creator]\n\nMISSING CLAUSES:\n[What should be in this contract but isn't]\n\nTERMS TO NEGOTIATE:\nFor each term to negotiate:\n- What it currently says\n- Why it's problematic\n- What to ask for instead\n\nTERMS THAT LOOK GOOD:\n[Acknowledge what's fair]\n\nNEGOTIATION SCRIPT:\nExact language to use when pushing back on the biggest issue\n\nSHOULD YOU SIGN?: Final recommendation in 2 sentences\n\nBe direct and specific. Creator-first perspective. Under 500 words.`,'cr-txt','cr-lbar','cr-out');
+}
+async function genInvoice(){
+  const creator=g('inv-creator')||'Envi Lee Studios',client=g('inv-client')||'Client',services=g('inv-services'),amount=g('inv-amount')||'3500',paid=g('inv-paid')||'0',method=g('inv-method'),date=g('inv-date'),due=g('inv-due');
+  const balance=parseFloat(amount)-(parseFloat(paid)||0);
+  await ai(`Generate a professional invoice for a content creator.\n\nFROM: ${creator}\nTO: ${client}\nDATE: ${date||new Date().toLocaleDateString()}\nDUE: ${due||'Net 14'}\nSERVICES: ${services||'Content creation services as agreed'}\nTOTAL: $${amount}\nALREADY PAID: $${paid||'0'}\nBALANCE DUE: $${balance}\nPAYMENT METHOD: ${method}\n\nFormat as a clean, professional invoice:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nINVOICE\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nFROM: ${creator}\nTO: ${client}\nINVOICE DATE: ${date||'[Today]'}\nDUE DATE: ${due||'Net 14'}\nINVOICE #: INV-${Date.now().toString().slice(-6)}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nSERVICES RENDERED:\n[Break down the services into line items]\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSUBTOTAL: $${amount}\nDEPOSIT RECEIVED: ($${paid||'0'})\nBALANCE DUE: $${balance}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nPAYMENT METHOD: ${method}\n[Include payment details placeholder]\n\nLATE FEE: 1.5% per month on overdue balances\n\nThank you for the partnership. I look forward to working together again.\n\n${creator}\n\nKeep it clean and professional. Under 300 words.`,'inv-txt','inv-lbar','inv-out');
+}
+function quickInvoice(creator,client,services,amount,paid,method){
+  document.getElementById('inv-creator').value=creator;
+  document.getElementById('inv-client').value=client;
+  document.getElementById('inv-services').value=services;
+  document.getElementById('inv-amount').value=amount;
+  document.getElementById('inv-paid').value=paid;
+  document.getElementById('inv-method').value=method;
+  genInvoice();
+}
+async function genMediaKit(){
+  const name=g('mk-name')||'Envi Lee',bio=g('mk-bio'),demo=g('mk-demographics'),tiktok=g('mk-tiktok'),insta=g('mk-insta'),yt=g('mk-yt'),email=g('mk-email'),content=g('mk-content'),past=g('mk-past'),result=g('mk-result');
+  await ai(`Write a complete, professional media kit for ${name}.\n\nBio: ${bio||'POD brand founder, AI influencer creator, luxury lifestyle educator'}\nAudience demographics: ${demo||'78% women, 68% Black women, age 22-38, fashion & entrepreneurship'}\nTikTok: ${tiktok||'85k followers'}\nInstagram: ${insta||'42k followers'}\nYouTube: ${yt||'12k subscribers'}\nEmail: ${email||'8k subscribers'}\nContent categories: ${content||'fashion, AI content, POD business, luxury lifestyle'}\nPast partnerships: ${past||'multiple fashion and lifestyle brands'}\nNotable result: ${result||'strong engagement and conversion rates'}\n\nWrite the complete media kit copy:\n\n${name.toUpperCase()} — MEDIA KIT\n\nHELLO, I'M ${name.split('—')[0].trim().toUpperCase()}\n[2-3 sentence compelling bio in her voice]\n\nBY THE NUMBERS\n[Format all platform stats in a visual way]\nTotal reach: [calculated total]\nAverage engagement: [rate]\n\nMY AUDIENCE\n[Demographics laid out clearly — who follows her and why brands care]\n\nWHAT I CREATE\n[Content categories and formats — specific and visual]\n\nTHE DIFFERENCE\n[What makes her content unique — AI cinematic quality, Black creator perspective, POD expertise]\n\nPAST PARTNERSHIPS\n[Past brands + 1 result each where available]\n\nNOTABLE RESULT\n${result}\n\nWORK WITH ME\n[3-4 sentences on how brands can partner with her]\n\nCONTACT: [placeholder]\n\nMake it feel premium, confident, and worth a brand's investment. Under 450 words.`,'mk-txt','mk-lbar','mk-out');
+}
+async function genOutreachList(){
+  const niche=g('bo-niche')||'POD fashion and AI content creation for Black women',category=g('bo-category'),budget=g('bo-budget'),size=g('bo-size')||'85k TikTok, 42k Instagram';
+  await ai(`Generate a targeted brand outreach list for Envi Lee.\n\nHer niche: ${niche}\nTarget brand category: ${category}\nDeal budget range: ${budget}\nAudience size: ${size}\n\nProvide 10 specific brands she should pitch, formatted as:\n\nBRAND [N]: [Brand Name]\nWHY IT FITS: [1 sentence — specific audience overlap]\nDEAL TYPE: [What kind of partnership makes sense]\nESTIMATED BUDGET: [What brands like this typically pay]\nHOW TO REACH: [Email, IG DM, LinkedIn — and who to contact]\nPITCH ANGLE: [The specific hook to use in her pitch — something unique to this brand]\n\nInclude a mix of: brands that actively work with creators her size, brands that align with her specific audience, and 2 stretch brands that are bigger but worth trying.\n\nEnd with: PRIORITY ORDER — which 3 to pitch first and why.\n\nUnder 500 words. Make every recommendation specific and actionable.`,'bo-txt','bo-lbar','bo-out');
+}
+async function genDealStrategy(){
+  const current=g('ds-current')||'$5k/month',goal=g('ds-goal')||'$20k/month',audience=g('ds-audience')||'85k TikTok, 42k Instagram',niche=g('ds-niche'),challenge=g('ds-challenge'),working=g('ds-working');
+  await ai(`You are a creator business strategist. Build a brand deal growth plan for Envi Lee.\n\nCURRENT STATE:\n- Monthly deal income: ${current}\n- Audience: ${audience}\n- Niche: ${niche||'POD fashion, AI influencer, luxury lifestyle'}\n- What's not working: ${challenge||'general growth challenges'}\n- What's working: ${working||'strong content quality'}\n\nGOAL: ${goal}\n\nProvide a complete strategy:\n\nGAP ANALYSIS:\nFrom ${current} to ${goal} — what specifically needs to change\n\nTHE DEAL MIX (how to build to the goal):\nBreak down exactly what combination of deals gets her to ${goal}\n[e.g. X ambassador deals + Y sponsored + Z UGC = $20k]\n\nTOP 3 ACTIONS THIS WEEK:\n1. [Specific and doable in 7 days]\n2. [Specific and doable in 7 days]\n3. [Specific and doable in 7 days]\n\nFIX WHAT'S NOT WORKING:\nFor each challenge listed, give the specific fix\n\nRETENTION STRATEGY:\nHow to keep brands coming back month after month (most creators miss this)\n\nTHE ONE MOVE:\nIf she could only do one thing to dramatically increase her deal income, what is it?\n\nTIMELINE:\nRealistic timeline to hit ${goal} from where she is now\n\nBe specific, direct, and creator-first. Under 500 words.`,'ds-txt','ds-lbar','ds-out');
+}
+
+const mainMap={dashboard:'dashboard',pitch:'pitch-email',ratecard:'rate-builder',contract:'contract-gen',tracker:'deal-tracker','media-kit':'media-kit-builder',strategy:'deal-strategy'};
+const sideMap={dashboard:'dashboard','deal-pipeline':'deal-tracker','pitch-email':'pitch-email','pitch-dm':'pitch-dm','pitch-response':'pitch-response','rate-builder':'rate-builder','package-builder':'package-builder','contract-gen':'contract-gen','contract-review':'contract-review','invoice-gen':'invoice-gen','deal-tracker':'deal-tracker',deliverables:'deliverables',payments:'payments','media-kit-builder':'media-kit-builder','brand-outreach':'brand-outreach','deal-strategy':'deal-strategy'};
+
+function nav(k){
+  document.querySelectorAll('.tn').forEach(b=>b.classList.remove('on'));
+  const keys=Object.keys(mainMap),idx=keys.indexOf(k);
+  if(idx>=0)document.querySelectorAll('.tn')[idx].classList.add('on');
+  showPg(mainMap[k]);
+}
+function side(k,el){
+  document.querySelectorAll('.si').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(sideMap[k])showPg(sideMap[k]);
+}
+function showPg(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('pg-'+id);
+  if(p)p.classList.add('on');
+}
+</script>
+</body>
+</html>
