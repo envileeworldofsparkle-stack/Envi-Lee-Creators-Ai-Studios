@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Envi Lee Baddie Academy Creator Studios</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0a0f;--bg2:#0e0e16;--bg3:#13131e;
+  --surface:#19192a;--surface2:#20203a;
+  --lilac:#AFA9EC;--lilac2:#CECBF6;--lilac3:#7F77DD;--lilac4:#534AB7;--lilac5:#EEEDFE;
+  --silver:#c0c0d0;--silver2:#9090a8;--silver3:#e8e8f0;--silver4:rgba(192,192,208,0.12);
+  --white:#f0f0ff;--muted:#7070a0;
+  --border:rgba(175,169,236,0.12);--border2:rgba(192,192,208,0.15);
+  --glow-l:0 0 20px rgba(175,169,236,0.2);--glow-s:0 0 16px rgba(192,192,208,0.15);
+  --r:10px;--r2:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+h1,h2,h3,.logo-text,.syne{font-family:'Syne',sans-serif}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.02) 3px,rgba(0,0,0,0.02) 4px);pointer-events:none;z-index:999}
+.topbar{background:rgba(10,10,15,0.97);border-bottom:0.5px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-diamond{width:18px;height:18px;background:linear-gradient(135deg,var(--lilac),var(--silver));transform:rotate(45deg);animation:shimmer 4s ease infinite}
+@keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+.logo-text{font-size:13px;font-weight:700;color:var(--white);letter-spacing:0.3px}
+.logo-text span{color:var(--lilac2)}
+.topnav{display:flex;gap:2px}
+.tnav{background:none;border:none;padding:6px 10px;border-radius:6px;font-size:11px;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.tnav:hover{background:var(--surface);color:var(--white)}
+.tnav.active{background:rgba(175,169,236,0.1);color:var(--lilac2);border:0.5px solid rgba(175,169,236,0.3)}
+.tier-badge{background:linear-gradient(135deg,rgba(175,169,236,0.15),rgba(192,192,208,0.1));border:0.5px solid rgba(175,169,236,0.3);color:var(--lilac2);font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500;font-family:'Syne',sans-serif;display:flex;align-items:center;gap:5px}
+.d-sm{width:7px;height:7px;background:var(--lilac);transform:rotate(45deg)}
+.main{display:flex;min-height:calc(100vh - 54px)}
+.sidebar{width:215px;background:var(--bg2);border-right:0.5px solid var(--border);padding:14px 10px;flex-shrink:0;display:flex;flex-direction:column;gap:2px}
+.sec-label{font-size:9px;font-weight:600;color:rgba(175,169,236,0.35);text-transform:uppercase;letter-spacing:1.2px;padding:10px 8px 4px;font-family:'Syne',sans-serif}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--muted);transition:all 0.2s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.nav-item:hover{background:var(--surface);color:var(--white)}
+.nav-item.active{background:rgba(175,169,236,0.1);color:var(--lilac2);border:0.5px solid rgba(175,169,236,0.2)}
+.new-tag{background:rgba(192,192,208,0.1);color:var(--silver);font-size:9px;padding:1px 5px;border-radius:6px;margin-left:auto;border:0.5px solid rgba(192,192,208,0.25)}
+.content{flex:1;padding:22px;overflow:auto;background:var(--bg)}
+.page{display:none}.page.active{display:block}
+.pg-title{font-size:20px;font-weight:700;color:var(--white);margin-bottom:3px;font-family:'Syne',sans-serif}
+.pg-title span{color:var(--lilac2)}
+.pg-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r2);padding:16px}
+.panel-title{font-size:11px;font-weight:600;color:var(--lilac);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;padding-bottom:9px;border-bottom:0.5px solid var(--border);font-family:'Syne',sans-serif}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r);padding:13px;position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lilac),var(--silver))}
+.stat-n{font-size:22px;font-weight:700;font-family:'Syne',sans-serif;color:var(--white)}
+.stat-l{font-size:10px;color:var(--muted);margin-top:2px}
+.stat-g{font-size:10px;color:var(--lilac);margin-top:2px}
+.inp{background:var(--bg3);border:0.5px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--white);font-family:'DM Sans',sans-serif;width:100%;transition:border 0.2s}
+.inp:focus{outline:none;border-color:rgba(175,169,236,0.5);box-shadow:0 0 0 3px rgba(175,169,236,0.06)}
+.inp::placeholder{color:var(--muted)}
+textarea.inp{resize:vertical;min-height:80px}
+.sel{background:var(--bg3);border:0.5px solid var(--border);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--white);font-family:'DM Sans',sans-serif;width:100%}
+.sel:focus{outline:none;border-color:rgba(175,169,236,0.4)}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px}
+.btn{padding:8px 14px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--border2);background:var(--surface2);color:var(--white);transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--surface);border-color:rgba(175,169,236,0.3)}
+.btn.primary{background:rgba(175,169,236,0.12);border:0.5px solid rgba(175,169,236,0.4);color:var(--lilac2)}
+.btn.primary:hover{background:rgba(175,169,236,0.2);box-shadow:var(--glow-l)}
+.btn.silver{background:rgba(192,192,208,0.08);border:0.5px solid rgba(192,192,208,0.25);color:var(--silver)}
+.btn.silver:hover{background:rgba(192,192,208,0.15);box-shadow:var(--glow-s)}
+.pill{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600}
+.pill-live{background:rgba(175,169,236,0.12);color:var(--lilac2);border:0.5px solid rgba(175,169,236,0.3)}
+.pill-draft{background:rgba(192,192,208,0.08);color:var(--silver);border:0.5px solid rgba(192,192,208,0.2)}
+.pill-build{background:rgba(127,119,221,0.12);color:var(--lilac);border:0.5px solid rgba(127,119,221,0.3)}
+.ai-output{background:var(--surface);border:0.5px solid rgba(175,169,236,0.2);border-radius:var(--r);padding:14px;display:none}
+.ai-output.visible{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.ai-label{font-size:9px;font-weight:600;color:var(--lilac);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ai-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lilac);animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.2}}
+.ai-text{font-size:12px;color:var(--white);line-height:1.8;white-space:pre-wrap}
+.loading-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden;margin:8px 0;display:none}
+.loading-bar.active{display:block}
+.loading-fill{height:100%;background:linear-gradient(90deg,var(--lilac),var(--silver),var(--lilac));background-size:200% 100%;animation:loadMove 1.5s linear infinite}
+@keyframes loadMove{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.twin-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r2);padding:14px;cursor:pointer;transition:all 0.25s}
+.twin-card:hover,.twin-card.selected{border-color:rgba(175,169,236,0.4);box-shadow:var(--glow-l)}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px}
+.ep-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--r);background:var(--bg3);margin-bottom:6px}
+.ep-num{width:24px;height:24px;border-radius:50%;background:rgba(175,169,236,0.12);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--lilac);flex-shrink:0;border:0.5px solid rgba(175,169,236,0.2)}
+.ep-info{flex:1}
+.ep-title{font-size:12px;font-weight:500;color:var(--white);font-family:'Syne',sans-serif}
+.ep-meta{font-size:10px;color:var(--muted)}
+.deal-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r2);padding:13px}
+.deal-brand{font-size:13px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif}
+.deal-value{font-size:16px;font-weight:700;color:var(--lilac);margin-top:2px;font-family:'Syne',sans-serif}
+.deal-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.dtag{background:rgba(175,169,236,0.1);color:var(--lilac);font-size:9px;padding:2px 7px;border-radius:8px;border:0.5px solid rgba(175,169,236,0.2)}
+.cc{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:11px;margin-bottom:8px}
+.cc-plat{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.cc-text{font-size:12px;color:var(--white);line-height:1.6}
+.cc-acts{display:flex;gap:6px;margin-top:8px}
+.prog-wrap{margin-bottom:10px}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.prog-label span:first-child{color:var(--muted)}
+.prog-label span:last-child{color:var(--lilac)}
+.prog-bar{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--lilac),var(--silver));border-radius:2px}
+.rev-bar{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.rev-label{font-size:11px;color:var(--muted);width:110px;flex-shrink:0}
+.rev-track{flex:1;height:7px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.rev-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--lilac3),var(--silver))}
+.rev-val{font-size:11px;font-weight:500;color:var(--white);width:52px;text-align:right;flex-shrink:0;font-family:'Syne',sans-serif}
+.scene-chip{padding:5px 11px;border-radius:14px;font-size:11px;border:0.5px solid var(--border2);cursor:pointer;color:var(--muted);transition:all 0.2s;background:var(--surface)}
+.scene-chip:hover,.scene-chip.active{background:rgba(175,169,236,0.1);color:var(--lilac2);border-color:rgba(175,169,236,0.35)}
+.tabs{display:flex;border-bottom:0.5px solid var(--border);margin-bottom:16px}
+.tab{background:none;border:none;padding:8px 13px;font-size:11px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-0.5px;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.tab.active{color:var(--lilac2);border-bottom-color:var(--lilac)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mb14{margin-bottom:14px}.mb20{margin-bottom:20px}.w100{width:100%}
+.flex-col{display:flex;flex-direction:column;gap:10px}
+.flex-row{display:flex;gap:8px;align-items:center}
+.pricing-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.price-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--r2);padding:18px;position:relative;transition:all 0.3s}
+.price-card.featured{border-color:rgba(175,169,236,0.5);box-shadow:var(--glow-l)}
+.price-card.featured::before{content:'Best Value';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--lilac4),var(--lilac3));color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;font-family:'Syne',sans-serif;white-space:nowrap}
+.price-tier{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-family:'Syne',sans-serif;margin-bottom:7px}
+.price-amount{font-size:26px;font-weight:800;color:var(--white);font-family:'Syne',sans-serif;line-height:1}
+.price-amount sup{font-size:13px;font-weight:500;vertical-align:super}
+.price-period{font-size:10px;color:var(--muted);margin-top:2px;margin-bottom:12px}
+.pf{font-size:11px;color:var(--muted);padding:4px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:6px;line-height:1.4}
+.pf::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--lilac);flex-shrink:0}
+.pf.dim::before{background:var(--surface2)}.pf.dim{opacity:0.35}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(175,169,236,0.2);border-radius:2px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="logo">
+      <div class="logo-diamond"></div>
+      <div class="logo-text">Envi Lee <span>Baddie Academy</span> Creator Studios</div>
+    </div>
+    <nav class="topnav">
+      <button class="tnav active" onclick="switchMain('home')">Home</button>
+      <button class="tnav" onclick="switchMain('twin')">AI Twin</button>
+      <button class="tnav" onclick="switchMain('studio')">Studio</button>
+      <button class="tnav" onclick="switchMain('content')">Content</button>
+      <button class="tnav" onclick="switchMain('deals')">Brand Deals</button>
+      <button class="tnav" onclick="switchMain('money')">Revenue</button>
+      <button class="tnav" onclick="switchMain('pricing')">Pricing</button>
+      <button class="tnav" onclick="switchMain('academy')">Academy</button>
+    </nav>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="tier-badge"><span class="d-sm"></span> Diamond Tier</span>
+    <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--lilac4),var(--lilac));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:'Syne',sans-serif">EL</div>
+  </div>
+</div>
+
+<div class="main">
+  <aside class="sidebar">
+    <div class="sec-label">AI Twin</div>
+    <button class="nav-item active" onclick="ss('twins',this)">◈ My AI Twins</button>
+    <button class="nav-item" onclick="ss('persona',this)">◉ Persona Builder</button>
+    <button class="nav-item" onclick="ss('voice',this)">◌ Voice & Style</button>
+    <div class="sec-label">Creator Studio</div>
+    <button class="nav-item" onclick="ss('reality',this)">⊳ Reality Show Creator</button>
+    <button class="nav-item" onclick="ss('movies',this)">◎ Movie Builder</button>
+    <button class="nav-item" onclick="ss('talkshow',this)">⊹ Talk Show Studio<span class="new-tag">New</span></button>
+    <button class="nav-item" onclick="ss('scenes',this)">◷ Scene Library</button>
+    <div class="sec-label">Daily Content</div>
+    <button class="nav-item" onclick="ss('daily',this)">⬡ Daily Content Hub</button>
+    <button class="nav-item" onclick="ss('scripts',this)">⊞ Script Generator</button>
+    <button class="nav-item" onclick="ss('hooks',this)">◌ Hook Library</button>
+    <button class="nav-item" onclick="ss('cal',this)">◷ Content Calendar</button>
+    <div class="sec-label">Business</div>
+    <button class="nav-item" onclick="ss('deals-page',this)">◈ Brand Deals</button>
+    <button class="nav-item" onclick="ss('revenue',this)">⬆ Revenue Tracker</button>
+    <button class="nav-item" onclick="ss('mediakit',this)">◉ Media Kit Builder</button>
+  </aside>
+
+  <main class="content">
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="pg-title">Welcome back, <span>Envi Lee</span> ✦</div>
+      <div class="pg-sub">Your creator universe — twins, shows, deals, and content in one place.</div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-n">3</div><div class="stat-l">Active AI twins</div><div class="stat-g">✦ All live</div></div>
+        <div class="stat"><div class="stat-n">12</div><div class="stat-l">Shows & movies</div><div class="stat-g">2 in production</div></div>
+        <div class="stat"><div class="stat-n">$48.2k</div><div class="stat-l">Revenue this month</div><div class="stat-g">+22%</div></div>
+        <div class="stat"><div class="stat-n">7</div><div class="stat-l">Active brand deals</div><div class="stat-g">3 pending</div></div>
+      </div>
+      <div class="g2 mb14">
+        <div class="panel">
+          <div class="panel-title">Active AI twins</div>
+          <div class="flex-col">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r)"><div class="avatar" style="background:rgba(175,169,236,0.1);font-size:16px">👸</div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Luxe Envi</div><div style="font-size:10px;color:var(--muted)">@luxe.envi · Luxury lifestyle</div></div><span class="pill pill-live">Live</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r)"><div class="avatar" style="background:rgba(206,203,246,0.08);font-size:16px">🔥</div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Baddie Nova</div><div style="font-size:10px;color:var(--muted)">@baddie.nova · Streetwear & POD</div></div><span class="pill pill-live">Live</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r)"><div class="avatar" style="background:rgba(192,192,208,0.08);font-size:16px">🌊</div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Coastal Ari</div><div style="font-size:10px;color:var(--muted)">@coastal.ari · Travel & swim</div></div><span class="pill pill-draft">Draft</span></div>
+          </div>
+          <button class="btn primary mt8 w100" onclick="switchMain('twin')">Manage twins ↗</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title">In production</div>
+          <div class="flex-col">
+            <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:500;color:var(--white)">Baddie House — S1</div><span class="pill pill-build">Filming</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%"></div></div><div style="font-size:10px;color:var(--muted);margin-top:3px">Ep 4 of 6 complete</div></div>
+            <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:500;color:var(--white)">The Luxe Life — Movie</div><span class="pill pill-build">Scripting</span></div><div class="prog-bar"><div class="prog-fill" style="width:30%"></div></div><div style="font-size:10px;color:var(--muted);margin-top:3px">Act 1 of 3 written</div></div>
+            <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:500;color:var(--white)">The Envi Lee Show — Ep 8</div><span class="pill pill-live">Live</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div><div style="font-size:10px;color:var(--muted);margin-top:3px">42k views</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Today's tasks</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div style="padding:10px;background:rgba(175,169,236,0.07);border:0.5px solid rgba(175,169,236,0.2);border-radius:var(--r);cursor:pointer" onclick="switchMain('content')"><div style="font-size:11px;font-weight:600;color:var(--lilac2);font-family:'Syne',sans-serif">TikTok caption</div><div style="font-size:10px;color:var(--lilac);margin-top:2px">Due today · Baddie Nova</div></div>
+          <div style="padding:10px;background:rgba(192,192,208,0.06);border:0.5px solid rgba(192,192,208,0.15);border-radius:var(--r);cursor:pointer" onclick="ss('scripts',null)"><div style="font-size:11px;font-weight:600;color:var(--silver);font-family:'Syne',sans-serif">Episode script</div><div style="font-size:10px;color:var(--silver2);margin-top:2px">Baddie House Ep 5</div></div>
+          <div style="padding:10px;background:var(--bg3);border-radius:var(--r);cursor:pointer" onclick="ss('deals-page',null)"><div style="font-size:11px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Brand deal reply</div><div style="font-size:10px;color:var(--muted);margin-top:2px">FashionNova pending</div></div>
+          <div style="padding:10px;background:var(--bg3);border-radius:var(--r);cursor:pointer" onclick="ss('mediakit',null)"><div style="font-size:11px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Update media kit</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Add new stats</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TWINS -->
+    <div class="page" id="page-twins">
+      <div class="pg-title">My <span>AI Twins</span></div>
+      <div class="pg-sub">Build, manage, and deploy your AI influencer characters.</div>
+      <div class="g3 mb14">
+        <div class="twin-card selected">
+          <div class="avatar" style="background:rgba(175,169,236,0.1)">👸</div>
+          <div style="display:flex;justify-content:space-between;align-items:start"><div><div style="font-size:13px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Luxe Envi</div><div style="font-size:10px;color:var(--muted)">@luxe.envi</div></div><span class="pill pill-live">Live</span></div>
+          <div style="display:flex;gap:10px;margin-top:7px"><span style="font-size:10px;color:var(--muted)"><strong style="color:var(--white)">248k</strong> followers</span><span style="font-size:10px;color:var(--muted)"><strong style="color:var(--white)">6.2%</strong> eng</span></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:6px">Luxury lifestyle · Fashion · Travel</div>
+          <button class="btn primary mt8 w100" onclick="buildTwinPersona('Luxe Envi','luxury lifestyle AI influencer known for high fashion, travel, and an old money aesthetic')">Develop persona ↗</button>
+        </div>
+        <div class="twin-card">
+          <div class="avatar" style="background:rgba(206,203,246,0.08)">🔥</div>
+          <div style="display:flex;justify-content:space-between;align-items:start"><div><div style="font-size:13px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Baddie Nova</div><div style="font-size:10px;color:var(--muted)">@baddie.nova</div></div><span class="pill pill-live">Live</span></div>
+          <div style="display:flex;gap:10px;margin-top:7px"><span style="font-size:10px;color:var(--muted)"><strong style="color:var(--white)">182k</strong> followers</span><span style="font-size:10px;color:var(--muted)"><strong style="color:var(--white)">8.4%</strong> eng</span></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:6px">Streetwear · POD · Hustle culture</div>
+          <button class="btn w100 mt8" onclick="buildTwinPersona('Baddie Nova','bold streetwear AI influencer who promotes POD fashion, hustle culture, and financial freedom')">Develop persona ↗</button>
+        </div>
+        <div class="twin-card">
+          <div class="avatar" style="background:rgba(192,192,208,0.08)">🌊</div>
+          <div style="display:flex;justify-content:space-between;align-items:start"><div><div style="font-size:13px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Coastal Ari</div><div style="font-size:10px;color:var(--muted)">@coastal.ari</div></div><span class="pill pill-draft">Draft</span></div>
+          <div style="display:flex;gap:10px;margin-top:7px"><span style="font-size:10px;color:var(--muted)"><strong style="color:var(--silver2)">—</strong> followers</span></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:6px">Travel · Swimwear · Beach lifestyle</div>
+          <button class="btn silver mt8 w100" onclick="buildTwinPersona('Coastal Ari','beach lifestyle AI influencer who models swimwear and promotes POD vacation-themed clothing on travel content')">Finish building ↗</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Create a new AI twin</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div class="field"><div class="field-label">Twin name</div><input class="inp" id="new-twin-name" placeholder="e.g. Glam Nia"/></div>
+          <div class="field"><div class="field-label">Handle</div><input class="inp" id="new-twin-handle" placeholder="@glamnia"/></div>
+          <div class="field"><div class="field-label">Niche</div><select class="sel" id="new-twin-niche"><option>Luxury lifestyle</option><option>Streetwear</option><option>Fitness</option><option>Travel</option><option>Beauty</option><option>Business</option><option>Entertainment</option></select></div>
+          <div class="field"><div class="field-label">Personality</div><select class="sel" id="new-twin-vibe"><option>Luxury & elegant</option><option>Bold & baddie</option><option>Soft & aesthetic</option><option>Motivational boss</option><option>Mysterious & dark</option></select></div>
+          <div class="field"><div class="field-label">Platform</div><select class="sel"><option>TikTok</option><option>Instagram</option><option>YouTube</option><option>All platforms</option></select></div>
+          <div class="field"><div class="field-label">Content style</div><select class="sel"><option>Fashion / OOTD</option><option>Lifestyle vlogs</option><option>Reality show star</option><option>Talk show host</option><option>POD promoter</option></select></div>
+        </div>
+        <button class="btn primary mt8" onclick="createNewTwin()">Build full twin profile ↗</button>
+        <div class="loading-bar mt8" id="twins-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="twins-output"><div class="ai-label">AI Twin Profile</div><div class="ai-text" id="twins-text"></div><button class="btn primary mt8" onclick="copyText('twins-text')">Copy full profile ↗</button></div>
+      </div>
+    </div>
+
+    <!-- PERSONA -->
+    <div class="page" id="page-persona">
+      <div class="pg-title">Persona <span>Builder</span></div>
+      <div class="pg-sub">Define every detail of your AI twin's identity and audience.</div>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-title">Identity & backstory</div>
+          <div class="field"><div class="field-label">Twin</div><select class="sel" id="persona-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>Coastal Ari</option></select></div>
+          <div class="field"><div class="field-label">Character backstory</div><textarea class="inp" id="persona-backstory" placeholder="Where is she from? What's her story?"></textarea></div>
+          <div class="field"><div class="field-label">Signature phrases</div><input class="inp" id="persona-phrases" placeholder="e.g. 'We don't chase, we attract'"/></div>
+          <div class="field"><div class="field-label">Aesthetic mood</div><select class="sel" id="persona-mood"><option>Old money luxury</option><option>Y2K baddie</option><option>Dark feminine</option><option>Soft glam</option><option>Corporate baddie</option><option>Cyber futuristic</option></select></div>
+          <button class="btn primary mt8 w100" onclick="generatePersona()">Generate full persona ↗</button>
+        </div>
+        <div class="panel">
+          <div class="loading-bar" id="persona-loading"><div class="loading-fill"></div></div>
+          <div class="ai-output" id="persona-output" style="display:block;background:var(--bg3);border-color:var(--border)"><div class="ai-label">Persona Document</div><div class="ai-text" id="persona-text" style="color:var(--muted)">Fill in the details and click Generate to create a full persona document for your AI twin.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REALITY SHOW -->
+    <div class="page" id="page-reality">
+      <div class="pg-title">Reality Show <span>Creator</span></div>
+      <div class="pg-sub">Build your AI reality show from concept to full episode scripts.</div>
+      <div class="g2 mb14">
+        <div class="panel">
+          <div class="panel-title">Show setup</div>
+          <div class="field"><div class="field-label">Show name</div><input class="inp" id="show-name" placeholder="e.g. Baddie House, The Come Up, Luxe & Loaded"/></div>
+          <div class="field"><div class="field-label">Format</div><select class="sel" id="show-format"><option>Reality house drama</option><option>Competition show</option><option>Docuseries</option><option>Makeover show</option><option>Business hustle show</option><option>Love & relationship</option><option>Travel show</option></select></div>
+          <div class="field"><div class="field-label">Setting</div><select class="sel" id="show-setting"><option>Luxury mansion</option><option>Miami beach house</option><option>NYC penthouse</option><option>LA influencer house</option><option>Dubai / international</option></select></div>
+          <div class="field"><div class="field-label">Lead twin</div><select class="sel" id="show-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>All twins (ensemble)</option></select></div>
+          <div class="field"><div class="field-label">Episodes</div><select class="sel"><option>6 episodes</option><option>8 episodes</option><option>10 episodes</option></select></div>
+          <button class="btn primary w100 mt8" onclick="generateShowBible()">Generate show bible ↗</button>
+          <div class="loading-bar mt8" id="show-loading"><div class="loading-fill"></div></div>
+          <div class="ai-output mt8" id="show-output"><div class="ai-label">Show Bible</div><div class="ai-text" id="show-text"></div><button class="btn primary mt8" onclick="copyText('show-text')">Copy ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Baddie House — Season 1</div>
+          <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-size:12px;font-weight:500;color:var(--white)">Season progress</div><span class="pill pill-build">In production</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%"></div></div><div style="font-size:10px;color:var(--muted);margin-top:3px">4 of 6 episodes complete</div></div>
+          <div class="ep-row"><div class="ep-num">1</div><div class="ep-info"><div class="ep-title">Move-in day drama</div><div class="ep-meta">38k views</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">2</div><div class="ep-info"><div class="ep-title">The brand deal battle</div><div class="ep-meta">41k views</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">3</div><div class="ep-info"><div class="ep-title">Glow up challenge</div><div class="ep-meta">29k views</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">4</div><div class="ep-info"><div class="ep-title">Who's copying who?</div><div class="ep-meta">33k views</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">5</div><div class="ep-info"><div class="ep-title">The elimination</div><div class="ep-meta">Script in progress</div></div><span class="pill pill-build">Scripting</span></div>
+          <div class="ep-row"><div class="ep-num">6</div><div class="ep-info"><div class="ep-title">Season finale</div><div class="ep-meta">Not started</div></div><span class="pill pill-draft">Pending</span></div>
+          <button class="btn primary mt8 w100" onclick="generateEpisodeScript(5,'Baddie House')">Write Episode 5 script ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOVIE BUILDER -->
+    <div class="page" id="page-movies">
+      <div class="pg-title">Movie <span>Builder</span></div>
+      <div class="pg-sub">Script, cast, and produce full AI movies and short films.</div>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-title">New movie / short film</div>
+          <div class="field"><div class="field-label">Title</div><input class="inp" id="movie-title" placeholder="e.g. The Luxe Life, From Broke to Baddie"/></div>
+          <div class="field"><div class="field-label">Genre</div><select class="sel" id="movie-genre"><option>Drama / lifestyle</option><option>Romantic comedy</option><option>Thriller / mystery</option><option>Inspirational / biopic</option><option>Fantasy / AI world</option></select></div>
+          <div class="field"><div class="field-label">Length</div><select class="sel" id="movie-length"><option>Short film (5–15 min)</option><option>Feature (45–90 min)</option><option>Mini-series (3 parts)</option></select></div>
+          <div class="field"><div class="field-label">Lead character</div><select class="sel" id="movie-lead"><option>Luxe Envi</option><option>Baddie Nova</option><option>Coastal Ari</option><option>New character</option></select></div>
+          <div class="field"><div class="field-label">Theme</div><input class="inp" id="movie-theme" placeholder="e.g. A woman who loses everything and rebuilds as an AI influencer queen"/></div>
+          <button class="btn primary mt8 w100" onclick="generateMovieOutline()">Generate movie outline ↗</button>
+          <div class="loading-bar mt8" id="movie-loading"><div class="loading-fill"></div></div>
+          <div class="ai-output mt8" id="movie-output"><div class="ai-label">Movie Outline</div><div class="ai-text" id="movie-text"></div><button class="btn primary mt8" onclick="copyText('movie-text')">Copy ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">The Luxe Life — in progress</div>
+          <div class="prog-wrap"><div class="prog-label"><span>Act 1 — The fall</span><span>Done</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
+          <div class="prog-wrap"><div class="prog-label"><span>Act 2 — The rise</span><span>30%</span></div><div class="prog-bar"><div class="prog-fill" style="width:30%"></div></div></div>
+          <div class="prog-wrap"><div class="prog-label"><span>Act 3 — The empire</span><span>0%</span></div><div class="prog-bar"><div class="prog-fill" style="width:0%"></div></div></div>
+          <div class="flex-col mt12">
+            <button class="btn primary" onclick="generateAct2()">Write Act 2 ↗</button>
+            <button class="btn" onclick="generateVideoPrompts('The Luxe Life movie scenes')">Generate video prompts ↗</button>
+          </div>
+          <div class="loading-bar mt8" id="act-loading"><div class="loading-fill"></div></div>
+          <div class="ai-output mt8" id="act-output"><div class="ai-label">Act 2 Script</div><div class="ai-text" id="act-text"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TALK SHOW -->
+    <div class="page" id="page-talkshow">
+      <div class="pg-title">Talk Show <span>Studio</span></div>
+      <div class="pg-sub">Host, script, and produce your AI talk show episodes.</div>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-title">Episode setup</div>
+          <div class="field"><div class="field-label">Show name</div><input class="inp" id="ts-show" placeholder="e.g. The Envi Lee Show, Baddie Talks"/></div>
+          <div class="field"><div class="field-label">Format</div><select class="sel" id="ts-format"><option>Interview / guest show</option><option>Solo commentary</option><option>Panel discussion</option><option>Advice & Q&A</option><option>Drama reaction recap</option><option>Business boss talk</option></select></div>
+          <div class="field"><div class="field-label">Host twin</div><select class="sel" id="ts-host"><option>Luxe Envi</option><option>Baddie Nova</option><option>Coastal Ari</option></select></div>
+          <div class="field"><div class="field-label">Episode topic</div><input class="inp" id="ts-topic" placeholder="e.g. How I made $100k with AI and POD"/></div>
+          <div class="field"><div class="field-label">Guest type</div><select class="sel"><option>AI guest character</option><option>Real creator (interview format)</option><option>Brand rep (sponsored)</option><option>No guest (solo)</option></select></div>
+          <button class="btn primary mt8 w100" onclick="generateTalkShow()">Generate episode script ↗</button>
+          <div class="loading-bar mt8" id="ts-loading"><div class="loading-fill"></div></div>
+          <div class="ai-output mt8" id="ts-output"><div class="ai-label">Episode Script</div><div class="ai-text" id="ts-text"></div><button class="btn primary mt8" onclick="copyText('ts-text')">Copy ↗</button></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">The Envi Lee Show — episodes</div>
+          <div class="ep-row"><div class="ep-num">8</div><div class="ep-info"><div class="ep-title">I made $10k my first month</div><div class="ep-meta">42k views · 3.2k shares</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">7</div><div class="ep-info"><div class="ep-title">AI influencer vs real influencer</div><div class="ep-meta">28k views</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">6</div><div class="ep-info"><div class="ep-title">Brand deals explained</div><div class="ep-meta">19k views</div></div><span class="pill pill-live">Live</span></div>
+          <div class="ep-row"><div class="ep-num">9</div><div class="ep-info"><div class="ep-title">How to build your AI twin</div><div class="ep-meta">Ready · Not published</div></div><span class="pill pill-build">Ready</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY CONTENT HUB -->
+    <div class="page" id="page-daily">
+      <div class="pg-title">Daily <span>Content Hub</span></div>
+      <div class="pg-sub">Everything you need to post every single day — for every twin.</div>
+      <div style="display:grid;grid-template-columns:260px 1fr;gap:14px">
+        <div class="panel">
+          <div class="panel-title">Generate content</div>
+          <div class="field"><div class="field-label">Twin</div><select class="sel" id="dc-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>Coastal Ari</option></select></div>
+          <div class="field"><div class="field-label">Content type</div><select class="sel" id="dc-type"><option>TikTok caption + hooks</option><option>Instagram caption</option><option>YouTube title + desc</option><option>Reel script (15 sec)</option><option>Story ideas (5 pack)</option><option>Email promo</option></select></div>
+          <div class="field"><div class="field-label">Topic / product</div><input class="inp" id="dc-topic" placeholder="e.g. New swimwear drop, Ep 5 promo"/></div>
+          <div class="field"><div class="field-label">Tone</div><select class="sel" id="dc-tone"><option>Luxury & aspirational</option><option>Bold & confident</option><option>Funny & viral</option><option>Emotional & real</option><option>FOMO / urgency</option></select></div>
+          <button class="btn primary mt8 w100" onclick="generateDailyContent()">Generate content ↗</button>
+          <div class="loading-bar mt8" id="dc-loading"><div class="loading-fill"></div></div>
+        </div>
+        <div id="dc-area">
+          <div class="cc"><div class="cc-plat">TikTok hook</div><div class="cc-text ai-text" id="dc-text1">POV: you built a $48k/month business using nothing but AI and a WiFi connection.</div><div class="cc-acts"><button class="btn" onclick="copyText('dc-text1')">Copy</button></div></div>
+          <div class="cc"><div class="cc-plat">TikTok caption</div><div class="cc-text ai-text" id="dc-text2">She is not real. But the money is. My AI twin just closed her 7th brand deal this month. #AIInfluencer #BaddieAcademy #CreatorEconomy</div><div class="cc-acts"><button class="btn" onclick="copyText('dc-text2')">Copy</button><button class="btn silver">Schedule</button></div></div>
+          <div class="cc"><div class="cc-plat">Instagram caption</div><div class="cc-text ai-text" id="dc-text3">The luxe life is not a destination. It is a decision. New collection dropping Friday. ✦</div><div class="cc-acts"><button class="btn" onclick="copyText('dc-text3')">Copy</button><button class="btn silver">Schedule</button></div></div>
+          <div class="cc"><div class="cc-plat">Reel script</div><div class="cc-text ai-text" id="dc-text4">OPEN: Close-up of outfit. VO: "She woke up, posted once, and made $3,000." CUT: montage. VO: "This is an AI influencer business." CTA: "Follow for the blueprint."</div><div class="cc-acts"><button class="btn" onclick="copyText('dc-text4')">Copy</button><button class="btn primary" onclick="generateVideoPrompts('AI influencer reel about making money with POD clothing')">Make video prompt ↗</button></div></div>
+          <div class="ai-output" id="dc-output"><div class="ai-label">Generated Content</div><div class="ai-text" id="dc-new-text"></div><button class="btn primary mt8" onclick="copyText('dc-new-text')">Copy ↗</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <div class="page" id="page-scripts">
+      <div class="pg-title">Script <span>Generator</span></div>
+      <div class="pg-sub">Full scripts for episodes, reels, UGC ads, and more.</div>
+      <div class="panel">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+          <div class="field"><div class="field-label">Script type</div><select class="sel" id="sc-type"><option>Episode script</option><option>Short reel (15–30s)</option><option>UGC ad script</option><option>Brand deal integration</option><option>Dialogue between twins</option></select></div>
+          <div class="field"><div class="field-label">Twin</div><select class="sel" id="sc-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>All twins</option></select></div>
+          <div class="field"><div class="field-label">Topic</div><input class="inp" id="sc-topic" placeholder="Script topic..."/></div>
+          <div class="field"><div class="field-label">Length</div><select class="sel" id="sc-length"><option>Short (15–30 sec)</option><option>Medium (1–3 min)</option><option>Long (5–10 min)</option><option>Full episode</option></select></div>
+        </div>
+        <button class="btn primary" onclick="generateScript()">Generate script ↗</button>
+        <div class="loading-bar mt8" id="sc-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="sc-output"><div class="ai-label">Script</div><div class="ai-text" id="sc-text"></div><button class="btn primary mt8" onclick="copyText('sc-text')">Copy ↗</button></div>
+      </div>
+    </div>
+
+    <!-- HOOKS -->
+    <div class="page" id="page-hooks">
+      <div class="pg-title">Hook <span>Library</span></div>
+      <div class="pg-sub">Scroll-stopping openers — click any pack to generate.</div>
+      <div class="panel">
+        <div class="flex-col">
+          <div style="padding:11px 14px;background:rgba(175,169,236,0.07);border:0.5px solid rgba(175,169,236,0.2);border-radius:var(--r);cursor:pointer" onclick="generateHooks('viral TikTok hooks for an AI influencer who sells POD clothing and teaches others how to build AI twin businesses')"><div style="font-size:12px;font-weight:600;color:var(--lilac2);font-family:'Syne',sans-serif">POD business hooks (TikTok)</div><div style="font-size:10px;color:var(--muted);margin-top:2px">10 scroll-stopping openers for POD promotion</div></div>
+          <div style="padding:11px 14px;background:rgba(192,192,208,0.05);border:0.5px solid rgba(192,192,208,0.15);border-radius:var(--r);cursor:pointer" onclick="generateHooks('luxury lifestyle hooks for an AI influencer living a rich glamorous life for Instagram Reels and TikTok')"><div style="font-size:12px;font-weight:600;color:var(--silver);font-family:'Syne',sans-serif">Luxury lifestyle hooks</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Aspirational, money-focused, rich girl energy</div></div>
+          <div style="padding:11px 14px;background:var(--bg3);border-radius:var(--r);cursor:pointer" onclick="generateHooks('reality show teaser hooks for promoting an AI influencer reality show on TikTok and Instagram, dramatic and addictive')"><div style="font-size:12px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Reality show promo hooks</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Hype & teaser energy for your show drops</div></div>
+          <div style="padding:11px 14px;background:var(--bg3);border-radius:var(--r);cursor:pointer" onclick="generateHooks('brand deal hooks for TikTok — promoting a fashion or beauty brand in a natural non-salesy way as an AI influencer')"><div style="font-size:12px;font-weight:600;color:var(--white);font-family:'Syne',sans-serif">Brand deal hooks</div><div style="font-size:10px;color:var(--muted);margin-top:2px">Sponsored content that does not feel sponsored</div></div>
+        </div>
+        <div class="loading-bar mt8" id="hooks-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="hooks-output"><div class="ai-label">Generated Hooks</div><div class="ai-text" id="hooks-text"></div><button class="btn primary mt8" onclick="copyText('hooks-text')">Copy all ↗</button></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="page" id="page-cal">
+      <div class="pg-title">Content <span>Calendar</span></div>
+      <div class="pg-sub">Plan your posts, show drops, and campaigns across all twins.</div>
+      <div class="panel">
+        <div class="g2">
+          <div class="field"><div class="field-label">Campaign / collection</div><input class="inp" id="cal-topic" placeholder="e.g. Baddie House S1 Episode 5 launch..."/></div>
+          <div class="field"><div class="field-label">Duration</div><select class="sel" id="cal-duration"><option>7-day plan</option><option>14-day plan</option><option>30-day plan</option></select></div>
+        </div>
+        <button class="btn primary mt8" onclick="generateCalendar()">Generate calendar ↗</button>
+        <div class="loading-bar mt8" id="cal-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="cal-output"><div class="ai-label">Content Calendar</div><div class="ai-text" id="cal-text"></div><button class="btn primary mt8" onclick="copyText('cal-text')">Copy ↗</button></div>
+      </div>
+    </div>
+
+    <!-- BRAND DEALS -->
+    <div class="page" id="page-deals-page">
+      <div class="pg-title">Brand <span>Deals Hub</span></div>
+      <div class="pg-sub">Track, pitch, and close brand partnerships for every twin.</div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-n">7</div><div class="stat-l">Active deals</div></div>
+        <div class="stat"><div class="stat-n">$22.5k</div><div class="stat-l">Monthly deal value</div></div>
+        <div class="stat"><div class="stat-n">3</div><div class="stat-l">Pending review</div></div>
+        <div class="stat"><div class="stat-n">14</div><div class="stat-l">Completed deals</div></div>
+      </div>
+      <div class="g3 mb14">
+        <div class="deal-card"><div style="display:flex;justify-content:space-between"><div class="deal-brand">FashionNova</div><span class="pill pill-live">Active</span></div><div class="deal-value">$3,500/mo</div><div class="deal-meta">Baddie Nova · 4 posts/mo</div><div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap"><span class="dtag">Fashion</span><span class="dtag">Apparel</span></div></div>
+        <div class="deal-card"><div style="display:flex;justify-content:space-between"><div class="deal-brand">BooHoo Beauty</div><span class="pill pill-live">Active</span></div><div class="deal-value">$2,200/mo</div><div class="deal-meta">Luxe Envi · 2 posts/mo</div><div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap"><span class="dtag">Beauty</span><span class="dtag">Skincare</span></div></div>
+        <div class="deal-card"><div style="display:flex;justify-content:space-between"><div class="deal-brand">Shein x Baddie</div><span class="pill pill-draft">Pending</span></div><div class="deal-value">$5,800 flat</div><div class="deal-meta">All twins · Campaign</div><div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap"><span class="dtag">Campaign</span><span class="dtag">Swim</span></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Pitch builder</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div class="field"><div class="field-label">Brand name</div><input class="inp" id="pitch-brand" placeholder="Brand to pitch"/></div>
+          <div class="field"><div class="field-label">Twin to pitch</div><select class="sel" id="pitch-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>Best match (auto)</option></select></div>
+          <div class="field"><div class="field-label">Deal type</div><select class="sel" id="pitch-type"><option>Sponsored post</option><option>Affiliate deal</option><option>Brand ambassador</option><option>Collection collab</option><option>UGC package</option></select></div>
+        </div>
+        <button class="btn primary mt8" onclick="generatePitch()">Generate pitch email ↗</button>
+        <div class="loading-bar mt8" id="pitch-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="pitch-output"><div class="ai-label">Pitch Email</div><div class="ai-text" id="pitch-text"></div><button class="btn primary mt8" onclick="copyText('pitch-text')">Copy ↗</button></div>
+      </div>
+    </div>
+
+    <!-- REVENUE -->
+    <div class="page" id="page-revenue">
+      <div class="pg-title">Revenue <span>Tracker</span></div>
+      <div class="pg-sub">All your income streams in one place.</div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-n">$48.2k</div><div class="stat-l">This month</div><div class="stat-g">+22%</div></div>
+        <div class="stat"><div class="stat-n">$22.5k</div><div class="stat-l">Brand deals</div></div>
+        <div class="stat"><div class="stat-n">$14.8k</div><div class="stat-l">POD / products</div></div>
+        <div class="stat"><div class="stat-n">$10.9k</div><div class="stat-l">Courses & digital</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Revenue by stream</div>
+        <div style="padding:4px 0">
+          <div class="rev-bar"><div class="rev-label">Brand deals</div><div class="rev-track"><div class="rev-fill" style="width:47%"></div></div><div class="rev-val">$22.5k</div></div>
+          <div class="rev-bar"><div class="rev-label">POD clothing</div><div class="rev-track"><div class="rev-fill" style="width:31%;background:linear-gradient(90deg,var(--silver),var(--lilac2))"></div></div><div class="rev-val">$14.8k</div></div>
+          <div class="rev-bar"><div class="rev-label">Courses</div><div class="rev-track"><div class="rev-fill" style="width:23%;background:linear-gradient(90deg,var(--lilac2),var(--silver2))"></div></div><div class="rev-val">$10.9k</div></div>
+          <div class="rev-bar"><div class="rev-label">Digital products</div><div class="rev-track"><div class="rev-fill" style="width:8%;background:var(--silver)"></div></div><div class="rev-val">$3.8k</div></div>
+          <div class="rev-bar"><div class="rev-label">Affiliate</div><div class="rev-track"><div class="rev-fill" style="width:5%;background:var(--muted)"></div></div><div class="rev-val">$2.2k</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDIA KIT -->
+    <div class="page" id="page-mediakit">
+      <div class="pg-title">Media <span>Kit Builder</span></div>
+      <div class="pg-sub">Professional press kit for every AI twin.</div>
+      <div class="panel">
+        <div class="field"><div class="field-label">Twin</div><select class="sel" id="mk-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>Coastal Ari</option></select></div>
+        <div class="field"><div class="field-label">Highlight achievement (optional)</div><input class="inp" id="mk-achievement" placeholder="e.g. 248k followers, 7 brand deals, $48k/month revenue"/></div>
+        <button class="btn primary mt8" onclick="generateMediaKit()">Build media kit ↗</button>
+        <div class="loading-bar mt8" id="mk-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="mk-output"><div class="ai-label">Media Kit</div><div class="ai-text" id="mk-text"></div><button class="btn primary mt8" onclick="copyText('mk-text')">Copy ↗</button></div>
+      </div>
+    </div>
+
+    <!-- VOICE -->
+    <div class="page" id="page-voice">
+      <div class="pg-title">Voice <span>& Style Guide</span></div>
+      <div class="pg-sub">Define how each twin writes, speaks, and sounds.</div>
+      <div class="panel">
+        <div class="field"><div class="field-label">Twin</div><select class="sel" id="voice-twin"><option>Luxe Envi</option><option>Baddie Nova</option><option>Coastal Ari</option></select></div>
+        <div class="field"><div class="field-label">Platform focus</div><select class="sel"><option>TikTok</option><option>Instagram</option><option>All platforms</option></select></div>
+        <button class="btn primary mt8" onclick="generateVoiceGuide()">Build voice guide ↗</button>
+        <div class="loading-bar mt8" id="voice-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="voice-output"><div class="ai-label">Voice & Style Guide</div><div class="ai-text" id="voice-text"></div><button class="btn primary mt8" onclick="copyText('voice-text')">Copy ↗</button></div>
+      </div>
+    </div>
+
+    <!-- SCENES -->
+    <div class="page" id="page-scenes">
+      <div class="pg-title">Scene <span>Library</span></div>
+      <div class="pg-sub">Choose locations and sets for your AI content, shows, and movies.</div>
+      <div class="panel">
+        <div class="panel-title">Scene categories</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+          <span class="scene-chip active">Luxury mansion</span><span class="scene-chip">Miami beach</span><span class="scene-chip">Dubai rooftop</span><span class="scene-chip">NYC penthouse</span><span class="scene-chip">LA studio</span><span class="scene-chip">Paris fashion week</span><span class="scene-chip">Private jet</span><span class="scene-chip">Red carpet</span><span class="scene-chip">Yacht</span><span class="scene-chip">Gym / fitness</span><span class="scene-chip">Boutique shop</span><span class="scene-chip">Rooftop pool</span>
+        </div>
+        <div class="field"><div class="field-label">Selected scene</div><input class="inp" id="scene-input" placeholder="Describe the scene you want prompts for..."/></div>
+        <button class="btn primary" onclick="generateScenePrompts()">Generate scene prompts ↗</button>
+        <div class="loading-bar mt8" id="scene-loading"><div class="loading-fill"></div></div>
+        <div class="ai-output mt8" id="scene-output"><div class="ai-label">Scene Prompts</div><div class="ai-text" id="scene-text"></div></div>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="page" id="page-pricing">
+      <div class="pg-title">Plans <span>& Pricing</span></div>
+      <div class="pg-sub">Choose the plan that fits your creator journey — from student to empire builder.</div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Free</div>
+          <div class="price-amount"><sup>$</sup>0</div>
+          <div class="price-period">forever free</div>
+          <div class="pf">1 AI twin</div>
+          <div class="pf">Basic persona builder</div>
+          <div class="pf">5 content pieces / mo</div>
+          <div class="pf">Starter hook library</div>
+          <div class="pf dim">Reality show creator</div>
+          <div class="pf dim">Movie builder</div>
+          <div class="pf dim">Brand deals hub</div>
+          <div class="pf dim">Media kit builder</div>
+          <button class="btn w100 mt12">Current plan</button>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Creator</div>
+          <div class="price-amount"><sup>$</sup>37</div>
+          <div class="price-period">per month</div>
+          <div class="pf">3 AI twins</div>
+          <div class="pf">Full persona builder</div>
+          <div class="pf">50 content pieces / mo</div>
+          <div class="pf">Script generator</div>
+          <div class="pf">Hook library (all)</div>
+          <div class="pf">Reality show creator</div>
+          <div class="pf dim">Movie builder</div>
+          <div class="pf dim">Brand deals pitch</div>
+          <button class="btn silver w100 mt12">Upgrade</button>
+        </div>
+        <div class="price-card featured">
+          <div class="price-tier">Boss</div>
+          <div class="price-amount"><sup>$</sup>77</div>
+          <div class="price-period">per month</div>
+          <div class="pf">Unlimited AI twins</div>
+          <div class="pf">Unlimited content</div>
+          <div class="pf">Reality show creator</div>
+          <div class="pf">Movie builder</div>
+          <div class="pf">Talk show studio</div>
+          <div class="pf">Brand deals hub</div>
+          <div class="pf">Media kit builder</div>
+          <div class="pf">Content calendar</div>
+          <button class="btn primary w100 mt12">Upgrade to Boss</button>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Empire</div>
+          <div class="price-amount"><sup>$</sup>147</div>
+          <div class="price-period">per month</div>
+          <div class="pf">Everything in Boss</div>
+          <div class="pf">5 team seats</div>
+          <div class="pf">White-label exports</div>
+          <div class="pf">Revenue tracker pro</div>
+          <div class="pf">Priority AI generation</div>
+          <div class="pf">Client portal access</div>
+          <div class="pf">Analytics dashboard</div>
+          <div class="pf">API access</div>
+          <button class="btn silver w100 mt12">Upgrade to Empire</button>
+        </div>
+        <div class="price-card" style="border-color:rgba(192,192,208,0.2)">
+          <div class="price-tier">Academy</div>
+          <div class="price-amount"><sup>$</sup>27</div>
+          <div class="price-period">/ mo for students</div>
+          <div class="pf">Everything in Creator</div>
+          <div class="pf">Skool community access</div>
+          <div class="pf">Academy assignments</div>
+          <div class="pf">Progress tracker</div>
+          <div class="pf">First sale kit</div>
+          <div class="pf">Live coaching access</div>
+          <div class="pf dim">Movie builder</div>
+          <div class="pf dim">Empire features</div>
+          <button class="btn w100 mt12" style="border-color:rgba(192,192,208,0.25);color:var(--silver)">For students</button>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:13px;background:rgba(175,169,236,0.05);border:0.5px solid rgba(175,169,236,0.15);border-radius:var(--r2);font-size:11px;color:var(--muted);text-align:center">
+        All plans include access inside Envi Lee Baddie Academy on Skool. Academy students get 40% off Boss & Empire plans. Cancel anytime.
+      </div>
+    </div>
+
+    <!-- ACADEMY -->
+    <div class="page" id="page-academy">
+      <div class="pg-title">Baddie <span>Academy Mode</span></div>
+      <div class="pg-sub">Your guided path from student to AI creator empire.</div>
+      <div class="g2">
+        <div class="panel">
+          <div class="panel-title">Your progress</div>
+          <div class="flex-col">
+            <div class="prog-wrap"><div class="prog-label"><span>Build your first AI twin</span><span>Complete ✦</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Create your first show</span><span>80%</span></div><div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Close your first brand deal</span><span>50%</span></div><div class="prog-bar"><div class="prog-fill" style="width:50%"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Hit $10k/month</span><span>Done ✦</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
+            <div class="prog-wrap"><div class="prog-label"><span>Build a media empire</span><span>40%</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Next assignments</div>
+          <div class="flex-col">
+            <div style="padding:9px 12px;background:rgba(175,169,236,0.07);border:0.5px solid rgba(175,169,236,0.2);border-radius:var(--r);font-size:12px;color:var(--lilac2)">Finish Coastal Ari twin profile</div>
+            <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);font-size:12px;color:var(--white)">Script Baddie House Episode 5</div>
+            <div style="padding:9px 12px;background:rgba(192,192,208,0.06);border:0.5px solid rgba(192,192,208,0.15);border-radius:var(--r);font-size:12px;color:var(--silver)">Reply to the Shein brand deal offer</div>
+            <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);font-size:12px;color:var(--white)">Build Luxe Envi media kit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
+
+async function ai(prompt,textId,loadId,outputId){
+  const textEl=document.getElementById(textId);
+  const loadEl=loadId?document.getElementById(loadId):null;
+  const outEl=outputId?document.getElementById(outputId):null;
+  if(loadEl)loadEl.classList.add('active');
+  if(textEl)textEl.textContent='Generating...';
+  if(outEl){outEl.style.display='block';outEl.classList.add('visible')}
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const t=d.content&&d.content[0]?d.content[0].text:'Generation failed. Try again.';
+    if(textEl)textEl.textContent=t;
+  }catch(e){if(textEl)textEl.textContent='Error connecting to AI. Check your connection.'}
+  if(loadEl)loadEl.classList.remove('active');
+}
+
+function v(id){return document.getElementById(id)?.value||''}
+
+async function buildTwinPersona(name,desc){
+  await ai(`You are a top AI influencer strategist. Build a complete character profile for an AI twin called "${name}" — ${desc}.
+
+Include:
+1. PERSONALITY OVERVIEW — 3-4 sentences describing her character, energy, and vibe
+2. BACKSTORY — Where she came from, what she overcame, what she stands for (3-4 sentences)
+3. SIGNATURE PHRASES — 5 things she always says
+4. CONTENT PILLARS — 4 main topics she posts about
+5. AUDIENCE — Who follows her and why
+6. MONETIZATION STREAMS — How she makes money
+7. WHAT MAKES HER ICONIC — 2 sentences
+
+Write like a character bible for a TV show. Vivid and specific.`,'twins-text','twins-loading','twins-output');
+}
+async function createNewTwin(){
+  const name=v('new-twin-name')||'New Twin';
+  const niche=v('new-twin-niche');const vibe=v('new-twin-vibe');
+  await buildTwinPersona(name,`${vibe} AI influencer in the ${niche} niche`);
+}
+async function generatePersona(){
+  const twin=v('persona-twin');const backstory=v('persona-backstory');const phrases=v('persona-phrases');const mood=v('persona-mood');
+  await ai(`Create a full persona document for AI twin "${twin}".
+Aesthetic: ${mood}. Backstory context: ${backstory||'not provided'}. Signature phrases: ${phrases||'not provided'}.
+
+Generate:
+1. FULL CHARACTER BACKSTORY (5-6 sentences)
+2. SIGNATURE PHRASES (7 she uses constantly)
+3. THINGS SHE NEVER SAYS (5 off-brand phrases)
+4. HER DAILY LIFE (typical day as content)
+5. RELATIONSHIP WITH AUDIENCE (how she connects)
+6. STYLE AESTHETIC (clothing, colors, visual identity)
+7. BRAND PARTNERSHIPS THAT FIT HER
+
+Make it feel like a real celebrity profile.`,'persona-text','persona-loading','persona-output');
+}
+async function generateShowBible(){
+  const name=v('show-name')||'Untitled Show';
+  const format=v('show-format');const setting=v('show-setting');const twin=v('show-twin');
+  await ai(`Create a complete reality show bible for: "${name}"
+Format: ${format} | Setting: ${setting} | Lead: ${twin}
+
+Include:
+1. SHOW LOGLINE — one compelling sentence
+2. PREMISE — 3-4 sentences explaining the show
+3. CAST — main characters with brief bios (4-5 people including the AI twin lead)
+4. SEASON ARC — overall story of Season 1
+5. EPISODE BREAKDOWN — 6 episode titles with 1-sentence descriptions
+6. RECURRING DRAMA ELEMENTS — 3 ongoing conflicts or storylines
+7. AUDIENCE & PLATFORM — who watches and where to post
+
+Write like a real Netflix pitch bible.`,'show-text','show-loading','show-output');
+}
+async function generateEpisodeScript(ep,show){
+  await ai(`Write a full episode script for Episode ${ep} of "${show}" — an AI influencer reality show.
+
+Include:
+- COLD OPEN (hook scene, 30 seconds)
+- ACT 1 — Setup and drama (5-6 scenes)
+- ACT 2 — Confrontation or challenge (5-6 scenes)
+- ACT 3 — Resolution and cliffhanger (3-4 scenes)
+- CONFESSIONAL MOMENTS — 3 diary cam quotes from cast
+
+Write with dialogue, scene directions, and emotional beats. Dramatic, addictive, reality TV energy.`,'show-text','show-loading','show-output');
+}
+async function generateMovieOutline(){
+  const title=v('movie-title')||'Untitled Movie';const genre=v('movie-genre');
+  const length=v('movie-length');const lead=v('movie-lead');const theme=v('movie-theme');
+  await ai(`Write a full movie outline for: "${title}"
+Genre: ${genre} | Format: ${length} | Lead: ${lead}
+Theme: ${theme||'AI influencer rise to empire'}
+
+Include:
+1. LOGLINE — one sentence
+2. SYNOPSIS — 3-4 sentences
+3. THREE-ACT STRUCTURE — detailed breakdown of each act
+4. KEY SCENES — 6 pivotal scenes with descriptions
+5. CHARACTER ARCS — how the lead evolves
+6. DIALOGUE SAMPLES — 3 key exchanges
+7. VISUAL STYLE — how it should look and feel
+8. ENDING — how it resolves (and any sequel setup)
+
+Write like a real film treatment.`,'movie-text','movie-loading','movie-output');
+}
+async function generateAct2(){
+  await ai(`Write Act 2 of "The Luxe Life" — a drama film about an AI influencer woman who lost everything and is rebuilding her empire.
+
+Act 2 is "The Rise" — she discovers AI influencer tools, builds her first digital twin, starts getting brand deals, faces a betrayal from someone she trusted, and almost gives up before having her breakthrough moment.
+
+Write with:
+- Scene descriptions
+- Dialogue
+- Internal monologue / voiceover
+- Emotional beats and turning points
+
+Make it cinematic, inspirational, and addictive. 500-700 words.`,'act-text','act-loading','act-output');
+}
+async function generateTalkShow(){
+  const show=v('ts-show')||'The Envi Lee Show';const format=v('ts-format');
+  const host=v('ts-host');const topic=v('ts-topic')||'building an AI influencer empire';
+  await ai(`Write a complete talk show episode script for "${show}" hosted by AI twin ${host}.
+Format: ${format} | Topic: ${topic}
+
+Include:
+1. OPENING MONOLOGUE — 60-90 second hook (write it out fully)
+2. SEGMENT 1 — Main topic discussion with 4-5 talking points
+3. INTERVIEW / GUEST SEGMENT — questions and sample answers
+4. SPONSOR INTEGRATION — natural brand mention (30 seconds)
+5. AUDIENCE Q&A — 2 questions with answers
+6. CLOSING CALL TO ACTION — how to follow, buy, or join
+
+Write the full dialogue. Energetic, smart, aspirational host voice.`,'ts-text','ts-loading','ts-output');
+}
+async function generateDailyContent(){
+  const twin=v('dc-twin');const type=v('dc-type');const topic=v('dc-topic')||'AI influencer lifestyle';const tone=v('dc-tone');
+  await ai(`You are a viral social media copywriter for AI influencer brand "Envi Lee Baddie Academy."
+
+Generate ${type} for AI twin ${twin}.
+Topic: ${topic}
+Tone: ${tone}
+
+For TikTok: write 3 different hooks + 1 full caption with hashtags
+For Instagram: write 1 elevated caption + 5 hashtag groups
+For YouTube: write 3 title options + full description
+For Reel script: write full 15-30 second scene-by-scene script
+For Story ideas: write 5 specific story concepts with CTAs
+For Email: write subject line + full promo email body
+
+Make it feel authentic to the twin's personality. No generic AI energy.`,'dc-new-text','dc-loading','dc-output');
+}
+async function generateScript(){
+  const type=v('sc-type');const twin=v('sc-twin');const topic=v('sc-topic')||'AI influencer life';const length=v('sc-length');
+  await ai(`Write a ${type} for AI influencer ${twin} on the topic: "${topic}"
+Length: ${length}
+
+Format with:
+- HOOK / OPENING (first 3 seconds if video)
+- BODY (main content with scene directions if video)
+- CTA / CLOSE
+- VOICEOVER NOTES (tone, pacing, emotion)
+
+If it's a dialogue: write both characters with personality.
+If it's a monologue: make it feel real and unscripted.
+If it's a UGC ad: make it feel organic, not salesy.
+
+Write the complete script ready to read or record.`,'sc-text','sc-loading','sc-output');
+}
+async function generateHooks(topic){
+  await ai(`Generate 10 viral scroll-stopping hooks for an AI influencer: ${topic}
+
+For each hook write:
+HOOK [number]: [the hook text — 1-2 sentences max]
+WHY IT WORKS: [one sentence explanation]
+
+Mix hook types: POV hooks, controversial takes, income reveals, transformation hooks, FOMO hooks, question hooks.
+Make them bold, specific, and magnetic. No generic content.`,'hooks-text','hooks-loading','hooks-output');
+}
+async function generateCalendar(){
+  const topic=v('cal-topic')||'new AI influencer content';const dur=v('cal-duration');
+  await ai(`Create a ${dur} social media content calendar for: "${topic}"
+For an AI influencer brand with twins Luxe Envi and Baddie Nova.
+
+For each day include:
+DAY [X] — [Platform] — [Content type]
+Hook/subject: [exact hook or subject line]
+Content description: [what to post, 1-2 sentences]
+Best time: [posting time]
+
+Mix TikTok, Instagram, YouTube, and email strategically. Build hype, then launch, then sustain. Include show drop days, brand deal mentions, and community engagement.`,'cal-text','cal-loading','cal-output');
+}
+async function generatePitch(){
+  const brand=v('pitch-brand')||'luxury brand';const twin=v('pitch-twin');const type=v('pitch-type');
+  await ai(`Write a professional brand deal pitch email from AI twin ${twin} to ${brand}.
+Deal type: ${type}
+
+Include:
+SUBJECT LINE: [compelling subject]
+
+EMAIL BODY:
+- Hook opening (why I'm reaching out)
+- Who ${twin} is (stats, audience, niche)
+- Why this partnership makes sense for ${brand}
+- Specific deliverables and what's included
+- Pricing range or rate card
+- Next steps / CTA
+
+Tone: professional but confident. Not desperate. This twin knows her worth.
+Keep it under 350 words.`,'pitch-text','pitch-loading','pitch-output');
+}
+async function generateMediaKit(){
+  const twin=v('mk-twin');const achievement=v('mk-achievement');
+  await ai(`Create a complete media kit document for AI influencer twin: ${twin}
+Achievements: ${achievement||'growing AI influencer'}
+
+Include:
+1. BIO — 3-4 sentences, third person, impressive
+2. PLATFORM STATS — format as a table (followers, eng rate, avg views per post)
+3. AUDIENCE DEMOGRAPHICS — age, gender, location, interests
+4. CONTENT PILLARS — 4 main topics
+5. PAST BRAND PARTNERS — list 5 (real or realistic examples)
+6. WHAT I OFFER — 4-5 deliverable types with descriptions
+7. RATE CARD — pricing for sponsored post, reel, story, campaign, UGC
+8. CONTACT INFO PLACEHOLDER
+
+Format cleanly. This gets sent to real brands. Make it impressive.`,'mk-text','mk-loading','mk-output');
+}
+async function generateVoiceGuide(){
+  const twin=v('voice-twin');
+  await ai(`Create a complete brand voice and style guide for AI influencer twin: ${twin}
+
+Include:
+1. TONE IN 3 WORDS — the core vibe
+2. VOICE DESCRIPTION — 3-4 sentences on how she communicates
+3. WORDS SHE LOVES — 10 specific words or phrases she uses
+4. WORDS SHE NEVER USES — 8 words that are off-brand
+5. CAPTION FORMULA — her go-to structure for posts
+6. HASHTAG STRATEGY — types of hashtags and how she uses them
+7. EMOJI STYLE — which ones, how many, when
+8. HOW SHE HANDLES HATE — her response (or non-response) style
+9. HOW SHE CELEBRATES WINS — how she posts about milestones
+
+This is her brand bible. Make it specific and real.`,'voice-text','voice-loading','voice-output');
+}
+async function generateScenePrompts(){
+  const scene=v('scene-input')||'luxury mansion';
+  await ai(`Generate 5 detailed AI video/image generation scene prompts for: "${scene}"
+
+For each scene include:
+SCENE [number]: [name]
+PROMPT: [detailed Midjourney/Kling/Runway ready prompt]
+TWIN FIT: [which AI twin this works best for]
+CONTENT TYPE: [what kind of content — fashion shoot, talk show, reality scene, etc]
+
+Make prompts specific: include lighting, time of day, camera angle, wardrobe style, mood, color palette. Ready to paste into any AI tool.`,'scene-text','scene-loading','scene-output');
+}
+async function generateVideoPrompts(context){
+  await ai(`Create 4 AI video prompts for: "${context}"
+For use in Kling AI, Runway, or Pika.
+
+For each:
+PROMPT [number] — [Video style name]
+PROMPT TEXT: [detailed prompt]
+DURATION: [suggested seconds]
+MOVEMENT: [camera/subject movement]
+MOOD: [emotional tone]
+
+Include: product reveal, model walk, TikTok UGC style, and cinematic brand version.`,'dc-new-text','dc-loading','dc-output');
+}
+
+const mainMap={home:'home',twin:'twins',studio:'reality',content:'daily',deals:'deals-page',money:'revenue',pricing:'pricing',academy:'academy'};
+function switchMain(k){
+  document.querySelectorAll('.tnav').forEach(b=>b.classList.remove('active'));
+  const keys=Object.keys(mainMap);const idx=keys.indexOf(k);
+  if(idx>=0)document.querySelectorAll('.tnav')[idx].classList.add('active');
+  showPage(mainMap[k]);
+}
+function ss(k,el){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  showPage(k);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const p=document.getElementById('page-'+id);
+  if(p)p.classList.add('active');
+}
+function copyText(id){
+  const el=document.getElementById(id);
+  if(el&&navigator.clipboard)navigator.clipboard.writeText(el.textContent).then(()=>{
+    const orig=el.style.color;el.style.color='var(--lilac2)';setTimeout(()=>el.style.color=orig,500);
+  });
+}
+document.querySelectorAll('.scene-chip').forEach(c=>{
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.scene-chip').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('scene-input').value=this.textContent;
+  });
+});
+</script>
+</body>
+</html>
