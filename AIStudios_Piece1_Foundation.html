@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Envi Lee AI Studios™</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#000;--bg2:#080808;--bg3:#0f0f0f;--bg4:#141414;--s1:#1a1a1a;--s2:#222;--s3:#2a2a2a;--w:#fff;--w2:#e8e8e8;--w3:#c0c0c0;--mu:#666;--mu2:#888;--b:rgba(255,255,255,0.08);--b2:rgba(255,255,255,0.14);--b3:rgba(255,255,255,0.24);--r:8px;--r2:12px;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--w);min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;z-index:0}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:500;background:rgba(0,0,0,0.97);border-bottom:0.5px solid var(--b2);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(16px)}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo-mark{width:20px;height:20px;border:1.5px solid var(--w);transform:rotate(45deg);flex-shrink:0;animation:lp 5s ease infinite}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.4}}
+.logo-text{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--w)}
+.logo-text em{font-style:normal;opacity:.5}
+.logo-suite{font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-top:1px;font-family:'DM Mono',monospace}
+.topnav{display:flex;gap:2px}
+.tn{background:none;border:none;padding:6px 10px;border-radius:6px;font-size:11px;color:var(--mu2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tn:hover{background:var(--s1);color:var(--w)}
+.tn.on{background:var(--s1);color:var(--w);border:0.5px solid var(--b2)}
+.plan-badge{background:var(--s2);border:0.5px solid var(--b2);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--w3);font-family:'DM Mono',monospace}
+.user-av{width:30px;height:30px;border-radius:50%;background:var(--w);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;font-family:'Syne',sans-serif}
+
+/* LAYOUT */
+.shell{display:flex;min-height:calc(100vh - 56px);position:relative;z-index:1}
+
+/* SIDEBAR */
+.sidebar{width:218px;background:var(--bg2);border-right:0.5px solid var(--b);padding:14px 10px;flex-shrink:0;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.slabel{font-size:9px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:1.2px;padding:12px 10px 5px;font-family:'DM Mono',monospace}
+.si{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--mu2);transition:all .2s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.si:hover{background:var(--s1);color:var(--w)}
+.si.on{background:var(--s1);color:var(--w);border:0.5px solid var(--b2)}
+.ltag{font-size:9px;padding:1px 6px;border-radius:5px;background:var(--w);color:#000;font-weight:700;font-family:'DM Mono',monospace;margin-left:auto}
+.ntag{font-size:9px;padding:1px 5px;border-radius:5px;background:var(--s2);color:var(--w3);border:0.5px solid var(--b2);margin-left:auto}
+
+/* CONTENT */
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.pg{display:none;padding:24px;animation:pgIn .3s ease}
+.pg.on{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pg-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--w);margin-bottom:4px;letter-spacing:-.3px}
+.dim{color:var(--mu2)}
+.pg-sub{font-size:12px;color:var(--mu2);margin-bottom:20px;line-height:1.6}
+.pain-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.ps-tag{font-size:9px;padding:3px 8px;border-radius:20px;font-weight:600;font-family:'DM Mono',monospace;background:var(--s2);color:var(--w3);border:0.5px solid var(--b2)}
+
+/* PANELS */
+.panel{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:16px}
+.panel.hi{border-color:var(--b3)}
+.ptitle{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--w3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;padding-bottom:9px;border-bottom:0.5px solid var(--b)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--s1);border-radius:var(--r);padding:14px;border:0.5px solid var(--b);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--w2);opacity:.2}
+.stat-n{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--w)}
+.stat-l{font-size:10px;color:var(--mu);margin-top:3px;font-family:'DM Mono',monospace}
+
+/* FORM */
+.inp{background:var(--bg3);border:0.5px solid var(--b);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%;transition:border .2s}
+.inp:focus{outline:none;border-color:var(--b3)}
+.inp::placeholder{color:var(--mu)}
+textarea.inp{resize:vertical;min-height:78px;line-height:1.6}
+.sel{background:var(--bg3);border:0.5px solid var(--b);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%}
+.sel:focus{outline:none;border-color:var(--b3)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+.fl{font-size:9px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;font-family:'DM Mono',monospace}
+
+/* BUTTONS */
+.btn{padding:8px 15px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--b2);background:var(--s2);color:var(--w2);transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--s3);border-color:var(--b3)}
+.btn.hi{background:var(--w);color:#000;border-color:var(--w)}
+.btn.hi:hover{background:var(--w2)}
+.btn.ou{background:transparent;border:0.5px solid var(--b3);color:var(--w3)}
+.btn.ou:hover{background:var(--s1)}
+.btn.w100{width:100%}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{background:var(--s2);border:0.5px solid var(--b);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--mu2);cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--b3);color:var(--w)}
+.chip.on{background:var(--w);color:#000;border-color:var(--w)}
+
+/* AI OUTPUT */
+.ai-out{background:var(--bg4);border:0.5px solid var(--b2);border-radius:var(--r2);padding:14px;display:none;margin-top:12px;animation:pgIn .35s ease}
+.ai-out.show{display:block}
+.ai-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--w3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--w3);animation:aip 1.8s ease infinite;flex-shrink:0}
+@keyframes aip{0%,100%{opacity:1}50%{opacity:.2}}
+.ai-text{font-size:12px;color:var(--w2);line-height:1.85;white-space:pre-wrap}
+
+/* LOAD BAR */
+.lbar{height:1px;background:var(--b);overflow:hidden;margin:8px 0;display:none}
+.lbar.go{display:block}
+.lbar-fill{height:100%;background:var(--w);animation:lm 1.8s linear infinite}
+@keyframes lm{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+
+/* PILLS */
+.pill{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;font-family:'DM Mono',monospace}
+.pw{background:var(--w);color:#000}
+.pg2{background:var(--s2);color:var(--w3);border:0.5px solid var(--b2)}
+.ph{background:var(--s3);color:var(--w);border:0.5px solid var(--b3)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g14{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
+.gc{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.fc{display:flex;flex-direction:column;gap:10px}
+.mb12{margin-bottom:12px}
+.mb18{margin-bottom:18px}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.w100{width:100%}
+
+/* EPISODE ROWS */
+.ep-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);background:var(--bg3);margin-bottom:6px;border:0.5px solid var(--b)}
+.ep-num{width:26px;height:26px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--w3);flex-shrink:0;border:0.5px solid var(--b2);font-family:'DM Mono',monospace}
+.ep-info{flex:1}
+.ep-ttl{font-size:12px;font-weight:500;color:var(--w)}
+.ep-mt{font-size:10px;color:var(--mu)}
+
+/* SCENE CARDS */
+.scene-card{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .25s}
+.scene-card:hover{border-color:var(--b3)}
+.scene-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:24px;color:var(--mu);background:var(--bg3)}
+.scene-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)}
+.scene-meta{font-size:10px;color:var(--mu);margin-top:2px;font-family:'DM Mono',monospace}
+
+/* CHARACTER CARDS */
+.char-card{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:14px;cursor:pointer;transition:all .25s}
+.char-card:hover,.char-card.on{border-color:var(--b3);background:var(--s2)}
+.char-av{width:40px;height:40px;border-radius:50%;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:14px;margin-bottom:8px;color:var(--w3)}
+.char-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w)}
+.char-meta{font-size:10px;color:var(--mu);margin-top:3px;font-family:'DM Mono',monospace}
+
+/* SCRIPT BLOCKS */
+.script-block{background:var(--bg3);border-left:2px solid var(--w3);padding:10px 14px;margin-bottom:8px;border-radius:0 var(--r) var(--r) 0}
+.script-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.script-text{font-size:12px;color:var(--w2);line-height:1.7}
+
+/* CHAPTER CARDS */
+.ch-card{background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:13px;margin-bottom:8px}
+.ch-num{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px}
+.ch-desc{font-size:11px;color:var(--mu2);line-height:1.6}
+
+/* EXPORT CARDS */
+.exp-card{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;margin-bottom:8px}
+.exp-card:hover{border-color:var(--b3);background:var(--s2)}
+.exp-icon{font-family:'DM Mono',monospace;font-size:18px;color:var(--w3);flex-shrink:0;width:28px;text-align:center}
+.exp-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--w)}
+.exp-desc{font-size:10px;color:var(--mu);margin-top:2px}
+
+/* LIVE STAGE BANNER */
+.live-banner{background:var(--s1);border:1px solid var(--w);border-radius:var(--r2);padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.live-sq{width:34px;height:34px;background:var(--w);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:16px;color:#000;flex-shrink:0;font-weight:700}
+.live-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--w)}
+.live-sub{font-size:11px;color:var(--mu2);margin-top:3px}
+
+/* STAGE CHIPS */
+.sc-chip{padding:5px 12px;border-radius:14px;font-size:11px;border:0.5px solid var(--b);cursor:pointer;color:var(--mu2);transition:all .2s;background:var(--s1)}
+.sc-chip:hover,.sc-chip.on{background:var(--w);color:#000;border-color:var(--w)}
+
+/* PROGRESS */
+.prog{margin-bottom:10px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.prog-lbl span:first-child{color:var(--mu2)}
+.prog-lbl span:last-child{color:var(--w3);font-family:'DM Mono',monospace}
+.prog-bar{height:2px;background:var(--s2);border-radius:1px;overflow:hidden}
+.prog-fill{height:100%;background:var(--w);border-radius:1px}
+
+/* PRICING */
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pc{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:20px;position:relative}
+.pc.pop{border-color:var(--w)}
+.pc.pop::before{content:'Most popular';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--w);color:#000;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;font-family:'Syne',sans-serif;white-space:nowrap}
+.pc-tier{font-family:'DM Mono',monospace;font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.pc-price{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--w);line-height:1}
+.pc-price sup{font-size:15px;font-weight:500;vertical-align:super}
+.pc-period{font-size:10px;color:var(--mu);margin-top:3px;margin-bottom:16px;font-family:'DM Mono',monospace}
+.pf{font-size:11px;color:var(--mu2);padding:5px 0;border-bottom:0.5px solid var(--b);display:flex;align-items:center;gap:7px;line-height:1.4}
+.pf::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--w3);flex-shrink:0}
+.pf.dim::before{background:var(--s3)}.pf.dim{opacity:.3}
+
+/* MARKETPLACE */
+.mkt-card{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:13px;cursor:pointer;transition:all .2s}
+.mkt-card:hover{border-color:var(--b3)}
+
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo-wrap">
+    <div class="logo-mark"></div>
+    <div>
+      <div class="logo-text">Envi Lee AI Studios<em>™</em></div>
+      <div class="logo-suite">Envi Lee AI Creator Suite · App 2 of 3</div>
+    </div>
+  </div>
+  <nav class="topnav">
+    <button class="tn on" onclick="nav('dashboard')">Dashboard</button>
+    <button class="tn" onclick="nav('characters')">Characters</button>
+    <button class="tn" onclick="nav('scripts')">Scripts</button>
+    <button class="tn" onclick="nav('scenes')">Scene Builder</button>
+    <button class="tn" onclick="nav('live')">Live Stage ★</button>
+    <button class="tn" onclick="nav('talk')">Talk & Podcast</button>
+    <button class="tn" onclick="nav('exports')">Video Exports</button>
+    <button class="tn" onclick="nav('pricing')">Pricing</button>
+    <button class="tn" onclick="nav('academy')">Academy</button>
+  </nav>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="plan-badge">Boss Plan</div>
+    <div class="user-av">EL</div>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="slabel">Studio</div>
+    <button class="si on" onclick="side('dashboard',this)">◈ Dashboard</button>
+    <button class="si" onclick="side('projects',this)">⬡ My Projects</button>
+    <div class="slabel">Characters</div>
+    <button class="si" onclick="side('char-builder',this)">◉ Character Builder</button>
+    <button class="si" onclick="side('char-presets',this)">⊹ Saved Characters</button>
+    <button class="si" onclick="side('char-market',this)">◌ Marketplace</button>
+    <div class="slabel">Scripts</div>
+    <button class="si" onclick="side('script-movie',this)">⊳ Movie Script</button>
+    <button class="si" onclick="side('script-episode',this)">◷ Episode Script</button>
+    <button class="si" onclick="side('script-reality',this)">◎ Reality Scene</button>
+    <button class="si" onclick="side('script-doc',this)">⊞ Documentary</button>
+    <button class="si" onclick="side('script-mv',this)">◈ Music Video Concept</button>
+    <div class="slabel">Scene Builder</div>
+    <button class="si" onclick="side('scene-builder',this)">◌ Scene Builder</button>
+    <button class="si" onclick="side('ep-assembler',this)">⬡ Episode Assembler</button>
+    <div class="slabel">Live Stage ★</div>
+    <button class="si" onclick="side('artist-builder',this)">◉ AI Artist Builder<span class="ltag">★</span></button>
+    <button class="si" onclick="side('stage-builder',this)">⊳ Stage Builder<span class="ltag">★</span></button>
+    <button class="si" onclick="side('perf-script',this)">◎ Performance Script<span class="ltag">★</span></button>
+    <button class="si" onclick="side('music-video',this)">◈ Music Video Builder<span class="ltag">★</span></button>
+    <div class="slabel">Talk & Podcast</div>
+    <button class="si" onclick="side('talk-show',this)">⊹ Talk Show Builder</button>
+    <button class="si" onclick="side('podcast',this)">◷ Podcast Builder</button>
+    <button class="si" onclick="side('longform',this)">⊞ Long-Form Video<span class="ntag">Big</span></button>
+    <div class="slabel">Export</div>
+    <button class="si" onclick="side('vid-export',this)">⬆ Video Prompt Export</button>
+    <button class="si" onclick="side('voice-export',this)">◌ Voice & Lip Sync</button>
+  </aside>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="pg on" id="pg-dashboard">
+      <div class="pg-title">Studio <span class="dim">Dashboard</span></div>
+      <div class="pg-sub">Your Hollywood in a browser — movies, shows, concerts, podcasts and more. No cast, no crew, no studio needed.</div>
+      <div class="stats mb18">
+        <div class="stat"><div class="stat-n">8</div><div class="stat-l">Active projects</div></div>
+        <div class="stat"><div class="stat-n">14</div><div class="stat-l">AI characters</div></div>
+        <div class="stat"><div class="stat-n">42</div><div class="stat-l">Scripts written</div></div>
+        <div class="stat"><div class="stat-n">186</div><div class="stat-l">Credits remaining</div></div>
+      </div>
+      <div class="g2 mb18">
+        <div class="panel">
+          <div class="ptitle">Recent projects</div>
+          <div class="fc">
+            <div class="ep-row"><div class="ep-num">◈</div><div class="ep-info"><div class="ep-ttl">Baddie House — Season 1</div><div class="ep-mt">Reality show · 4/6 episodes</div></div><span class="pill ph">Filming</span></div>
+            <div class="ep-row"><div class="ep-num">◉</div><div class="ep-info"><div class="ep-ttl">The Luxe Life</div><div class="ep-mt">Feature film · Act 2 in progress</div></div><span class="pill ph">Scripting</span></div>
+            <div class="ep-row"><div class="ep-num">⊳</div><div class="ep-info"><div class="ep-ttl">Nova Live — World Tour</div><div class="ep-mt">AI concert · Stage built</div></div><span class="pill pg2">Draft</span></div>
+            <div class="ep-row"><div class="ep-num">◷</div><div class="ep-info"><div class="ep-ttl">The Envi Lee Show — Ep 9</div><div class="ep-mt">Talk show · Script ready</div></div><span class="pill pw">Ready</span></div>
+            <div class="ep-row"><div class="ep-num">⊞</div><div class="ep-info"><div class="ep-ttl">Rise & Reign Documentary</div><div class="ep-mt">Mini-doc · Narration drafted</div></div><span class="pill pg2">Draft</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb12">
+            <div class="ptitle">Quick create</div>
+            <div class="g2">
+              <button class="btn hi" onclick="side('script-movie',null);showPg('script-movie')">New movie ↗</button>
+              <button class="btn" onclick="side('script-episode',null);showPg('script-episode')">New episode ↗</button>
+              <button class="btn" onclick="side('artist-builder',null);showPg('artist-builder')">AI artist ★ ↗</button>
+              <button class="btn" onclick="side('podcast',null);showPg('podcast')">New podcast ↗</button>
+              <button class="btn" onclick="side('longform',null);showPg('longform')">Long-form ↗</button>
+              <button class="btn" onclick="side('scene-builder',null);showPg('scene-builder')">Build scene ↗</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Credit usage today</div>
+            <div class="prog"><div class="prog-lbl"><span>Scripts</span><span>8 credits</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Scene prompts</span><span>5 credits</span></div><div class="prog-bar"><div class="prog-fill" style="width:25%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Voice prompts</span><span>15 credits</span></div><div class="prog-bar"><div class="prog-fill" style="width:75%"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS PAGE -->
+    <div class="pg" id="pg-projects">
+      <div class="pg-title">My <span class="dim">Projects</span></div>
+      <div class="pg-sub">All your movies, shows, concerts, podcasts, and videos in one place.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="chips" style="margin:0"><span class="chip on">All</span><span class="chip">Movies</span><span class="chip">Shows</span><span class="chip">Concerts</span><span class="chip">Podcasts</span><span class="chip">Docs</span></div>
+        <button class="btn hi">+ New project</button>
+      </div>
+      <div class="g3">
+        <div class="scene-card"><div class="scene-thumb">◈</div><div style="padding:10px 12px"><div class="scene-name">Baddie House S1</div><div class="scene-meta">Reality show · 4/6 eps</div></div></div>
+        <div class="scene-card"><div class="scene-thumb">◉</div><div style="padding:10px 12px"><div class="scene-name">The Luxe Life</div><div class="scene-meta">Feature film · Act 2</div></div></div>
+        <div class="scene-card"><div class="scene-thumb">⊳</div><div style="padding:10px 12px"><div class="scene-name">Nova Live World Tour</div><div class="scene-meta">AI concert · Stage set</div></div></div>
+        <div class="scene-card"><div class="scene-thumb">◷</div><div style="padding:10px 12px"><div class="scene-name">The Envi Lee Show</div><div class="scene-meta">Talk show · Ep 9 ready</div></div></div>
+        <div class="scene-card"><div class="scene-thumb">⊞</div><div style="padding:10px 12px"><div class="scene-name">Rise & Reign</div><div class="scene-meta">Mini-documentary</div></div></div>
+        <div class="scene-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:130px;cursor:pointer"><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mu)">+ New project</div></div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER PAGES (will be filled in next pieces) -->
+    <div class="pg" id="pg-char-builder"><div class="pg-title">Character <span class="dim">Builder</span></div><div class="pg-sub">Coming in Piece 2...</div></div>
+    <div class="pg" id="pg-char-presets"><div class="pg-title">Saved <span class="dim">Characters</span></div><div class="pg-sub">Coming in Piece 2...</div></div>
+    <div class="pg" id="pg-char-market"><div class="pg-title">Character <span class="dim">Marketplace</span></div><div class="pg-sub">Coming in Piece 2...</div></div>
+    <div class="pg" id="pg-script-movie"><div class="pg-title">Movie <span class="dim">Script</span></div><div class="pg-sub">Coming in Piece 3...</div></div>
+    <div class="pg" id="pg-script-episode"><div class="pg-title">Episode <span class="dim">Script</span></div><div class="pg-sub">Coming in Piece 3...</div></div>
+    <div class="pg" id="pg-script-reality"><div class="pg-title">Reality <span class="dim">Scene</span></div><div class="pg-sub">Coming in Piece 3...</div></div>
+    <div class="pg" id="pg-script-doc"><div class="pg-title">Documentary <span class="dim">Script</span></div><div class="pg-sub">Coming in Piece 3...</div></div>
+    <div class="pg" id="pg-script-mv"><div class="pg-title">Music Video <span class="dim">Concept</span></div><div class="pg-sub">Coming in Piece 3...</div></div>
+    <div class="pg" id="pg-scene-builder"><div class="pg-title">Scene <span class="dim">Builder</span></div><div class="pg-sub">Coming in Piece 4...</div></div>
+    <div class="pg" id="pg-ep-assembler"><div class="pg-title">Episode <span class="dim">Assembler</span></div><div class="pg-sub">Coming in Piece 4...</div></div>
+    <div class="pg" id="pg-artist-builder"><div class="pg-title">AI Artist <span class="dim">Builder</span> ★</div><div class="pg-sub">Coming in Piece 5...</div></div>
+    <div class="pg" id="pg-stage-builder"><div class="pg-title">Live Stage <span class="dim">Builder</span> ★</div><div class="pg-sub">Coming in Piece 5...</div></div>
+    <div class="pg" id="pg-perf-script"><div class="pg-title">Performance <span class="dim">Script</span> ★</div><div class="pg-sub">Coming in Piece 5...</div></div>
+    <div class="pg" id="pg-music-video"><div class="pg-title">Music Video <span class="dim">Builder</span> ★</div><div class="pg-sub">Coming in Piece 5...</div></div>
+    <div class="pg" id="pg-talk-show"><div class="pg-title">Talk Show <span class="dim">Builder</span></div><div class="pg-sub">Coming in Piece 6...</div></div>
+    <div class="pg" id="pg-podcast"><div class="pg-title">Podcast <span class="dim">Builder</span></div><div class="pg-sub">Coming in Piece 6...</div></div>
+    <div class="pg" id="pg-longform"><div class="pg-title">Long-Form <span class="dim">Video Builder</span></div><div class="pg-sub">Coming in Piece 6...</div></div>
+    <div class="pg" id="pg-vid-export"><div class="pg-title">Video Prompt <span class="dim">Export</span></div><div class="pg-sub">Coming in Piece 7...</div></div>
+    <div class="pg" id="pg-voice-export"><div class="pg-title">Voice & <span class="dim">Lip Sync</span></div><div class="pg-sub">Coming in Piece 7...</div></div>
+    <div class="pg" id="pg-pricing"><div class="pg-title">Plans <span class="dim">& Pricing</span></div><div class="pg-sub">Coming in Piece 7...</div></div>
+    <div class="pg" id="pg-academy"><div class="pg-title">Academy <span class="dim">Mode</span></div><div class="pg-sub">Coming in Piece 7...</div></div>
+
+  </main>
+</div>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
+
+async function ai(prompt,txtId,lbarId,outId){
+  const txt=document.getElementById(txtId),lb=lbarId?document.getElementById(lbarId):null,out=outId?document.getElementById(outId):null;
+  if(lb)lb.classList.add('go');
+  if(txt)txt.textContent='Generating…';
+  if(out){out.style.display='block';out.classList.add('show')}
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(txt)txt.textContent=d.content&&d.content[0]?d.content[0].text:'Generation failed. Please try again.';
+  }catch(e){if(txt)txt.textContent='Connection error. Please check your network.'}
+  if(lb)lb.classList.remove('go');
+}
+function g(id){return document.getElementById(id)?.value||''}
+function cp(id){const el=document.getElementById(id);if(el&&navigator.clipboard)navigator.clipboard.writeText(el.textContent).then(()=>{const o=el.style.color;el.style.color='var(--w3)';setTimeout(()=>el.style.color=o,600)})}
+function selStage(el){document.querySelectorAll('#stage-chips .sc-chip').forEach(c=>c.classList.remove('on'));el.classList.add('on')}
+
+const mainMap={dashboard:'dashboard',characters:'char-builder',scripts:'script-movie',scenes:'scene-builder',live:'artist-builder',talk:'talk-show',exports:'vid-export',pricing:'pricing',academy:'academy'};
+const sideMap={dashboard:'dashboard',projects:'projects','char-builder':'char-builder','char-presets':'char-presets','char-market':'char-market','script-movie':'script-movie','script-episode':'script-episode','script-reality':'script-reality','script-doc':'script-doc','script-mv':'script-mv','scene-builder':'scene-builder','ep-assembler':'ep-assembler','artist-builder':'artist-builder','stage-builder':'stage-builder','perf-script':'perf-script','music-video':'music-video','talk-show':'talk-show','podcast':'podcast','longform':'longform','vid-export':'vid-export','voice-export':'voice-export'};
+
+function nav(k){
+  document.querySelectorAll('.tn').forEach(b=>b.classList.remove('on'));
+  const keys=Object.keys(mainMap),idx=keys.indexOf(k);
+  if(idx>=0)document.querySelectorAll('.tn')[idx].classList.add('on');
+  showPg(mainMap[k]);
+}
+function side(k,el){
+  document.querySelectorAll('.si').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(sideMap[k])showPg(sideMap[k]);
+}
+function showPg(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('pg-'+id);
+  if(p)p.classList.add('on');
+}
+</script>
+</body>
+</html>
