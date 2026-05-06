@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>POD Pro Mockup Studio™ — Envi Lee AI Creator Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#060608;--bg2:#0a0a10;--bg3:#0f0f18;--bg4:#14141f;
+  --s1:#18182a;--s2:#1e1e32;--s3:#24243c;
+  --c:#00f5ff;--c2:#00c8d4;--c3:rgba(0,245,255,0.08);
+  --m:#ff2d78;--m2:#ff6699;--m3:rgba(255,45,120,0.08);
+  --v:#8b5cf6;--v2:#a78bfa;--v3:rgba(139,92,246,0.1);
+  --t:#0ff4c6;--t2:rgba(15,244,198,0.08);
+  --w:#f0f0ff;--w2:#c0c0e0;--mu:#606080;--mu2:#808098;
+  --bc:rgba(0,245,255,0.1);--bm:rgba(255,45,120,0.1);--bv:rgba(139,92,246,0.12);--bt:rgba(15,244,198,0.08);
+  --r:8px;--r2:12px;--r3:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--w);min-height:100vh;overflow-x:hidden}
+.syne{font-family:'Syne',sans-serif}
+.mono{font-family:'DM Mono',monospace}
+
+/* GRID TEXTURE */
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.015) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:500;background:rgba(6,6,8,0.96);border-bottom:0.5px solid var(--bc);padding:0 22px;height:56px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(16px)}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo-hex{width:26px;height:26px;position:relative;flex-shrink:0}
+.logo-hex svg{width:100%;height:100%;animation:hexPulse 4s ease infinite}
+@keyframes hexPulse{0%,100%{filter:drop-shadow(0 0 4px rgba(0,245,255,0.4))}50%{filter:drop-shadow(0 0 10px rgba(0,245,255,0.8))}}
+.logo-text{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--w);letter-spacing:0.2px}
+.logo-text em{color:var(--c);font-style:normal}
+.logo-suite{font-size:9px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-top:1px;font-family:'DM Mono',monospace}
+.topnav{display:flex;gap:2px}
+.tn{background:none;border:none;padding:6px 11px;border-radius:6px;font-size:11px;color:var(--mu2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;letter-spacing:.2px;white-space:nowrap}
+.tn:hover{background:var(--s1);color:var(--w)}
+.tn.on{background:var(--c3);color:var(--c);border:0.5px solid var(--bc)}
+.top-right{display:flex;align-items:center;gap:10px}
+.plan-gem{display:flex;align-items:center;gap:5px;background:var(--v3);border:0.5px solid rgba(139,92,246,0.3);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--v2);font-family:'Syne',sans-serif;font-weight:600}
+.gem-dot{width:7px;height:7px;background:var(--v);transform:rotate(45deg);flex-shrink:0}
+.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--c2),var(--v));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;font-family:'Syne',sans-serif}
+
+/* LAYOUT */
+.shell{display:flex;min-height:calc(100vh - 56px);position:relative;z-index:1}
+
+/* SIDEBAR */
+.sidebar{width:220px;background:var(--bg2);border-right:0.5px solid var(--bc);padding:16px 10px;flex-shrink:0;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.slabel{font-size:9px;font-weight:600;color:rgba(0,245,255,0.35);text-transform:uppercase;letter-spacing:1.2px;padding:12px 10px 5px;font-family:'DM Mono',monospace}
+.si{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--mu2);transition:all .2s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.si:hover{background:var(--s1);color:var(--w)}
+.si.on{background:var(--c3);color:var(--c);border:0.5px solid rgba(0,245,255,0.15)}
+.si-ico{font-size:12px;width:18px;text-align:center;flex-shrink:0;font-family:'DM Mono',monospace;color:inherit}
+.ntag{font-size:9px;padding:1px 5px;border-radius:5px;background:var(--m3);color:var(--m);border:0.5px solid rgba(255,45,120,0.25);margin-left:auto}
+.p2tag{font-size:9px;padding:1px 5px;border-radius:5px;background:var(--v3);color:var(--v2);border:0.5px solid rgba(139,92,246,0.25);margin-left:auto}
+
+/* MAIN CONTENT */
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.pg{display:none;padding:24px;animation:pgIn .3s ease}
+.pg.on{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pg-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--w);margin-bottom:4px;letter-spacing:-0.3px}
+.pg-title .hi{color:var(--c)}
+.pg-title .him{color:var(--m)}
+.pg-title .hiv{color:var(--v2)}
+.pg-title .hit{color:var(--t)}
+.pg-sub{font-size:12px;color:var(--mu2);margin-bottom:22px;line-height:1.6}
+.pain-solved{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.ps{font-size:9px;padding:3px 8px;border-radius:20px;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:.3px}
+.ps-c{background:var(--c3);color:var(--c);border:0.5px solid var(--bc)}
+.ps-m{background:var(--m3);color:var(--m);border:0.5px solid var(--bm)}
+.ps-v{background:var(--v3);color:var(--v2);border:0.5px solid var(--bv)}
+.ps-t{background:var(--t2);color:var(--t);border:0.5px solid var(--bt)}
+
+/* PANELS */
+.panel{background:var(--s1);border:0.5px solid rgba(255,255,255,0.06);border-radius:var(--r2);padding:16px}
+.panel.cyan{border-color:var(--bc)}
+.panel.magenta{border-color:var(--bm)}
+.panel.violet{border-color:var(--bv)}
+.panel.teal{border-color:var(--bt)}
+.ptitle{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--c);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;padding-bottom:9px;border-bottom:0.5px solid rgba(0,245,255,0.08);display:flex;align-items:center;gap:8px}
+.ptitle.m{color:var(--m);border-bottom-color:rgba(255,45,120,0.08)}
+.ptitle.v{color:var(--v2);border-bottom-color:rgba(139,92,246,0.1)}
+.ptitle.t{color:var(--t);border-bottom-color:rgba(15,244,198,0.08)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--s1);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;border:0.5px solid rgba(255,255,255,0.04)}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat.c::before{background:linear-gradient(90deg,var(--c),transparent)}
+.stat.m::before{background:linear-gradient(90deg,var(--m),transparent)}
+.stat.v::before{background:linear-gradient(90deg,var(--v),transparent)}
+.stat.t::before{background:linear-gradient(90deg,var(--t),transparent)}
+.stat-n{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--w)}
+.stat-l{font-size:10px;color:var(--mu);margin-top:3px;font-family:'DM Mono',monospace}
+
+/* FORM */
+.inp{background:var(--bg3);border:0.5px solid rgba(255,255,255,0.08);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%;transition:border .2s}
+.inp:focus{outline:none;border-color:rgba(0,245,255,0.4);box-shadow:0 0 0 3px rgba(0,245,255,0.05)}
+.inp::placeholder{color:var(--mu)}
+textarea.inp{resize:vertical;min-height:78px;line-height:1.6}
+.sel{background:var(--bg3);border:0.5px solid rgba(255,255,255,0.08);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%;cursor:pointer}
+.sel:focus{outline:none;border-color:rgba(0,245,255,0.3)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+.fl{font-size:9px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;font-family:'DM Mono',monospace}
+
+/* BUTTONS */
+.btn{padding:8px 15px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid rgba(255,255,255,0.1);background:var(--s2);color:var(--w2);transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--s3);border-color:rgba(255,255,255,0.15)}
+.btn.c{background:var(--c3);border-color:var(--bc);color:var(--c)}
+.btn.c:hover{background:rgba(0,245,255,0.15);box-shadow:0 0 16px rgba(0,245,255,0.15)}
+.btn.m{background:var(--m3);border-color:var(--bm);color:var(--m)}
+.btn.m:hover{background:rgba(255,45,120,0.15)}
+.btn.v{background:var(--v3);border-color:var(--bv);color:var(--v2)}
+.btn.v:hover{background:rgba(139,92,246,0.18)}
+.btn.t{background:var(--t2);border-color:var(--bt);color:var(--t)}
+.btn.t:hover{background:rgba(15,244,198,0.14)}
+.btn.w100{width:100%}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{background:var(--s2);border:0.5px solid rgba(255,255,255,0.07);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--mu2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.chip:hover{border-color:var(--bc);color:var(--w)}
+.chip.on{background:var(--c3);border-color:var(--bc);color:var(--c)}
+.chip.onm{background:var(--m3);border-color:var(--bm);color:var(--m)}
+.chip.onv{background:var(--v3);border-color:var(--bv);color:var(--v2)}
+
+/* VIEW BTNS */
+.vrow{display:flex;gap:6px;margin-bottom:14px}
+.vb{flex:1;padding:6px;border-radius:6px;font-size:10px;border:0.5px solid rgba(255,255,255,0.07);background:var(--bg3);cursor:pointer;color:var(--mu2);transition:all .2s;font-family:'DM Mono',monospace}
+.vb.on{background:var(--c3);color:var(--c);border-color:var(--bc)}
+
+/* CANVAS */
+.canvas{background:var(--bg3);border-radius:14px;min-height:320px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:0.5px solid rgba(0,245,255,0.08);position:relative;overflow:hidden}
+.canvas::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,245,255,0.05),transparent 65%);pointer-events:none}
+.canvas-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,245,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.025) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+.canvas-ph{text-align:center;padding:20px;z-index:1}
+.canvas-icon{font-family:'DM Mono',monospace;font-size:42px;color:rgba(0,245,255,0.25);margin-bottom:12px;line-height:1}
+.canvas-lbl{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--w2);margin-bottom:4px}
+.canvas-sub{font-size:11px;color:var(--mu)}
+
+/* AI OUTPUT */
+.ai-out{background:var(--bg4);border:0.5px solid rgba(0,245,255,0.18);border-radius:var(--r2);padding:14px;display:none;margin-top:12px;animation:pgIn .35s ease}
+.ai-out.show{display:block}
+.ai-out.m{border-color:rgba(255,45,120,0.2)}
+.ai-out.v{border-color:rgba(139,92,246,0.2)}
+.ai-out.t{border-color:rgba(15,244,198,0.18)}
+.ai-lbl{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;color:var(--c);text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.ai-lbl.m{color:var(--m)}
+.ai-lbl.v{color:var(--v2)}
+.ai-lbl.t{color:var(--t)}
+.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;animation:aipulse 1.8s ease infinite;flex-shrink:0}
+@keyframes aipulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+.ai-text{font-size:12px;color:var(--w2);line-height:1.85;white-space:pre-wrap;font-family:'DM Sans',sans-serif}
+
+/* LOAD BAR */
+.lbar{height:2px;background:rgba(255,255,255,0.04);border-radius:1px;overflow:hidden;margin:8px 0;display:none}
+.lbar.go{display:block}
+.lbar-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--v),var(--m),var(--c));background-size:300% 100%;animation:lmove 1.8s linear infinite}
+@keyframes lmove{0%{background-position:300% 0}100%{background-position:-300% 0}}
+.lbar.m .lbar-fill{background:linear-gradient(90deg,var(--m),var(--v),var(--m));background-size:300% 100%}
+.lbar.v .lbar-fill{background:linear-gradient(90deg,var(--v),var(--c),var(--v));background-size:300% 100%}
+
+/* PILLS */
+.pill{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;font-family:'DM Mono',monospace}
+.pill-live{background:rgba(15,244,198,0.1);color:var(--t);border:0.5px solid rgba(15,244,198,0.25)}
+.pill-draft{background:var(--v3);color:var(--v2);border:0.5px solid rgba(139,92,246,0.2)}
+.pill-hot{background:var(--m3);color:var(--m);border:0.5px solid rgba(255,45,120,0.2)}
+
+/* COLOR SWATCHES */
+.swatches{display:flex;gap:7px;flex-wrap:wrap}
+.sw{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;flex-shrink:0}
+.sw.on{border-color:var(--c);box-shadow:0 0 10px rgba(0,245,255,0.4)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g14{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+.gc{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.fc{display:flex;flex-direction:column;gap:10px}
+.fr{display:flex;gap:8px;align-items:center}
+.mb12{margin-bottom:12px}
+.mb18{margin-bottom:18px}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.w100{width:100%}
+
+/* COLLECTION CARDS */
+.coll-card{background:var(--s1);border:0.5px solid rgba(255,255,255,0.05);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .25s}
+.coll-card:hover{border-color:var(--bv);transform:translateY(-2px)}
+.coll-thumb{height:90px;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative}
+.coll-body{padding:11px 13px}
+.coll-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)}
+.coll-meta{font-size:10px;color:var(--mu);margin-top:2px;font-family:'DM Mono',monospace}
+
+/* COPY BLOCKS */
+.cb{background:var(--bg3);border:0.5px solid rgba(255,255,255,0.06);border-radius:var(--r);padding:13px;margin-bottom:10px}
+.cb-lbl{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
+.cb-text{font-size:12px;color:var(--w2);line-height:1.7}
+.tag-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.tag{background:var(--v3);color:var(--v2);font-size:10px;padding:3px 8px;border-radius:7px;border:0.5px solid rgba(139,92,246,0.2);font-family:'DM Mono',monospace}
+
+/* PLATFORM CARDS */
+.plat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.plat{background:var(--s1);border:0.5px solid rgba(255,255,255,0.05);border-radius:var(--r2);padding:15px;text-align:center;cursor:pointer;transition:all .25s}
+.plat:hover{border-color:var(--bc);transform:translateY(-2px)}
+.plat-ico{font-size:22px;margin-bottom:7px}
+.plat-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--w)}
+.plat-st{font-size:10px;margin-top:3px;font-family:'DM Mono',monospace}
+.conn{color:var(--t)}
+.nc{color:var(--mu)}
+
+/* FEATURE CARDS (phase 2) */
+.feat2{background:var(--bg3);border:0.5px dashed rgba(139,92,246,0.2);border-radius:var(--r);padding:12px;opacity:.65}
+.feat2-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;color:var(--w2);margin-bottom:3px}
+.feat2-desc{font-size:10px;color:var(--mu);line-height:1.5}
+
+/* PRICING */
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pc{background:var(--s1);border:0.5px solid rgba(255,255,255,0.06);border-radius:var(--r2);padding:20px;position:relative;transition:all .3s}
+.pc.pop{border-color:var(--bc)}
+.pc.pop::before{content:'Most popular';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--c2),var(--v));color:#000;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;font-family:'Syne',sans-serif;white-space:nowrap}
+.pc-tier{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.pc-price{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--w);line-height:1}
+.pc-price sup{font-size:15px;font-weight:500;vertical-align:super}
+.pc-period{font-size:10px;color:var(--mu);margin-top:3px;margin-bottom:16px;font-family:'DM Mono',monospace}
+.pf{font-size:11px;color:var(--mu2);padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.04);display:flex;align-items:center;gap:7px;line-height:1.4}
+.pf::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--c);flex-shrink:0}
+.pf.dim::before{background:var(--s3)}.pf.dim{opacity:.35}
+
+/* PROGRESS */
+.prog{margin-bottom:10px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.prog-lbl span:first-child{color:var(--mu2)}
+.prog-lbl span:last-child{color:var(--c);font-family:'DM Mono',monospace}
+.prog-bar{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--v));border-radius:2px}
+
+/* FABRIC CHIPS */
+.fab-chip{background:var(--s2);border:0.5px solid rgba(255,255,255,0.06);border-radius:6px;padding:6px 10px;font-size:10px;color:var(--mu2);cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.fab-chip.on{background:var(--t2);border-color:var(--bt);color:var(--t)}
+
+/* MODEL CARD */
+.model-card{background:var(--bg3);border:0.5px solid rgba(139,92,246,0.2);border-radius:var(--r2);padding:14px;cursor:pointer;transition:all .2s}
+.model-card:hover,.model-card.on{border-color:var(--v);background:var(--v3)}
+.model-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)}
+.model-meta{font-size:10px;color:var(--mu);margin-top:3px;font-family:'DM Mono',monospace}
+
+/* SCENE CHIP */
+.sc-chip{padding:5px 12px;border-radius:14px;font-size:11px;border:0.5px solid rgba(255,255,255,0.07);cursor:pointer;color:var(--mu2);transition:all .2s;background:var(--s1);font-family:'DM Sans',sans-serif}
+.sc-chip:hover,.sc-chip.on{background:var(--c3);color:var(--c);border-color:var(--bc)}
+
+/* DIGITAL PRODUCT CARDS */
+.dp-card{background:var(--s1);border:0.5px solid rgba(255,45,120,0.15);border-radius:var(--r2);padding:14px;cursor:pointer;transition:all .2s}
+.dp-card:hover{border-color:var(--m);background:var(--m3)}
+.dp-icon{font-family:'DM Mono',monospace;font-size:20px;color:var(--m);margin-bottom:7px}
+.dp-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:4px}
+.dp-desc{font-size:10px;color:var(--mu);line-height:1.5}
+
+/* ACADEMY */
+.task{background:var(--bg3);border-radius:var(--r);padding:10px 13px;font-size:12px;color:var(--w2);display:flex;align-items:center;gap:9px;border:0.5px solid rgba(255,255,255,0.04);cursor:pointer;transition:border .2s}
+.task:hover{border-color:var(--bc)}
+.task.done{opacity:.6}
+.task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.15);border-radius:2px}
+
+/* CONTENT BRIDGE */
+.bridge-card{background:var(--bg3);border:0.5px solid rgba(0,245,255,0.12);border-radius:var(--r2);padding:14px;margin-bottom:10px}
+.bridge-plat{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.bridge-text{font-size:12px;color:var(--w2);line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo-wrap">
+    <div class="logo-hex">
+      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="13,1 24,7 24,19 13,25 2,19 2,7" fill="rgba(0,245,255,0.08)" stroke="#00f5ff" stroke-width="1"/>
+        <polygon points="13,5 20,9 20,17 13,21 6,17 6,9" fill="rgba(0,245,255,0.15)"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">POD Pro Mockup Studio<em>™</em></div>
+      <div class="logo-suite">Envi Lee AI Creator Suite · App 1 of 3</div>
+    </div>
+  </div>
+  <nav class="topnav">
+    <button class="tn on" onclick="nav('studio')">Studio</button>
+    <button class="tn" onclick="nav('models')">AI Models</button>
+    <button class="tn" onclick="nav('collections')">Collections</button>
+    <button class="tn" onclick="nav('copy')">Copy & SEO</button>
+    <button class="tn" onclick="nav('platforms')">Platforms</button>
+    <button class="tn" onclick="nav('digital')">Digital Products</button>
+    <button class="tn" onclick="nav('bridge')">Content Bridge</button>
+    <button class="tn" onclick="nav('money')">Monetize</button>
+    <button class="tn" onclick="nav('pricing')">Pricing</button>
+    <button class="tn" onclick="nav('academy')">Academy</button>
+  </nav>
+  <div class="top-right">
+    <div class="plan-gem"><div class="gem-dot"></div>Boss Plan</div>
+    <div class="user-av">EL</div>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="slabel">Creation Engine</div>
+    <button class="si on" onclick="side('mockup',this)"><span class="si-ico">◈</span>AI Mockup Generator</button>
+    <button class="si" onclick="side('design-editor',this)"><span class="si-ico">◌</span>Design Editor<span class="ntag">New</span></button>
+    <button class="si" onclick="side('sketch',this)"><span class="si-ico">◎</span>Sketch → Wearable<span class="ntag">New</span></button>
+    <button class="si" onclick="side('scene',this)"><span class="si-ico">⬡</span>Scene Generator</button>
+    <div class="slabel">AI Models</div>
+    <button class="si" onclick="side('model-builder',this)"><span class="si-ico">◉</span>Model Builder</button>
+    <button class="si" onclick="side('model-presets',this)"><span class="si-ico">⊹</span>Saved Presets<span class="ntag">New</span></button>
+    <button class="si" onclick="side('consistency',this)"><span class="si-ico">◷</span>Consistency System<span class="ntag">New</span></button>
+    <div class="slabel">Collections & Sales</div>
+    <button class="si" onclick="side('collection-build',this)"><span class="si-ico">⊞</span>Collection Builder</button>
+    <button class="si" onclick="side('listings',this)"><span class="si-ico">⊳</span>Product Listings</button>
+    <button class="si" onclick="side('launch-plan',this)"><span class="si-ico">◷</span>Launch Planner</button>
+    <div class="slabel">Export & Sell</div>
+    <button class="si" onclick="side('pod-hub',this)"><span class="si-ico">⬆</span>POD Integration Hub</button>
+    <button class="si" onclick="side('digital-builder',this)"><span class="si-ico">◈</span>Digital Product Builder</button>
+    <button class="si" onclick="side('export-center',this)"><span class="si-ico">⬇</span>Export Center</button>
+    <div class="slabel">Phase 2</div>
+    <button class="si" onclick="side('phase2',this)"><span class="si-ico">◌</span>Coming Soon<span class="p2tag">P2</span></button>
+    <div class="slabel">Monetize</div>
+    <button class="si" onclick="side('profit-calc',this)"><span class="si-ico">◈</span>Profit Calculator<span class="ntag">New</span></button>
+    <button class="si" onclick="side('pricing-helper',this)"><span class="si-ico">⊹</span>Pricing Helper<span class="ntag">New</span></button>
+    <button class="si" onclick="side('revenue-tracker',this)"><span class="si-ico">◷</span>Revenue Tracker<span class="ntag">New</span></button>
+    <button class="si" onclick="side('preorder',this)"><span class="si-ico">⊳</span>Pre-Order Planner<span class="ntag">New</span></button>
+    <button class="si" onclick="side('brand-deals',this)"><span class="si-ico">◉</span>Brand Deals<span class="ntag">New</span></button>
+  </aside>
+
+  <main class="main">
+
+    <!-- ═══ MOCKUP GENERATOR ═══ -->
+    <div class="pg on" id="pg-mockup">
+      <div class="pg-title">AI <span class="hi">Mockup</span> Generator</div>
+      <div class="pg-sub">Describe your design — AI generates a studio-quality product mockup in seconds. No team, no photographer, no models needed.</div>
+      <div class="pain-solved">
+        <span class="ps ps-c">Solves: content looks fake</span>
+        <span class="ps ps-m">Solves: no models or team</span>
+        <span class="ps ps-v">Solves: can't turn ideas into content</span>
+        <span class="ps ps-t">Solves: everything looks fake</span>
+      </div>
+      <div class="g14">
+        <div>
+          <div class="panel cyan mb12">
+            <div class="ptitle">Product type</div>
+            <div class="chips" id="prod-chips">
+              <span class="chip on" onclick="selChip(this,'T-Shirt')">T-Shirt</span>
+              <span class="chip" onclick="selChip(this,'Hoodie')">Hoodie</span>
+              <span class="chip" onclick="selChip(this,'Swimwear')">Swimwear</span>
+              <span class="chip" onclick="selChip(this,'Leggings')">Leggings</span>
+              <span class="chip" onclick="selChip(this,'Onesie')">Onesie</span>
+              <span class="chip" onclick="selChip(this,'Hat')">Hat</span>
+              <span class="chip" onclick="selChip(this,'Tumbler')">Tumbler</span>
+              <span class="chip" onclick="selChip(this,'Bag')">Bag</span>
+              <span class="chip" onclick="selChip(this,'Shoes')">Shoes</span>
+              <span class="chip" onclick="selChip(this,'Pajamas')">Pajamas</span>
+              <span class="chip" onclick="selChip(this,'Pet Clothing')">Pet Clothing</span>
+              <span class="chip" onclick="selChip(this,'Kids Wear')">Kids Wear</span>
+            </div>
+            <div class="field mb12">
+              <div class="fl">Fabric type</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap" id="fab-chips">
+                <span class="fab-chip on" onclick="selFab(this)">Cotton</span>
+                <span class="fab-chip" onclick="selFab(this)">Silk</span>
+                <span class="fab-chip" onclick="selFab(this)">Swimwear</span>
+                <span class="fab-chip" onclick="selFab(this)">Fleece</span>
+                <span class="fab-chip" onclick="selFab(this)">Mesh</span>
+                <span class="fab-chip" onclick="selFab(this)">Denim</span>
+                <span class="fab-chip" onclick="selFab(this)">Jersey</span>
+              </div>
+            </div>
+            <div class="vrow">
+              <button class="vb on" onclick="selView(this,'front')">Front</button>
+              <button class="vb" onclick="selView(this,'back')">Back</button>
+              <button class="vb" onclick="selView(this,'side')">Side</button>
+              <button class="vb" onclick="selView(this,'lifestyle')">Lifestyle</button>
+              <button class="vb" onclick="selView(this,'flat lay')">Flat Lay</button>
+            </div>
+            <div class="canvas" id="main-canvas">
+              <div class="canvas-grid"></div>
+              <div class="canvas-ph" id="canvas-ph">
+                <div class="canvas-icon">◈</div>
+                <div class="canvas-lbl">Describe your design below</div>
+                <div class="canvas-sub">AI generates your <span id="prod-lbl">T-Shirt</span> mockup instantly</div>
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:14px">
+                  <button class="btn" onclick="alert('Upload design: In the live build this opens a file picker for PNG/SVG/PDF designs')">Upload design</button>
+                  <button class="btn c" onclick="genMockup()">AI generate ↗</button>
+                </div>
+              </div>
+              <div id="canvas-result" style="display:none;width:100%;padding:16px;text-align:center;z-index:1">
+                <svg width="200" height="240" viewBox="0 0 200 240" id="prod-svg">
+                  <path id="shirt-path" d="M58,20 L30,52 L50,62 L50,198 L150,198 L150,62 L170,52 L142,20 L118,30 Q100,40 82,30 Z" fill="rgba(0,245,255,0.07)" stroke="rgba(0,245,255,0.3)" stroke-width="1.5"/>
+                  <rect x="68" y="78" width="64" height="64" rx="5" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.4)" stroke-width="1"/>
+                  <text x="100" y="111" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.6)" font-family="DM Mono,monospace">YOUR</text>
+                  <text x="100" y="123" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.6)" font-family="DM Mono,monospace">DESIGN</text>
+                  <text x="100" y="135" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.6)" font-family="DM Mono,monospace">HERE</text>
+                </svg>
+                <div id="result-lbl" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t);margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--t);display:inline-block;animation:aipulse 1.5s ease infinite"></span>
+                  <span id="result-text">Mockup ready</span>
+                </div>
+              </div>
+            </div>
+            <div class="lbar mt8" id="mockup-lbar"><div class="lbar-fill"></div></div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <input class="inp" id="mockup-prompt" placeholder="Describe your design — e.g. neon tropical print, luxury monogram, Y2K butterfly..."/>
+              <button class="btn c" onclick="genMockup()">Generate ↗</button>
+            </div>
+          </div>
+          <div class="ai-out" id="mockup-out">
+            <div class="ai-lbl">AI Mockup Prompt Generated</div>
+            <div class="ai-text" id="mockup-txt"></div>
+            <div class="btn-row">
+              <button class="btn c" onclick="copyEl('mockup-txt')">Copy prompt ↗</button>
+              <button class="btn v" onclick="genCopy()">Generate product copy ↗</button>
+              <button class="btn m" onclick="genVideoPrompt()">Create video prompt ↗</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel violet mb12">
+            <div class="ptitle v">Customization</div>
+            <div class="fc">
+              <div class="field">
+                <div class="fl">Product color</div>
+                <div class="swatches" id="swatches">
+                  <div class="sw on" style="background:#fff" onclick="pickSw(this,'white','rgba(0,245,255,0.07)')"></div>
+                  <div class="sw" style="background:#111" onclick="pickSw(this,'black','rgba(0,0,0,0.8)')"></div>
+                  <div class="sw" style="background:#00f5ff" onclick="pickSw(this,'cyan','rgba(0,245,255,0.2)')"></div>
+                  <div class="sw" style="background:#8b5cf6" onclick="pickSw(this,'violet','rgba(139,92,246,0.25)')"></div>
+                  <div class="sw" style="background:#ff2d78" onclick="pickSw(this,'magenta','rgba(255,45,120,0.2)')"></div>
+                  <div class="sw" style="background:#0ff4c6" onclick="pickSw(this,'mint','rgba(15,244,198,0.18)')"></div>
+                  <div class="sw" style="background:#ff9100" onclick="pickSw(this,'orange','rgba(255,145,0,0.2)')"></div>
+                  <div class="sw" style="background:#e040fb" onclick="pickSw(this,'neon purple','rgba(224,64,251,0.2)')"></div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="fl">AI model</div>
+                <select class="sel"><option>No model (product only)</option><option>Woman – luxury editorial</option><option>Woman – streetwear</option><option>Woman – fitness</option><option>Woman – swimwear</option><option>Plus size woman</option><option>Man – streetwear</option><option>Athlete</option><option>Kids model</option><option>Pet model</option><option>Couple</option><option>Family</option></select>
+              </div>
+              <div class="field">
+                <div class="fl">Background scene</div>
+                <select class="sel"><option>Studio – black void</option><option>Neon grid / cyber</option><option>Luxury resort</option><option>City rooftop night</option><option>Beach / vacation</option><option>Gym / fitness</option><option>Private jet</option><option>Influencer penthouse</option><option>Flat lay marble</option></select>
+              </div>
+              <div class="field">
+                <div class="fl">Lighting</div>
+                <select class="sel"><option>Neon / cyber glow</option><option>Natural soft</option><option>Studio bright</option><option>Golden hour</option><option>Moody editorial</option><option>High-key fashion</option></select>
+              </div>
+              <div class="field">
+                <div class="fl">Smart placement</div>
+                <select class="sel"><option>Auto-fit to product</option><option>Center chest</option><option>Left chest pocket</option><option>All-over print</option><option>Back only</option><option>Sleeve print</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Actions</div>
+            <div class="fc">
+              <button class="btn c w100" onclick="genMockup()">Generate mockup ↗</button>
+              <button class="btn v w100" onclick="genCopy()">Generate product copy ↗</button>
+              <button class="btn m w100" onclick="genVideoPrompt()">Create video prompt ↗</button>
+              <button class="btn t w100" onclick="side('collection-build',null)">Add to collection ↗</button>
+              <button class="btn w100">Export PNG / JPG</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DESIGN EDITOR ═══ -->
+    <div class="pg" id="pg-design-editor">
+      <div class="pg-title">Design <span class="hi">Editor</span></div>
+      <div class="pg-sub">Drag, drop, scale and position your design. Smart placement auto-fits to the product — fabric simulation adds realistic stretch, folds and shadows.</div>
+      <div class="pain-solved">
+        <span class="ps ps-c">Solves: content doesn't look real</span>
+        <span class="ps ps-t">Solves: everything looks fake</span>
+        <span class="ps ps-v">Solves: can't turn ideas into content</span>
+      </div>
+      <div class="g2">
+        <div class="panel cyan">
+          <div class="ptitle">Editor canvas</div>
+          <div class="canvas" style="min-height:380px;cursor:crosshair">
+            <div class="canvas-grid"></div>
+            <div class="canvas-ph" style="z-index:1">
+              <div class="canvas-icon">◌</div>
+              <div class="canvas-lbl">Drag your design here</div>
+              <div class="canvas-sub">Or click Upload to browse files</div>
+              <div style="display:flex;gap:8px;justify-content:center;margin-top:14px">
+                <button class="btn">Upload PNG / SVG</button>
+                <button class="btn c" onclick="genDesign()">AI generate design ↗</button>
+              </div>
+            </div>
+          </div>
+          <div class="lbar mt8" id="design-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="design-out">
+            <div class="ai-lbl">AI Design Prompt</div>
+            <div class="ai-text" id="design-txt"></div>
+            <button class="btn c mt8" onclick="copyEl('design-txt')">Copy prompt ↗</button>
+          </div>
+        </div>
+        <div>
+          <div class="panel violet mb12">
+            <div class="ptitle v">Design controls</div>
+            <div class="field"><div class="fl">Placement preset</div>
+              <select class="sel"><option>Auto-fit (smart placement)</option><option>Center chest</option><option>All-over print</option><option>Left chest pocket</option><option>Back print</option><option>Sleeve</option></select>
+            </div>
+            <div class="field"><div class="fl">Fabric simulation</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap" id="fab2">
+                <span class="fab-chip on" onclick="selFab2(this)">Folds</span>
+                <span class="fab-chip" onclick="selFab2(this)">Stretch</span>
+                <span class="fab-chip" onclick="selFab2(this)">Shadows</span>
+                <span class="fab-chip" onclick="selFab2(this)">Wrinkles</span>
+                <span class="fab-chip" onclick="selFab2(this)">Sheen</span>
+              </div>
+            </div>
+            <div class="field"><div class="fl">Scale</div>
+              <input type="range" min="20" max="200" value="100" style="width:100%" oninput="document.getElementById('scale-val').textContent=this.value+'%'"/>
+              <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--c)" id="scale-val">100%</div>
+            </div>
+            <div class="field"><div class="fl">Opacity</div>
+              <input type="range" min="10" max="100" value="100" step="1" style="width:100%" oninput="document.getElementById('opacity-val').textContent=this.value+'%'"/>
+              <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--v2)" id="opacity-val">100%</div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Generate design with AI</div>
+            <div class="field"><div class="fl">Design description</div>
+              <textarea class="inp" id="design-prompt" placeholder="Describe the design you want — e.g. celestial stars pattern, bold gothic font saying BOSS, pink floral watercolor..."></textarea>
+            </div>
+            <div class="field"><div class="fl">Design style</div>
+              <select class="sel"><option>Graphic / vector</option><option>Watercolor / hand-painted</option><option>Typography only</option><option>Pattern / repeat print</option><option>Minimalist logo</option><option>Streetwear graphic</option></select>
+            </div>
+            <button class="btn c w100" onclick="genDesign()">Generate design ↗</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SKETCH TO WEARABLE ═══ -->
+    <div class="pg" id="pg-sketch">
+      <div class="pg-title">Sketch <span class="hiv">→ Wearable</span></div>
+      <div class="pg-sub">Upload a flat sketch or drawing and watch AI transform it into a realistic wearable fashion mockup with fabric simulation.</div>
+      <div class="pain-solved">
+        <span class="ps ps-c">Solves: content doesn't look real</span>
+        <span class="ps ps-m">Solves: no time or skills</span>
+        <span class="ps ps-v">Solves: can't turn ideas into content</span>
+      </div>
+      <div class="panel cyan">
+        <div style="display:grid;grid-template-columns:1fr 80px 1fr 80px 1fr;gap:8px;align-items:center;margin-bottom:16px">
+          <div style="background:var(--bg3);border:0.5px dashed rgba(0,245,255,0.2);border-radius:12px;min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;cursor:pointer">
+            <div style="font-family:'DM Mono',monospace;font-size:26px;color:var(--mu)">◌</div>
+            <div style="font-size:11px;color:var(--mu)">Your sketch</div>
+            <button class="btn" style="font-size:10px">Upload</button>
+          </div>
+          <div style="text-align:center;font-family:'DM Mono',monospace;font-size:20px;color:var(--mu)">→</div>
+          <div style="background:rgba(0,245,255,0.04);border:0.5px solid var(--bc);border-radius:12px;min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+            <div style="font-family:'DM Mono',monospace;font-size:26px;color:var(--c)">✦</div>
+            <div style="font-size:11px;color:var(--c)">AI transforms</div>
+            <div style="font-size:10px;color:var(--mu)">Fabric sim applied</div>
+          </div>
+          <div style="text-align:center;font-family:'DM Mono',monospace;font-size:20px;color:var(--mu)">→</div>
+          <div style="background:var(--bg3);border:0.5px solid rgba(255,255,255,0.06);border-radius:12px;min-height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+            <div style="font-family:'DM Mono',monospace;font-size:26px;color:var(--mu2)">◈</div>
+            <div style="font-size:11px;color:var(--mu2)">Wearable result</div>
+          </div>
+        </div>
+        <div class="g2 mb12">
+          <div class="field"><div class="fl">Clothing description</div><input class="inp" id="sketch-prompt" placeholder="Describe the garment — e.g. fitted crop hoodie with asymmetric zipper..."/></div>
+          <div class="field"><div class="fl">Fabric type</div>
+            <select class="sel"><option>Cotton jersey</option><option>Silk satin</option><option>Swimwear lycra</option><option>Fleece</option><option>Mesh</option><option>Denim</option></select>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button class="btn">Front view</button>
+          <button class="btn">Back view</button>
+          <button class="btn">Side view</button>
+          <button class="btn v">3D preview</button>
+          <button class="btn c" style="margin-left:auto" onclick="genSketch()">Convert to wearable ↗</button>
+        </div>
+        <div class="lbar" id="sketch-lbar"><div class="lbar-fill"></div></div>
+        <div class="ai-out mt8" id="sketch-out">
+          <div class="ai-lbl">Wearable Design Prompt</div>
+          <div class="ai-text" id="sketch-txt"></div>
+          <button class="btn c mt8" onclick="copyEl('sketch-txt')">Copy prompt ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SCENE GENERATOR ═══ -->
+    <div class="pg" id="pg-scene">
+      <div class="pg-title">Scene <span class="hit">Generator</span></div>
+      <div class="pg-sub">Place your products in beautiful lifestyle scenes — from luxury resorts to urban streets to private jets.</div>
+      <div class="panel teal">
+        <div class="ptitle t">Choose a scene category</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px" id="scene-chips">
+          <span class="sc-chip on" onclick="selScene(this,'Luxury mansion')">Luxury mansion</span>
+          <span class="sc-chip" onclick="selScene(this,'Miami beach')">Miami beach</span>
+          <span class="sc-chip" onclick="selScene(this,'NYC penthouse')">NYC penthouse</span>
+          <span class="sc-chip" onclick="selScene(this,'Private jet')">Private jet</span>
+          <span class="sc-chip" onclick="selScene(this,'Dubai rooftop')">Dubai rooftop</span>
+          <span class="sc-chip" onclick="selScene(this,'Gym / fitness')">Gym / fitness</span>
+          <span class="sc-chip" onclick="selScene(this,'LA studio')">LA studio</span>
+          <span class="sc-chip" onclick="selScene(this,'Paris fashion week')">Paris fashion week</span>
+          <span class="sc-chip" onclick="selScene(this,'Vacation resort')">Vacation resort</span>
+          <span class="sc-chip" onclick="selScene(this,'Family / home')">Family / home</span>
+          <span class="sc-chip" onclick="selScene(this,'Urban streetwear')">Urban streetwear</span>
+          <span class="sc-chip" onclick="selScene(this,'Red carpet')">Red carpet</span>
+        </div>
+        <div class="g2 mb12">
+          <div class="field"><div class="fl">Products to feature</div><input class="inp" id="scene-products" placeholder="e.g. white t-shirt + matching leggings..."/></div>
+          <div class="field"><div class="fl">Scene mood</div>
+            <select class="sel"><option>Luxury & aspirational</option><option>Fun & bright</option><option>Dark & editorial</option><option>Candid & lifestyle</option><option>Cinematic & dramatic</option></select>
+          </div>
+        </div>
+        <button class="btn t w100" onclick="genScene()">Generate scene prompts ↗</button>
+        <div class="lbar t mt8" id="scene-lbar"><div class="lbar-fill"></div></div>
+        <div class="ai-out t mt8" id="scene-out">
+          <div class="ai-lbl t">Scene Prompts</div>
+          <div class="ai-text" id="scene-txt"></div>
+          <button class="btn t mt8" onclick="copyEl('scene-txt')">Copy prompts ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MODEL BUILDER ═══ -->
+    <div class="pg" id="pg-model-builder">
+      <div class="pg-title">AI Model <span class="hiv">Builder</span></div>
+      <div class="pg-sub">Create photorealistic AI models to wear your products. No casting, no agency fees, no scheduling — build your model in 60 seconds.</div>
+      <div class="pain-solved">
+        <span class="ps ps-m">Solves: no models or team</span>
+        <span class="ps ps-c">Solves: content doesn't look real</span>
+        <span class="ps ps-t">Solves: everything looks fake</span>
+      </div>
+      <div class="g2">
+        <div class="panel violet">
+          <div class="ptitle v">Model settings</div>
+          <div class="g2">
+            <div class="field"><div class="fl">Gender</div><select class="sel"><option>Woman</option><option>Man</option><option>Non-binary</option></select></div>
+            <div class="field"><div class="fl">Age range</div><select class="sel"><option>18–25</option><option>25–35</option><option>35–45</option><option>Kids (5–12)</option></select></div>
+            <div class="field"><div class="fl">Body type</div><select class="sel"><option>Slim</option><option>Athletic</option><option>Curvy</option><option>Plus size</option><option>Petite</option></select></div>
+            <div class="field"><div class="fl">Skin tone</div><select class="sel"><option>Fair</option><option>Light</option><option>Medium</option><option>Tan / olive</option><option>Deep brown</option><option>Dark</option></select></div>
+            <div class="field"><div class="fl">Hair style</div><select class="sel"><option>Long straight</option><option>Curly natural</option><option>Braids / locs</option><option>Bob</option><option>Wavy beach</option><option>Updo</option><option>Fade / short</option></select></div>
+            <div class="field"><div class="fl">Fashion vibe</div><select class="sel"><option>Luxury editorial</option><option>Cyber / futuristic</option><option>Streetwear cool</option><option>Beach lifestyle</option><option>Fitness athlete</option><option>Boho chic</option></select></div>
+            <div class="field"><div class="fl">Pose</div><select class="sel" id="pose-sel"><option>Standing natural</option><option>Walking</option><option>Modeling / runway</option><option>Action / sport</option><option>Sitting casual</option><option>Candid lifestyle</option></select></div>
+            <div class="field"><div class="fl">Expression</div><select class="sel" id="expr-sel"><option>Confident / fierce</option><option>Warm smile</option><option>Editorial neutral</option><option>Joyful / laughing</option><option>Relaxed / candid</option></select></div>
+          </div>
+          <div class="field"><div class="fl">Extra details</div><textarea class="inp" id="model-extra" placeholder="Any specific details — jewelry, nails, accessories, setting context..."></textarea></div>
+          <div class="btn-row">
+            <button class="btn v" onclick="genModel()">Generate model prompt ↗</button>
+            <button class="btn" onclick="saveModelPreset()">Save as preset</button>
+          </div>
+          <div class="lbar v mt8" id="model-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out v mt8" id="model-out">
+            <div class="ai-lbl v">AI Model Prompt</div>
+            <div class="ai-text" id="model-txt"></div>
+            <button class="btn v mt8" onclick="copyEl('model-txt')">Copy prompt ↗</button>
+          </div>
+        </div>
+        <div class="panel" style="background:var(--bg3);border-color:var(--bv);display:flex;align-items:center;justify-content:center;min-height:400px">
+          <div style="text-align:center">
+            <div style="font-family:'DM Mono',monospace;font-size:50px;color:rgba(139,92,246,0.2);margin-bottom:12px">◉</div>
+            <div style="font-family:'Syne',sans-serif;font-size:13px;color:var(--mu2)">Model preview here</div>
+            <div style="font-size:11px;color:var(--mu);margin-top:5px">Configure & generate prompt above</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MODEL PRESETS ═══ -->
+    <div class="pg" id="pg-model-presets">
+      <div class="pg-title">Saved Model <span class="hiv">Presets</span></div>
+      <div class="pg-sub">Your saved AI models — reuse the same look across all your product mockups for brand consistency.</div>
+      <div class="pain-solved"><span class="ps ps-m">Solves: no models or team</span><span class="ps ps-c">Solves: no consistency</span></div>
+      <div class="g3 mb12">
+        <div class="model-card on">
+          <div style="font-size:22px;margin-bottom:6px">👸</div>
+          <div class="model-name">Luxe Brand Model</div>
+          <div class="model-meta">Woman · 25–35 · Deep brown · Luxury editorial</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:5px">Used in 14 mockups</div>
+          <div class="btn-row mt8"><button class="btn v" style="font-size:10px">Use model</button><button class="btn" style="font-size:10px">Edit</button></div>
+        </div>
+        <div class="model-card">
+          <div style="font-size:22px;margin-bottom:6px">🏋️</div>
+          <div class="model-name">Fitness Athlete</div>
+          <div class="model-meta">Woman · 18–25 · Tan · Athletic / sport</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:5px">Used in 6 mockups</div>
+          <div class="btn-row mt8"><button class="btn v" style="font-size:10px">Use model</button><button class="btn" style="font-size:10px">Edit</button></div>
+        </div>
+        <div class="model-card">
+          <div style="font-size:22px;margin-bottom:6px">🌊</div>
+          <div class="model-name">Beach Swimwear Model</div>
+          <div class="model-meta">Woman · 18–25 · Medium · Beach lifestyle</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:5px">Used in 9 mockups</div>
+          <div class="btn-row mt8"><button class="btn v" style="font-size:10px">Use model</button><button class="btn" style="font-size:10px">Edit</button></div>
+        </div>
+      </div>
+      <button class="btn v" onclick="side('model-builder',null)">+ Create new model preset ↗</button>
+    </div>
+
+    <!-- ═══ CONSISTENCY SYSTEM ═══ -->
+    <div class="pg" id="pg-consistency">
+      <div class="pg-title">Model <span class="hiv">Consistency</span> System</div>
+      <div class="pg-sub">Lock a model to your collection so the same face, body type, and style appears across every single product photo. Professional brand cohesion — zero extra effort.</div>
+      <div class="pain-solved"><span class="ps ps-c">Solves: content doesn't look real</span><span class="ps ps-m">Solves: no models or team</span><span class="ps ps-t">Solves: everything looks inconsistent</span></div>
+      <div class="g2">
+        <div class="panel violet">
+          <div class="ptitle v">Consistency settings</div>
+          <div class="field"><div class="fl">Lock model to collection</div>
+            <select class="sel"><option>Summer Swim Collection</option><option>Luxury Streetwear Drop</option><option>Family Pajamas</option><option>Workout Collection</option></select>
+          </div>
+          <div class="field"><div class="fl">Active model preset</div>
+            <select class="sel"><option>Luxe Brand Model (deep brown, luxury)</option><option>Fitness Athlete (tan, athletic)</option><option>Beach Swimwear Model (medium, beach)</option></select>
+          </div>
+          <div class="field"><div class="fl">Consistency level</div>
+            <select class="sel"><option>Face + body + style locked</option><option>Body type + style only</option><option>Style vibe only</option></select>
+          </div>
+          <div style="background:rgba(139,92,246,0.08);border:0.5px solid rgba(139,92,246,0.2);border-radius:var(--r);padding:11px;font-size:12px;color:var(--w2);line-height:1.6;margin-bottom:12px">
+            Every mockup in this collection will use the same model. Change products, backgrounds, or poses — the model identity stays locked.
+          </div>
+          <button class="btn v w100" onclick="genConsistencyPrompt()">Generate consistency prompt ↗</button>
+          <div class="lbar v mt8" id="cons-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out v mt8" id="cons-out">
+            <div class="ai-lbl v">Consistency Seed Prompt</div>
+            <div class="ai-text" id="cons-txt"></div>
+            <button class="btn v mt8" onclick="copyEl('cons-txt')">Copy seed prompt ↗</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Why this matters</div>
+          <div class="fc">
+            <div style="padding:11px;background:var(--bg3);border-radius:var(--r);border:0.5px solid rgba(0,245,255,0.1)">
+              <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--c);margin-bottom:4px">Brand recognition</div>
+              <div style="font-size:11px;color:var(--mu2);line-height:1.6">Customers remember the model. Same face = stronger brand identity across your store.</div>
+            </div>
+            <div style="padding:11px;background:var(--bg3);border-radius:var(--r);border:0.5px solid rgba(255,45,120,0.1)">
+              <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--m);margin-bottom:4px">Trust & conversion</div>
+              <div style="font-size:11px;color:var(--mu2);line-height:1.6">Consistent imagery looks professional. Professional = customers trust and buy.</div>
+            </div>
+            <div style="padding:11px;background:var(--bg3);border-radius:var(--r);border:0.5px solid rgba(15,244,198,0.1)">
+              <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--t);margin-bottom:4px">Scale without effort</div>
+              <div style="font-size:11px;color:var(--mu2);line-height:1.6">Create 50 product photos with the same model — no team, no reshoots, no extra cost.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ COLLECTIONS ═══ -->
+    <div class="pg" id="pg-collections">
+      <div class="pg-title">My <span class="hi">Collections</span></div>
+      <div class="pg-sub">Build full product drops with mockups, copy, launch content, and export kits — all in one place.</div>
+      <div class="stats mb18">
+        <div class="stat c"><div class="stat-n">12</div><div class="stat-l">Collections</div></div>
+        <div class="stat m"><div class="stat-n">84</div><div class="stat-l">Mockups</div></div>
+        <div class="stat v"><div class="stat-n">6</div><div class="stat-l">Ready to launch</div></div>
+        <div class="stat t"><div class="stat-n">3</div><div class="stat-l">Live on stores</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--w)">Recent collections</div>
+        <button class="btn c" onclick="genCollectionIdea()">+ AI collection idea ↗</button>
+      </div>
+      <div class="g3 mb12">
+        <div class="coll-card"><div class="coll-thumb" style="background:rgba(0,245,255,0.05)"><span style="font-size:26px">🌊</span></div><div class="coll-body"><div class="coll-name">Summer Swim</div><div class="coll-meta">8 products · Launching soon</div></div></div>
+        <div class="coll-card"><div class="coll-thumb" style="background:rgba(139,92,246,0.05)"><span style="font-size:26px">✦</span></div><div class="coll-body"><div class="coll-name">Luxury Streetwear</div><div class="coll-meta">12 products · Draft</div></div></div>
+        <div class="coll-card"><div class="coll-thumb" style="background:rgba(15,244,198,0.05)"><span style="font-size:26px">🏠</span></div><div class="coll-body"><div class="coll-name">Family Pajamas</div><div class="coll-meta">6 products · Live</div></div></div>
+        <div class="coll-card"><div class="coll-thumb" style="background:rgba(255,45,120,0.05)"><span style="font-size:26px">💪</span></div><div class="coll-body"><div class="coll-name">Workout Collection</div><div class="coll-meta">9 products · In progress</div></div></div>
+        <div class="coll-card"><div class="coll-thumb" style="background:rgba(0,245,255,0.03)"><span style="font-size:26px">🎒</span></div><div class="coll-body"><div class="coll-name">Back to School</div><div class="coll-meta">5 products · Draft</div></div></div>
+        <div class="coll-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;min-height:140px" onclick="genCollectionIdea()"><div style="text-align:center;color:rgba(0,245,255,0.3);font-family:'DM Mono',monospace;font-size:11px">+ New collection</div></div>
+      </div>
+      <div class="ai-out" id="collection-out">
+        <div class="ai-lbl">AI Collection Idea</div>
+        <div class="ai-text" id="collection-txt"></div>
+        <button class="btn c mt8" onclick="copyEl('collection-txt')">Copy idea ↗</button>
+      </div>
+    </div>
+
+    <!-- ═══ COLLECTION BUILDER ═══ -->
+    <div class="pg" id="pg-collection-build">
+      <div class="pg-title">Collection <span class="hi">Builder</span></div>
+      <div class="pg-sub">Build your entire drop from one screen — products, mockups, copy, launch plan, and export kit.</div>
+      <div class="g2">
+        <div class="panel cyan">
+          <div class="ptitle">Collection details</div>
+          <div class="field"><div class="fl">Collection name</div><input class="inp" id="coll-name" placeholder="e.g. Summer Swim Drop 2025"/></div>
+          <div class="field"><div class="fl">Theme / story</div><textarea class="inp" id="coll-theme" placeholder="What's the vibe? What story does this collection tell?"></textarea></div>
+          <div class="field"><div class="fl">Target customer</div><input class="inp" id="coll-audience" placeholder="e.g. Women 25–40 who love luxury beach style"/></div>
+          <div class="field"><div class="fl">Products in this drop</div>
+            <div class="chips" id="coll-prods">
+              <span class="chip onm" onclick="toggleColl(this)">T-Shirt</span>
+              <span class="chip onm" onclick="toggleColl(this)">Swimwear</span>
+              <span class="chip" onclick="toggleColl(this)">Hoodie</span>
+              <span class="chip" onclick="toggleColl(this)">Bag</span>
+              <span class="chip" onclick="toggleColl(this)">Hat</span>
+              <span class="chip" onclick="toggleColl(this)">Tumbler</span>
+              <span class="chip" onclick="toggleColl(this)">Leggings</span>
+              <span class="chip" onclick="toggleColl(this)">Shoes</span>
+            </div>
+          </div>
+          <div class="field"><div class="fl">Launch timing</div>
+            <select class="sel"><option>ASAP</option><option>1 week from now</option><option>2 weeks from now</option><option>Next month</option><option>Pre-order drop</option></select>
+          </div>
+          <button class="btn c w100" onclick="genCollection()">Build full collection kit ↗</button>
+          <div class="lbar mt8" id="coll-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="coll-out">
+            <div class="ai-lbl">Collection Kit</div>
+            <div class="ai-text" id="coll-txt"></div>
+            <div class="btn-row"><button class="btn c" onclick="copyEl('coll-txt')">Copy ↗</button><button class="btn v" onclick="genLaunch()">Generate launch plan ↗</button></div>
+          </div>
+        </div>
+        <div class="panel violet">
+          <div class="ptitle v">Launch content kit</div>
+          <div class="fc">
+            <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid rgba(0,245,255,0.1)">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--c);margin-bottom:4px">Included in your kit</div>
+              <div style="font-size:11px;color:var(--mu2);line-height:1.8">✦ Collection story copy<br>✦ 6 product descriptions<br>✦ 12 SEO tags per product<br>✦ TikTok launch captions (5)<br>✦ Instagram captions (5)<br>✦ Pre-order announcement copy<br>✦ 7-day launch calendar<br>✦ Email announcement</div>
+            </div>
+            <button class="btn m w100" onclick="genLaunch()">Generate 7-day launch plan ↗</button>
+            <div class="lbar m" id="launch-lbar"><div class="lbar-fill"></div></div>
+            <div class="ai-out m" id="launch-out">
+              <div class="ai-lbl m">7-Day Launch Plan</div>
+              <div class="ai-text" id="launch-txt"></div>
+              <button class="btn m mt8" onclick="copyEl('launch-txt')">Copy plan ↗</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PRODUCT LISTINGS ═══ -->
+    <div class="pg" id="pg-listings">
+      <div class="pg-title">Product <span class="hit">Listings</span></div>
+      <div class="pg-sub">AI writes your complete product listing — title, description, SEO tags, price suggestion, and pre-order copy. Ready to paste into any platform.</div>
+      <div class="pain-solved"><span class="ps ps-v">Solves: don't know how to make money</span><span class="ps ps-c">Solves: don't know what to post</span></div>
+      <div class="gc">
+        <div class="panel teal">
+          <div class="ptitle t">Product info</div>
+          <div class="field"><div class="fl">Product name</div><input class="inp" id="list-name" placeholder="e.g. Sunset Floral Crop Tee"/></div>
+          <div class="field"><div class="fl">Product type</div><select class="sel" id="list-type"><option>T-Shirt</option><option>Hoodie</option><option>Swimwear</option><option>Leggings</option><option>Hat</option><option>Bag</option><option>Tumbler</option></select></div>
+          <div class="field"><div class="fl">Platform</div><select class="sel" id="list-platform"><option>Etsy</option><option>Shopify</option><option>TikTok Shop</option><option>Amazon</option></select></div>
+          <div class="field"><div class="fl">Brand tone</div><select class="sel" id="list-tone"><option>Luxury & elevated</option><option>Futuristic & bold</option><option>Fun & playful</option><option>Streetwear edge</option><option>Family-friendly warm</option></select></div>
+          <div class="field"><div class="fl">Launch type</div><select class="sel" id="list-launch"><option>Standard listing</option><option>Pre-order drop</option><option>Limited edition</option><option>Flash sale</option></select></div>
+          <button class="btn t w100 mt8" onclick="genListing()">Generate full listing ↗</button>
+          <div class="lbar t mt8" id="listing-lbar"><div class="lbar-fill"></div></div>
+        </div>
+        <div id="listing-area">
+          <div class="cb"><div class="cb-lbl">Product title</div><div class="ai-text cb-text" id="list-title">Sunset Floral Crop Top | Summer POD Fashion | Trendy Women's Tee</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('list-title')">Copy</button></div></div>
+          <div class="cb"><div class="cb-lbl">Description</div><div class="ai-text cb-text" id="list-desc">Step into summer with this gorgeous Sunset Floral Crop Top. Designed for the girl who blends style with effortless confidence. Premium POD fabric that feels as good as it looks. Available in multiple sizes — order yours before it sells out.</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('list-desc')">Copy</button></div></div>
+          <div class="cb"><div class="cb-lbl">SEO tags</div><div class="tag-wrap" id="list-tags"><span class="tag">floral crop top</span><span class="tag">summer fashion</span><span class="tag">POD clothing</span><span class="tag">women's tee</span><span class="tag">print on demand</span><span class="tag">vacation outfit</span><span class="tag">cute shirt</span><span class="tag">trendy top</span></div></div>
+          <div class="cb"><div class="cb-lbl">Price suggestion</div><div class="ai-text cb-text" id="list-price">Recommended retail: $28–$35 | POD cost est: $12–$15 | Margin: 55–65%</div></div>
+          <div class="cb"><div class="cb-lbl">Pre-order copy</div><div class="ai-text cb-text" id="list-preorder">⚡ PRE-ORDER NOW — Ships in 7–10 days. Secure yours before we sell out. Limited first run — once they're gone, they're gone.</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('list-preorder')">Copy</button></div></div>
+          <div class="cb"><div class="cb-lbl">TikTok caption</div><div class="ai-text cb-text" id="list-tiktok">POV: you found your new fave summer top ☀️ This floral crop is giving everything — link in bio 🌸 #POD #SummerFashion #CropTop</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('list-tiktok')">Copy</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ LAUNCH PLANNER ═══ -->
+    <div class="pg" id="pg-launch-plan">
+      <div class="pg-title">Launch <span class="hi">Planner</span></div>
+      <div class="pg-sub">AI builds your 7-day or 30-day content plan so you always know exactly what to post and when.</div>
+      <div class="pain-solved"><span class="ps ps-c">Solves: don't know what to post</span><span class="ps ps-m">Solves: no time or skills</span></div>
+      <div class="panel cyan">
+        <div class="g2 mb12">
+          <div class="field"><div class="fl">Collection / product to launch</div><input class="inp" id="lp-product" placeholder="e.g. Summer Swim Collection on Etsy and TikTok Shop"/></div>
+          <div class="field"><div class="fl">Plan duration</div><select class="sel" id="lp-duration"><option>7-day launch plan</option><option>14-day promo plan</option><option>30-day content calendar</option></select></div>
+        </div>
+        <button class="btn c w100" onclick="genLaunchPlan()">Generate launch plan ↗</button>
+        <div class="lbar mt8" id="lp-lbar"><div class="lbar-fill"></div></div>
+        <div class="ai-out mt8" id="lp-out">
+          <div class="ai-lbl">Launch Plan</div>
+          <div class="ai-text" id="lp-txt"></div>
+          <button class="btn c mt8" onclick="copyEl('lp-txt')">Copy plan ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ POD HUB ═══ -->
+    <div class="pg" id="pg-pod-hub">
+      <div class="pg-title">POD Integration <span class="hit">Hub</span></div>
+      <div class="pg-sub">Connect your POD platforms and push listings directly — or export CSV for bulk upload.</div>
+      <div class="plat-grid mb18">
+        <div class="plat"><div class="plat-ico">🛍️</div><div class="plat-name">Printify</div><div class="plat-st conn">● Connected</div></div>
+        <div class="plat"><div class="plat-ico">🖨️</div><div class="plat-name">Printful</div><div class="plat-st conn">● Connected</div></div>
+        <div class="plat"><div class="plat-ico">🏪</div><div class="plat-name">Etsy</div><div class="plat-st conn">● Connected</div></div>
+        <div class="plat"><div class="plat-ico">🛒</div><div class="plat-name">Shopify</div><div class="plat-st nc">+ Connect</div></div>
+        <div class="plat"><div class="plat-ico">🎵</div><div class="plat-name">TikTok Shop</div><div class="plat-st nc">+ Connect</div></div>
+        <div class="plat"><div class="plat-ico">🌐</div><div class="plat-name">WooCommerce</div><div class="plat-st nc">+ Connect</div></div>
+        <div class="plat"><div class="plat-ico">🖼️</div><div class="plat-name">Artsadd</div><div class="plat-st nc">+ Connect</div></div>
+        <div class="plat"><div class="plat-ico">📦</div><div class="plat-name">PrintDoors</div><div class="plat-st nc">+ Connect</div></div>
+      </div>
+      <div class="panel">
+        <div class="ptitle">Export options</div>
+        <div class="g2">
+          <button class="btn t w100">Export CSV — all products</button>
+          <button class="btn c w100">Push to Etsy (3 products)</button>
+          <button class="btn v w100">Export Printify design files</button>
+          <button class="btn m w100">Generate TikTok Shop listing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DIGITAL PRODUCT BUILDER ═══ -->
+    <div class="pg" id="pg-digital-builder">
+      <div class="pg-title">Digital Product <span class="him">Builder</span></div>
+      <div class="pg-sub">Turn your mockups, prompts, and templates into sellable digital products. Another income stream — no extra inventory needed.</div>
+      <div class="pain-solved"><span class="ps ps-v">Solves: don't know how to make money</span></div>
+      <div class="g3 mb12">
+        <div class="dp-card" onclick="genDigitalProduct('prompt pack for POD clothing business — AI mockup prompts, model prompts, scene prompts, and video prompts')">
+          <div class="dp-icon">◈</div>
+          <div class="dp-name">Prompt Pack</div>
+          <div class="dp-desc">Bundle your best AI prompts into a sellable digital download for other POD sellers</div>
+          <button class="btn m mt8 w100" style="font-size:10px">Build prompt pack ↗</button>
+        </div>
+        <div class="dp-card" onclick="genDigitalProduct('mockup template pack for POD sellers — product templates, background scenes, and model presets')">
+          <div class="dp-icon">⬡</div>
+          <div class="dp-name">Mockup Pack</div>
+          <div class="dp-desc">Package your mockup templates to sell to other POD sellers as ready-to-use files</div>
+          <button class="btn m mt8 w100" style="font-size:10px">Build mockup pack ↗</button>
+        </div>
+        <div class="dp-card" onclick="genDigitalProduct('POD first sale starter kit — everything a new POD seller needs to make their first sale in 30 days')">
+          <div class="dp-icon">⊳</div>
+          <div class="dp-name">POD Starter Kit</div>
+          <div class="dp-desc">First sale kit, launch checklist, and brand-building worksheets in one digital bundle</div>
+          <button class="btn m mt8 w100" style="font-size:10px">Build starter kit ↗</button>
+        </div>
+        <div class="dp-card" onclick="genDigitalProduct('Canva template kit for POD product listings — Instagram posts, TikTok thumbnails, product mockup frames')">
+          <div class="dp-icon">◉</div>
+          <div class="dp-name">Template Kit</div>
+          <div class="dp-desc">Canva-ready design templates for product listings, social posts, and store banners</div>
+          <button class="btn m mt8 w100" style="font-size:10px">Build template kit ↗</button>
+        </div>
+        <div class="dp-card" onclick="genDigitalProduct('POD brand kit — brand voice guide, color palette, content pillars, and launch strategy for a new POD business')">
+          <div class="dp-icon">◌</div>
+          <div class="dp-name">Brand Kit</div>
+          <div class="dp-desc">Sell a complete brand identity package — voice, visuals, and strategy all in one</div>
+          <button class="btn m mt8 w100" style="font-size:10px">Build brand kit ↗</button>
+        </div>
+        <div class="dp-card" onclick="genDigitalProduct('video prompt pack for POD product reveals, model walks, TikTok ads, and brand campaign videos using Kling and Runway AI')">
+          <div class="dp-icon">⊹</div>
+          <div class="dp-name">Video Prompt Pack</div>
+          <div class="dp-desc">Bundle video prompts for Kling, Runway, and Pika — sell to content creators</div>
+          <button class="btn m mt8 w100" style="font-size:10px">Build video pack ↗</button>
+        </div>
+      </div>
+      <div class="lbar m" id="dp-lbar"><div class="lbar-fill"></div></div>
+      <div class="ai-out m" id="dp-out">
+        <div class="ai-lbl m">Digital Product Content</div>
+        <div class="ai-text" id="dp-txt"></div>
+        <button class="btn m mt8" onclick="copyEl('dp-txt')">Copy ↗</button>
+      </div>
+    </div>
+
+    <!-- ═══ CONTENT BRIDGE ═══ -->
+    <div class="pg" id="pg-bridge">
+      <div class="pg-title">Content <span class="hi">Bridge</span></div>
+      <div class="pg-sub">Generate product promo content, TikTok scripts, and ad copy directly from your mockups. The bridge between your products and your audience.</div>
+      <div class="pain-solved"><span class="ps ps-c">Solves: don't know what to post</span><span class="ps ps-m">Solves: no time or skills for videos</span><span class="ps ps-v">Solves: don't know how to make money</span></div>
+      <div class="gc">
+        <div class="panel cyan">
+          <div class="ptitle">Content generator</div>
+          <div class="field"><div class="fl">Product / mockup</div><input class="inp" id="bridge-product" placeholder="e.g. Neon floral crop tee, summer swim collection..."/></div>
+          <div class="field"><div class="fl">Content type</div><select class="sel" id="bridge-type"><option>TikTok caption + 3 hooks</option><option>Instagram caption</option><option>Product promo reel script</option><option>UGC-style ad script</option><option>Email promo copy</option><option>Video prompt (Kling/Runway)</option></select></div>
+          <div class="field"><div class="fl">Platform tone</div><select class="sel"><option>Bold & viral</option><option>Luxury & aspirational</option><option>Fun & playful</option><option>FOMO / urgency</option></select></div>
+          <button class="btn c w100 mt8" onclick="genBridge()">Generate content ↗</button>
+          <div class="lbar mt8" id="bridge-lbar"><div class="lbar-fill"></div></div>
+        </div>
+        <div id="bridge-area">
+          <div class="bridge-card"><div class="bridge-plat">TikTok hook #1</div><div class="bridge-text ai-text" id="bridge-t1">POV: your new fave summer fit just dropped — and it's giving everything ☀️</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('bridge-t1')">Copy</button></div></div>
+          <div class="bridge-card"><div class="bridge-plat">TikTok caption</div><div class="bridge-text ai-text" id="bridge-t2">She said she wanted the summer body AND the summer fits — so we gave her both. New drop is live. Link in bio. 🌊 #POD #SummerFits #NewDrop</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('bridge-t2')">Copy</button></div></div>
+          <div class="bridge-card"><div class="bridge-plat">Instagram caption</div><div class="bridge-text ai-text" id="bridge-t3">Summer doesn't wait. Neither should you. New collection live now — tap the link in bio to shop before it's gone. ✦</div><div class="btn-row mt8"><button class="btn" onclick="copyEl('bridge-t3')">Copy</button></div></div>
+          <div class="ai-out mt8" id="bridge-out">
+            <div class="ai-lbl">Generated Content</div>
+            <div class="ai-text" id="bridge-txt"></div>
+            <button class="btn c mt8" onclick="copyEl('bridge-txt')">Copy ↗</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ EXPORT CENTER ═══ -->
+    <div class="pg" id="pg-export-center">
+      <div class="pg-title">Export <span class="hit">Center</span></div>
+      <div class="pg-sub">Download everything — mockups, listings, captions, brand kits, and full collection packages.</div>
+      <div class="g2">
+        <div class="panel teal">
+          <div class="ptitle t">Export options</div>
+          <div class="fc">
+            <button class="btn t w100">Export mockups — PNG (high res)</button>
+            <button class="btn t w100">Export mockups — JPG</button>
+            <button class="btn c w100">Export product listings — CSV</button>
+            <button class="btn c w100">Export captions — TXT</button>
+            <button class="btn v w100">Export brand kit — PDF</button>
+            <button class="btn v w100">Export collection kit — ZIP</button>
+            <button class="btn m w100">Export video prompts — TXT</button>
+            <button class="btn w100">Export all — ZIP bundle</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Recent exports</div>
+          <div class="fc">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--c);flex:1">Summer Swim — mockups.zip</div><span class="pill pill-live">Done</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--c);flex:1">Streetwear Drop — listings.csv</div><span class="pill pill-live">Done</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mu2);flex:1">Family Pajamas — full kit.zip</div><span class="pill pill-hot">Processing</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PHASE 2 ═══ -->
+    <div class="pg" id="pg-phase2">
+      <div class="pg-title">Phase 2 <span class="hiv">Features</span></div>
+      <div class="pg-sub">Coming in the next build — vote for what you want first.</div>
+      <div class="g4">
+        <div class="feat2"><div class="feat2-name">Bulk mockup generator</div><div class="feat2-desc">Generate 50+ mockups at once from a single design upload</div></div>
+        <div class="feat2"><div class="feat2-name">AI fashion trend predictor</div><div class="feat2-desc">Spot trending POD niches before they peak</div></div>
+        <div class="feat2"><div class="feat2-name">Profit calculator</div><div class="feat2-desc">Real-time margin calculator per product and platform</div></div>
+        <div class="feat2"><div class="feat2-name">Pre-order planner</div><div class="feat2-desc">Manufacturer pre-order workflow with timeline tracking</div></div>
+        <div class="feat2"><div class="feat2-name">White-label client system</div><div class="feat2-desc">Agency mode — build mockups for clients under your brand</div></div>
+        <div class="feat2"><div class="feat2-name">Mockup marketplace</div><div class="feat2-desc">Buy and sell templates inside the app</div></div>
+        <div class="feat2"><div class="feat2-name">Shopify auto-publish</div><div class="feat2-desc">One-click live listing push to your Shopify store</div></div>
+        <div class="feat2"><div class="feat2-name">Social scheduler</div><div class="feat2-desc">Schedule and post content directly from the app via Ayrshare</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ PRICING ═══ -->
+    <div class="pg" id="pg-pricing">
+      <div class="pg-title">Plans <span class="hi">& Pricing</span></div>
+      <div class="pg-sub">Choose the plan that fits your POD business. All plans include access inside the Envi Lee Skool community.</div>
+      <div class="price-grid">
+        <div class="pc">
+          <div class="pc-tier">Free</div>
+          <div class="pc-price"><sup>$</sup>0</div>
+          <div class="pc-period">forever free</div>
+          <div class="pf">5 mockups / month</div>
+          <div class="pf">3 product types</div>
+          <div class="pf">Basic copy generator</div>
+          <div class="pf">Starter prompts</div>
+          <div class="pf dim">AI Model Builder</div>
+          <div class="pf dim">Collection Builder</div>
+          <div class="pf dim">Video prompts</div>
+          <div class="pf dim">Digital Product Builder</div>
+          <button class="btn w100 mt12">Current plan</button>
+        </div>
+        <div class="pc">
+          <div class="pc-tier">Creator</div>
+          <div class="pc-price"><sup>$</sup>27</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">50 mockups / month</div>
+          <div class="pf">All product types</div>
+          <div class="pf">Full copy suite</div>
+          <div class="pf">AI Model Builder</div>
+          <div class="pf">5 collections</div>
+          <div class="pf">Platform integrations</div>
+          <div class="pf dim">Consistency system</div>
+          <div class="pf dim">Digital Product Builder</div>
+          <button class="btn v w100 mt12">Upgrade ↗</button>
+        </div>
+        <div class="pc pop">
+          <div class="pc-tier">Boss</div>
+          <div class="pc-price"><sup>$</sup>67</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">Unlimited mockups</div>
+          <div class="pf">All product types</div>
+          <div class="pf">Full AI copy suite</div>
+          <div class="pf">Model presets + consistency</div>
+          <div class="pf">Unlimited collections</div>
+          <div class="pf">Video prompt generator</div>
+          <div class="pf">Digital Product Builder</div>
+          <div class="pf">Content Bridge</div>
+          <button class="btn c w100 mt12">Upgrade to Boss ↗</button>
+        </div>
+        <div class="pc">
+          <div class="pc-tier">Agency</div>
+          <div class="pc-price"><sup>$</sup>147</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">Everything in Boss</div>
+          <div class="pf">5 team seats</div>
+          <div class="pf">Client project folders</div>
+          <div class="pf">Bulk mockup generator</div>
+          <div class="pf">White-label exports</div>
+          <div class="pf">Priority AI generation</div>
+          <div class="pf">CSV bulk export</div>
+          <div class="pf">API access</div>
+          <button class="btn m w100 mt12">Upgrade to Agency ↗</button>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:13px;background:rgba(0,245,255,0.04);border:0.5px solid var(--bc);border-radius:var(--r2);font-size:11px;color:var(--mu2);text-align:center;font-family:'DM Mono',monospace">
+        Academy students get 40% off Creator & Boss plans · All plans include Skool community access · Cancel anytime
+      </div>
+    </div>
+
+    <!-- ═══ ACADEMY ═══ -->
+    <div class="pg" id="pg-academy">
+      <div class="pg-title">Academy <span class="hiv">Mode</span></div>
+      <div class="pg-sub">Your guided journey from first design to first sale. Built for Envi Lee POD Academy students on Skool.</div>
+      <div class="g2">
+        <div class="panel violet">
+          <div class="ptitle v">Your progress</div>
+          <div class="fc">
+            <div class="prog"><div class="prog-lbl"><span>First sale checklist</span><span>7/10</span></div><div class="prog-bar"><div class="prog-fill" style="width:70%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Brand building</span><span>4/8</span></div><div class="prog-bar"><div class="prog-fill" style="width:50%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Product launches</span><span>2/5</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Content creation</span><span>1/6</span></div><div class="prog-bar"><div class="prog-fill" style="width:16%"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>Platform setup</span><span>3/4</span></div><div class="prog-bar"><div class="prog-fill" style="width:75%"></div></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Next assignments</div>
+          <div class="fc">
+            <div class="task"><div class="task-dot" style="background:var(--c)"></div>Create your first mockup in the studio</div>
+            <div class="task"><div class="task-dot" style="background:var(--v)"></div>Build your brand model preset</div>
+            <div class="task"><div class="task-dot" style="background:var(--m)"></div>Build a 3-product collection</div>
+            <div class="task"><div class="task-dot" style="background:var(--t)"></div>Write your first product listing</div>
+            <div class="task done"><div class="task-dot" style="background:var(--mu)"></div>Connect your Etsy store ✦</div>
+            <div class="task done"><div class="task-dot" style="background:var(--mu)"></div>Generate your first AI model ✦</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFIT CALCULATOR -->
+    <div class="pg" id="pg-profit-calc">
+      <div class="pg-title">Profit <span class="hi">Calculator</span></div>
+      <div class="pg-sub">See exactly what you make per sale before you list anything. Enter your costs and price — get real-time margin, profit, and monthly revenue projections.</div>
+      <div class="pain-row"><span class="ps-tag">Solves: don't know how to make money</span><span class="ps-tag">Solves: no time or skills</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+        <div class="panel hi">
+          <div class="ptitle">Your numbers</div>
+          <div class="field"><div class="fl">Product type</div>
+            <select class="sel" id="pc-type" onchange="calcProfit()">
+              <option>T-Shirt</option><option>Hoodie</option><option>Swimwear</option><option>Leggings</option>
+              <option>Hat</option><option>Bag</option><option>Tumbler</option><option>Shoes</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">POD production cost ($)</div>
+            <input class="inp" id="pc-cost" type="number" value="14" min="0" oninput="calcProfit()" placeholder="e.g. 14"/>
+          </div>
+          <div class="field"><div class="fl">Platform selling fee (%)</div>
+            <select class="sel" id="pc-platform" onchange="calcProfit()">
+              <option value="6.5">Etsy (6.5%)</option>
+              <option value="2.9">Shopify (2.9%)</option>
+              <option value="5">TikTok Shop (5%)</option>
+              <option value="15">Amazon (15%)</option>
+              <option value="0">My own site (0%)</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your selling price ($)</div>
+            <input class="inp" id="pc-price" type="number" value="35" min="0" oninput="calcProfit()" placeholder="e.g. 35"/>
+          </div>
+          <div class="field"><div class="fl">Shipping cost to customer ($)</div>
+            <input class="inp" id="pc-shipping" type="number" value="4.99" min="0" oninput="calcProfit()" placeholder="e.g. 4.99"/>
+          </div>
+          <div class="field"><div class="fl">Expected monthly sales</div>
+            <input class="inp" id="pc-sales" type="number" value="50" min="1" oninput="calcProfit()" placeholder="e.g. 50"/>
+          </div>
+        </div>
+        <div class="panel" id="profit-results" style="background:var(--bg3);border-color:var(--bc)">
+          <div class="ptitle">Your results</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="text-align:center;padding:16px;background:var(--bg);border-radius:var(--r);border:0.5px solid var(--bc)">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mu2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Profit per sale</div>
+              <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--c)" id="profit-per-sale">$16.73</div>
+            </div>
+            <div style="text-align:center;padding:16px;background:var(--bg);border-radius:var(--r);border:0.5px solid var(--bc)">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mu2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Profit margin</div>
+              <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--t)" id="profit-margin">47.8%</div>
+            </div>
+            <div style="text-align:center;padding:16px;background:var(--bg);border-radius:var(--r);border:0.5px solid rgba(139,92,246,0.3)">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--mu2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Monthly revenue</div>
+              <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--v2)" id="monthly-revenue">$836</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:var(--r);border:0.5px solid var(--b)">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--mu2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Breakdown</div>
+            <div id="profit-breakdown" style="font-size:11px;color:var(--w2);line-height:2;font-family:'DM Mono',monospace">
+              Sale price: $35.00<br>
+              POD cost: −$14.00<br>
+              Platform fee: −$2.28<br>
+              Net profit: $16.73
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb12">
+            <div class="ptitle">AI pricing advice</div>
+            <div class="field"><div class="fl">Get AI recommendation</div>
+              <input class="inp" id="pc-context" placeholder="e.g. luxury streetwear tee targeting women 25-40 on Etsy"/>
+            </div>
+            <button class="btn primary w100" onclick="genPricingAdvice()">Get AI pricing advice ↗</button>
+            <div class="lbar mt8" id="pc-lbar"><div class="lbar-fill"></div></div>
+            <div class="ai-out mt8" id="pc-out"><div class="ai-lbl">Pricing Advice</div><div class="ai-text" id="pc-txt"></div><button class="btn mt8" onclick="cp('pc-txt')">Copy ↗</button></div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Scale projections</div>
+            <div style="display:flex;flex-direction:column;gap:6px" id="scale-projections">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg3);border-radius:var(--r)"><span style="font-size:11px;color:var(--mu2);font-family:'DM Mono',monospace">10 sales/mo</span><span style="font-size:12px;font-weight:600;color:var(--w)" id="proj-10">$167</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg3);border-radius:var(--r)"><span style="font-size:11px;color:var(--mu2);font-family:'DM Mono',monospace">50 sales/mo</span><span style="font-size:12px;font-weight:600;color:var(--c)" id="proj-50">$836</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg3);border-radius:var(--r)"><span style="font-size:11px;color:var(--mu2);font-family:'DM Mono',monospace">100 sales/mo</span><span style="font-size:12px;font-weight:600;color:var(--v2)" id="proj-100">$1,673</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(0,245,255,0.06);border:0.5px solid var(--bc);border-radius:var(--r)"><span style="font-size:11px;color:var(--c);font-family:'DM Mono',monospace">500 sales/mo</span><span style="font-size:12px;font-weight:600;color:var(--c)" id="proj-500">$8,365</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICING HELPER -->
+    <div class="pg" id="pg-pricing-helper">
+      <div class="pg-title">Pricing <span class="hi">Helper</span></div>
+      <div class="pg-sub">AI analyzes your product, market, and target customer to recommend the perfect price point — not too low, not too high. Price with confidence.</div>
+      <div class="pain-row"><span class="ps-tag">Solves: don't know how to make money</span><span class="ps-tag">Solves: can't turn ideas into content</span></div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Product details</div>
+          <div class="field"><div class="fl">Product name & type</div><input class="inp" id="ph-product" placeholder="e.g. Luxury floral crop top — women's fitted tee"/></div>
+          <div class="field"><div class="fl">Product quality tier</div>
+            <select class="sel" id="ph-quality">
+              <option>Budget-friendly — accessible pricing</option>
+              <option>Mid-range — good quality, fair price</option>
+              <option>Premium — high quality, worth paying for</option>
+              <option>Luxury — exclusive, aspirational pricing</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your target customer</div><input class="inp" id="ph-customer" placeholder="e.g. Black women 25-40 who love luxury fashion"/></div>
+          <div class="field"><div class="fl">Selling platform</div>
+            <select class="sel" id="ph-platform">
+              <option>Etsy</option><option>Shopify (my own store)</option><option>TikTok Shop</option><option>Amazon</option><option>Instagram / direct</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your POD production cost ($)</div><input class="inp" id="ph-cost" type="number" placeholder="e.g. 14" value="14"/></div>
+          <div class="field"><div class="fl">Main competitors price range</div>
+            <select class="sel" id="ph-comp">
+              <option>$10–20 (budget market)</option>
+              <option>$20–35 (mid-range market)</option>
+              <option>$35–60 (premium market)</option>
+              <option>$60–100+ (luxury market)</option>
+              <option>I don't know my competitors</option>
+            </select>
+          </div>
+          <button class="btn primary w100 mt8" onclick="genPricingHelper()">Get my recommended price ↗</button>
+          <div class="lbar mt8" id="ph-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="ph-out"><div class="ai-lbl">Pricing Recommendation</div><div class="ai-text" id="ph-txt"></div><button class="btn mt8" onclick="cp('ph-txt')">Copy ↗</button></div>
+        </div>
+        <div>
+          <div class="panel mb12">
+            <div class="ptitle">Pricing psychology</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--c);margin-bottom:4px">Charm pricing works</div><div style="font-size:11px;color:var(--mu2);line-height:1.6">$34.99 converts better than $35. The brain reads the first digit — it sees $34, not $35.</div></div>
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--v2);margin-bottom:4px">Price signals quality</div><div style="font-size:11px;color:var(--mu2);line-height:1.6">Too cheap hurts you. If your luxury tee is $12, customers assume it's cheap. Price up.</div></div>
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--t);margin-bottom:4px">The golden margin rule</div><div style="font-size:11px;color:var(--mu2);line-height:1.6">Target 40–60% margin minimum. Below 30% and you can't run ads profitably.</div></div>
+              <div style="padding:11px 13px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--m);margin-bottom:4px">Anchor with bundles</div><div style="font-size:11px;color:var(--mu2);line-height:1.6">Offer a $60 2-piece bundle. Suddenly your $35 single item feels like a deal.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVENUE TRACKER -->
+    <div class="pg" id="pg-revenue-tracker">
+      <div class="pg-title">Revenue <span class="hi">Tracker</span></div>
+      <div class="pg-sub">Track your income across every platform — Etsy, Shopify, TikTok Shop, and Printify. See totals, trends, and your best-selling products all in one place.</div>
+      <div class="pain-row"><span class="ps-tag">Solves: don't know how to make money</span></div>
+      <div class="stats mb18">
+        <div class="stat c"><div class="stat-n">$14.8k</div><div class="stat-l">This month total</div><div class="stat-g">↑ +18%</div></div>
+        <div class="stat m"><div class="stat-n">$8.2k</div><div class="stat-l">Etsy revenue</div></div>
+        <div class="stat v"><div class="stat-n">$4.6k</div><div class="stat-l">Shopify revenue</div></div>
+        <div class="stat t"><div class="stat-n">$2.0k</div><div class="stat-l">TikTok Shop revenue</div></div>
+      </div>
+      <div class="g2 mb18">
+        <div class="panel hi">
+          <div class="ptitle">Revenue by platform</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--c)">Etsy</span><span style="color:var(--w2);font-family:'DM Mono',monospace">$8,200 · 55%</span></div>
+              <div style="height:8px;background:var(--s2);border-radius:4px;overflow:hidden"><div style="width:55%;height:100%;background:var(--c);border-radius:4px"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--v2)">Shopify</span><span style="color:var(--w2);font-family:'DM Mono',monospace">$4,600 · 31%</span></div>
+              <div style="height:8px;background:var(--s2);border-radius:4px;overflow:hidden"><div style="width:31%;height:100%;background:var(--v);border-radius:4px"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--m)">TikTok Shop</span><span style="color:var(--w2);font-family:'DM Mono',monospace">$2,000 · 14%</span></div>
+              <div style="height:8px;background:var(--s2);border-radius:4px;overflow:hidden"><div style="width:14%;height:100%;background:var(--m);border-radius:4px"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:16px">
+            <div class="ptitle" style="margin-bottom:10px">Best selling products</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border-radius:var(--r)"><div><div style="font-size:12px;color:var(--w2)">Summer Floral Crop Tee</div><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">142 units sold</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:600;color:var(--c)">$2,378</div><div style="font-size:10px;color:var(--mu2)">$16.75/unit</div></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border-radius:var(--r)"><div><div style="font-size:12px;color:var(--w2)">Luxury Swim Set</div><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">89 units sold</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:600;color:var(--v2)">$3,115</div><div style="font-size:10px;color:var(--mu2)">$35/unit</div></div></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg3);border-radius:var(--r)"><div><div style="font-size:12px;color:var(--w2)">Streetwear Hoodie</div><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">67 units sold</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:600;color:var(--m)">$2,949</div><div class="font-size:10px;color:var(--mu2)">$44/unit</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb12">
+            <div class="ptitle">Log a sale</div>
+            <div class="g2">
+              <div class="field"><div class="fl">Platform</div><select class="sel" id="rev-platform"><option>Etsy</option><option>Shopify</option><option>TikTok Shop</option><option>Other</option></select></div>
+              <div class="field"><div class="fl">Product</div><input class="inp" id="rev-product" placeholder="Product name"/></div>
+              <div class="field"><div class="fl">Sale amount ($)</div><input class="inp" id="rev-amount" type="number" placeholder="35.00"/></div>
+              <div class="field"><div class="fl">Units sold</div><input class="inp" id="rev-units" type="number" placeholder="1" value="1"/></div>
+            </div>
+            <button class="btn primary mt8" onclick="alert('Sale logged! Revenue tracker updated.')">Log sale</button>
+          </div>
+          <div class="panel mb12">
+            <div class="ptitle">AI revenue analysis</div>
+            <div class="field"><div class="fl">Ask about your revenue</div><input class="inp" id="rev-question" placeholder="e.g. How do I double my Etsy revenue? What should I focus on?"/></div>
+            <button class="btn primary mt8 w100" onclick="genRevenueAnalysis()">Get AI analysis ↗</button>
+            <div class="lbar mt8" id="rev-lbar"><div class="lbar-fill"></div></div>
+            <div class="ai-out mt8" id="rev-out"><div class="ai-lbl">Revenue Analysis</div><div class="ai-text" id="rev-txt"></div><button class="btn mt8" onclick="cp('rev-txt')">Copy ↗</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRE-ORDER PLANNER -->
+    <div class="pg" id="pg-preorder">
+      <div class="pg-title">Pre-Order <span class="hi">Planner</span></div>
+      <div class="pg-sub">Plan and execute your pre-order drops like a pro. Set your timeline, quantities, deposit amount, fulfillment schedule, and get AI-written pre-order copy ready to launch.</div>
+      <div class="pain-row"><span class="ps-tag">Solves: don't know how to make money</span><span class="ps-tag">Solves: can't turn ideas into content</span></div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle">Pre-order setup</div>
+          <div class="field"><div class="fl">Collection / product name</div><input class="inp" id="po-name" placeholder="e.g. Summer Swim Collection 2026"/></div>
+          <div class="field"><div class="fl">Pre-order open date</div><input class="inp" id="po-open" type="date"/></div>
+          <div class="field"><div class="fl">Pre-order close date</div><input class="inp" id="po-close" type="date"/></div>
+          <div class="field"><div class="fl">Expected ship date</div><input class="inp" id="po-ship" type="date"/></div>
+          <div class="field"><div class="fl">Max units available</div><input class="inp" id="po-units" type="number" placeholder="e.g. 100 (creates scarcity)"/></div>
+          <div class="field"><div class="fl">Price per unit ($)</div><input class="inp" id="po-price" type="number" placeholder="e.g. 45"/></div>
+          <div class="field"><div class="fl">Deposit required (%)</div>
+            <select class="sel" id="po-deposit">
+              <option value="100">Full payment upfront (100%)</option>
+              <option value="50">50% deposit, 50% on ship</option>
+              <option value="25">25% deposit, 75% on ship</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Special pre-order incentive</div><input class="inp" id="po-incentive" placeholder="e.g. 10% early bird discount, free shipping, bonus item"/></div>
+          <button class="btn primary w100 mt8" onclick="genPreOrder()">Generate pre-order campaign ↗</button>
+          <div class="lbar mt8" id="po-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="po-out"><div class="ai-lbl">Pre-Order Campaign</div><div class="ai-text" id="po-txt"></div><button class="btn mt8" onclick="cp('po-txt')">Copy ↗</button></div>
+        </div>
+        <div>
+          <div class="panel mb12">
+            <div class="ptitle">Pre-order revenue projection</div>
+            <div style="display:flex;flex-direction:column;gap:8px" id="po-projections">
+              <div style="padding:12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--mu2);text-transform:uppercase;margin-bottom:4px">If 25% sell (25 units)</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--w)">$1,125</div></div>
+              <div style="padding:12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--bc)"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--c);text-transform:uppercase;margin-bottom:4px">If 50% sell (50 units)</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--c)">$2,250</div></div>
+              <div style="padding:12px;background:rgba(0,245,255,0.06);border-radius:var(--r);border:0.5px solid var(--bc)"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--c);text-transform:uppercase;margin-bottom:4px">If sold out (100 units)</div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--c)">$4,500</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Pre-order timeline</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--c)"><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--w)">Week 1 — Tease</div><div style="font-size:10px;color:var(--mu2)">Behind-the-scenes content, sneak peeks, build anticipation</div></div>
+              <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--v)"><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--w)">Week 2 — Launch</div><div style="font-size:10px;color:var(--mu2)">Pre-order goes live, early bird offer active, push hard</div></div>
+              <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--m)"><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--w)">Week 3 — FOMO</div><div style="font-size:10px;color:var(--mu2)">Units remaining count, last chance messaging, urgency</div></div>
+              <div style="padding:9px 12px;background:var(--bg3);border-radius:var(--r);border-left:2px solid var(--t)"><div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--w)">Week 4 — Close & Fulfill</div><div style="font-size:10px;color:var(--mu2)">Pre-order closes, production begins, update customers</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRAND DEALS -->
+    <div class="pg" id="pg-brand-deals">
+      <div class="pg-title">Brand <span class="hi">Deals</span></div>
+      <div class="pg-sub">Build your rate card, write pitch emails, generate contracts, and track all your brand partnerships — all from inside POD Pro Studio.</div>
+      <div class="pain-row"><span class="ps-tag">Solves: don't know how to make money</span><span class="ps-tag">Solves: can't turn ideas into content</span></div>
+      <div class="stats mb18">
+        <div class="stat c"><div class="stat-n">7</div><div class="stat-l">Active deals</div></div>
+        <div class="stat v"><div class="stat-n">$22.5k</div><div class="stat-l">Monthly deal value</div></div>
+        <div class="stat m"><div class="stat-n">3</div><div class="stat-l">Pending review</div></div>
+        <div class="stat t"><div class="stat-n">14</div><div class="stat-l">Completed deals</div></div>
+      </div>
+      <div class="g2 mb18">
+        <div class="panel hi">
+          <div class="ptitle">Pitch email generator</div>
+          <div class="field"><div class="fl">Brand name</div><input class="inp" id="bd-brand" placeholder="e.g. FashionNova, Shein, Target"/></div>
+          <div class="field"><div class="fl">Deal type</div>
+            <select class="sel" id="bd-type">
+              <option>Sponsored post / content</option><option>Brand ambassador</option>
+              <option>Affiliate partnership</option><option>Collection collaboration</option><option>UGC content package</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Your audience size</div><input class="inp" id="bd-audience" placeholder="e.g. 50k TikTok, 30k Instagram"/></div>
+          <div class="field"><div class="fl">Your rate / ask</div><input class="inp" id="bd-rate" placeholder="e.g. $2,500 per post, $5k campaign"/></div>
+          <div class="field"><div class="fl">Why this brand fits you</div><input class="inp" id="bd-why" placeholder="e.g. Our audiences overlap — both love luxury fashion for Black women"/></div>
+          <button class="btn primary w100 mt8" onclick="genBrandPitch()">Generate pitch email ↗</button>
+          <div class="lbar mt8" id="bd-lbar"><div class="lbar-fill"></div></div>
+          <div class="ai-out mt8" id="bd-out"><div class="ai-lbl">Brand Pitch Email</div><div class="ai-text" id="bd-txt"></div><button class="btn mt8" onclick="cp('bd-txt')">Copy email ↗</button></div>
+        </div>
+        <div>
+          <div class="panel mb12">
+            <div class="ptitle">Active deals tracker</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)">FashionNova</div><span class="pill pill-live">Active</span></div>
+                <div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">$3,500/mo · 4 posts · Clothing</div>
+              </div>
+              <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)">BooHoo Beauty</div><span class="pill pill-live">Active</span></div>
+                <div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">$2,200/mo · 2 posts · Beauty</div>
+              </div>
+              <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid rgba(255,45,120,0.2)">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)">Shein x Envi Lee</div><span class="pill pill-hot">Pending</span></div>
+                <div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">$5,800 flat · Campaign · Swimwear</div>
+              </div>
+            </div>
+            <button class="btn primary mt8 w100">+ Add new deal</button>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Rate card builder</div>
+            <div class="field"><div class="fl">Your platform & follower count</div><input class="inp" id="rc-platform" placeholder="e.g. TikTok 50k, Instagram 30k"/></div>
+            <div class="field"><div class="fl">Your niche</div><input class="inp" id="rc-niche" placeholder="e.g. POD fashion, AI influencer, luxury lifestyle"/></div>
+            <button class="btn primary w100 mt8" onclick="genRateCard()">Build my rate card ↗</button>
+            <div class="lbar mt8" id="rc-lbar"><div class="lbar-fill"></div></div>
+            <div class="ai-out mt8" id="rc-out"><div class="ai-lbl">Rate Card</div><div class="ai-text" id="rc-txt"></div><button class="btn mt8" onclick="cp('rc-txt')">Copy ↗</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
+
+async function ai(prompt,txtId,lbarId,outId){
+  const txt=document.getElementById(txtId);
+  const lb=lbarId?document.getElementById(lbarId):null;
+  const out=outId?document.getElementById(outId):null;
+  if(lb)lb.classList.add('go');
+  if(txt)txt.textContent='Generating…';
+  if(out){out.classList.add('show');out.style.display='block'}
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const t=d.content&&d.content[0]?d.content[0].text:'Generation failed. Please try again.';
+    if(txt)txt.textContent=t;
+  }catch(e){if(txt)txt.textContent='Connection error. Please check your network and try again.'}
+  if(lb)lb.classList.remove('go');
+}
+
+function g(id){return document.getElementById(id)?.value||''}
+
+let curProd='T-Shirt',curView='front',curColor='white',curFab='Cotton',curScene='Luxury mansion';
+
+function selChip(el,name){document.querySelectorAll('#prod-chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');curProd=name;g('prod-lbl')&&(document.getElementById('prod-lbl').textContent=name)}
+function selFab(el){document.querySelectorAll('#fab-chips .fab-chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');curFab=el.textContent}
+function selFab2(el){el.classList.toggle('on')}
+function selView(el,v){document.querySelectorAll('.vb').forEach(b=>b.classList.remove('on'));el.classList.add('on');curView=v}
+function pickSw(el,name,fill){document.querySelectorAll('.sw').forEach(s=>s.classList.remove('on'));el.classList.add('on');curColor=name;const p=document.getElementById('shirt-path');if(p)p.setAttribute('fill',fill)}
+function selScene(el,s){document.querySelectorAll('#scene-chips .sc-chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');curScene=s}
+function toggleColl(el){el.classList.toggle('onm');el.classList.toggle('on')||el.classList.toggle('on')}
+function saveModelPreset(){alert('Model preset saved! Find it under AI Models → Saved Presets.')}
+
+async function genMockup(){
+  const prompt=g('mockup-prompt')||'futuristic floral print';
+  const ph=document.getElementById('canvas-ph'),res=document.getElementById('canvas-result');
+  ph.style.display='none';res.style.display='none';
+  const lb=document.getElementById('mockup-lbar');lb.classList.add('go');
+  await ai(`You are an expert AI mockup prompt engineer for a POD business called POD Pro Mockup Studio by Envi Lee.\n\nCreate a detailed, professional AI image generation prompt for:\n- Product: ${curProd}\n- Fabric: ${curFab}\n- Design: ${prompt}\n- View: ${curView}\n- Color: ${curColor}\n- Style: futuristic, high-fashion editorial quality\n- Fabric simulation: realistic stretch, folds, and shadows\n\nWrite ONE primary prompt ready for Midjourney/DALL-E/Stable Diffusion, then 3 alternative variations. Include lighting, model (if relevant), background, camera angle. Under 450 words.`,'mockup-txt','mockup-lbar','mockup-out');
+  res.style.display='block';
+  document.getElementById('result-text').textContent=`${curColor} ${curProd} · ${curView} view · ${curFab}`;
+}
+
+async function genDesign(){
+  const p=g('design-prompt')||'abstract floral watercolor pattern';
+  await ai(`Create a detailed AI image generation prompt for a clothing design:\nDesign concept: ${p}\n\nWrite a ready-to-use Midjourney/DALL-E prompt that generates a high-quality, print-ready clothing design. Include: style, colors, composition, technique, and any important details. Also include 3 variations. Under 300 words.`,'design-txt','design-lbar','design-out');
+}
+
+async function genSketch(){
+  const p=g('sketch-prompt')||'fitted crop hoodie';
+  await ai(`Create AI prompts to transform a clothing sketch into a realistic wearable fashion mockup.\nGarment: ${p}\n\nGenerate:\n1. A FRONT VIEW prompt — realistic wearable garment with fabric texture and lighting\n2. A BACK VIEW variation\n3. A FLAT-LAY product photo variation\n4. Notes on fabric simulation settings to apply\n\nMake each prompt ready to paste into Midjourney, DALL-E, or Stable Diffusion. Under 350 words.`,'sketch-txt','sketch-lbar','sketch-out');
+}
+
+async function genScene(){
+  const p=g('scene-products')||'POD clothing products';
+  await ai(`Generate 5 detailed AI scene/background prompts for product photography.\nScene: ${curScene}\nProducts: ${p}\n\nFor each scene:\nSCENE [n]: [name]\nPROMPT: [full Midjourney/Kling-ready prompt]\nBEST FOR: [product types]\nMOOD: [atmosphere description]\n\nInclude: lighting, time of day, camera angle, color palette, atmosphere. Ready to use immediately. Under 400 words.`,'scene-txt','scene-lbar','scene-out');
+}
+
+async function genModel(){
+  const pose=g('pose-sel'),expr=g('expr-sel'),extra=g('model-extra');
+  const selects=document.querySelectorAll('#pg-model-builder .sel');
+  const vals=Array.from(selects).map(s=>s.value);
+  await ai(`Create a detailed AI model prompt for a POD fashion product photoshoot.\n\nModel specs:\n- Type: ${vals[0]}, Age: ${vals[1]}, Body: ${vals[2]}\n- Skin tone: ${vals[3]}, Hair: ${vals[4]}\n- Vibe: ${vals[5]}, Pose: ${pose}, Expression: ${expr}\n- Extra: ${extra||'none'}\n\nWrite a photorealistic Midjourney/DALL-E prompt. Include: lighting, camera (lens, angle), background suggestion, wardrobe styling notes. Also write a consistency seed phrase to keep this model the same across multiple images. Under 250 words.`,'model-txt','model-lbar','model-out');
+}
+
+async function genConsistencyPrompt(){
+  await ai(`Create a model consistency system prompt for a POD fashion brand.\n\nPurpose: Lock one AI model's appearance across an entire product collection so every product photo features the same face, body type, and style.\n\nGenerate:\n1. SEED PROMPT — a short model description to prepend to every image prompt\n2. CONSISTENCY RULES — 5 specific rules for maintaining model consistency across images\n3. VARIATION GUIDE — how to vary pose/expression/background while keeping the model the same\n4. EXAMPLE — show one base prompt + 3 product-specific variations\n\nUnder 350 words.`,'cons-txt','cons-lbar','cons-out');
+}
+
+async function genCollectionIdea(){
+  await ai(`Generate a creative, on-trend POD clothing collection idea for a fashion brand.\n\nInclude:\n- COLLECTION NAME (catchy, memorable)\n- THEME & STORY (2-3 sentences)\n- PRODUCTS (6-8 specific items)\n- COLOR PALETTE (3-4 colors with hex codes)\n- TARGET CUSTOMER\n- LAUNCH TIMING suggestion\n- 3 TikTok content hooks for promotion\n\nMake it feel luxury, aspirational, and distinctive. Under 300 words.`,'collection-txt',null,'collection-out');
+}
+
+async function genCollection(){
+  const name=g('coll-name')||'New Collection';const theme=g('coll-theme');const audience=g('coll-audience');
+  await ai(`Build a complete POD collection launch kit for: "${name}"\nTheme: ${theme||'fashion forward'}\nAudience: ${audience||'fashion lovers'}\n\nGenerate:\n1. COLLECTION STORY — 3 sentences that bring it to life\n2. PRODUCT NAMES — creative names for 6 products in the collection\n3. HERO DESCRIPTION — one powerful description for the whole collection\n4. LAUNCH ANNOUNCEMENT — social post copy for drop day\n5. PRE-ORDER COPY — urgency-driven pre-order text\n6. EMAIL SUBJECT LINES — 3 options for launch email\n\nMake it feel like a real fashion brand launch. Under 450 words.`,'coll-txt','coll-lbar','coll-out');
+}
+
+async function genLaunch(){
+  const name=g('coll-name')||'New Collection';
+  await ai(`Create a 7-day social media launch plan for a POD collection: "${name}"\n\nFor each day:\nDAY [X] — [Platforms]\nCONTENT TYPE: [what to post]\nHOOK/SUBJECT: [exact hook or subject line]\nDESCRIPTION: [what to show or say]\nBEST TIME: [posting time]\n\nBuild urgency from teaser → launch → FOMO → last chance. Mix TikTok, Instagram, email, and TikTok Shop. Under 450 words.`,'launch-txt','launch-lbar','launch-out');
+}
+
+async function genListing(){
+  const name=g('list-name')||'POD Product';const type=g('list-type');const platform=g('list-platform');const tone=g('list-tone');const launch=g('list-launch');
+  const lb=document.getElementById('listing-lbar');lb.classList.add('go');
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:1200,messages:[{role:'user',content:`Write a complete product listing for a POD fashion brand.\n\nProduct: ${name} (${type})\nPlatform: ${platform}\nTone: ${tone}\nLaunch type: ${launch}\n\nProvide ALL of these clearly labeled:\nPRODUCT TITLE: [SEO title under 80 chars]\nDESCRIPTION: [3-4 compelling sentences]\nSEO TAGS: [10 tags comma-separated]\nPRICE: [suggested retail price + cost estimate + margin]\nPREORDER COPY: [urgency-driven pre-order text if applicable]\nTIKTOK CAPTION: [2-3 sentences + hashtags]\n\nKeep each section tight and copy-paste ready.`}]})});
+    const d=await r.json();const t=d.content&&d.content[0]?d.content[0].text:'';
+    const m=(label,next)=>{const rx=new RegExp(label+'[:\\s]*(.+?)(?:'+next+'|$)','s');const match=t.match(rx);return match?match[1].trim():''};
+    const title=m('PRODUCT TITLE','DESCRIPTION');const desc=m('DESCRIPTION','SEO TAGS');const tags=m('SEO TAGS','PRICE');const price=m('PRICE','PREORDER');const preorder=m('PREORDER(?: COPY)?','TIKTOK');const tiktok=m('TIKTOK(?: CAPTION)?','$');
+    if(title)document.getElementById('list-title').textContent=title;
+    if(desc)document.getElementById('list-desc').textContent=desc;
+    if(price)document.getElementById('list-price').textContent=price;
+    if(preorder)document.getElementById('list-preorder').textContent=preorder;
+    if(tiktok)document.getElementById('list-tiktok').textContent=tiktok;
+    if(tags){const tw=document.getElementById('list-tags');tw.innerHTML=tags.split(',').slice(0,10).map(tg=>`<span class="tag">${tg.trim()}</span>`).join('')}
+  }catch(e){}
+  lb.classList.remove('go');
+}
+
+async function genLaunchPlan(){
+  const p=g('lp-product')||'new POD collection';const dur=g('lp-duration');
+  await ai(`Create a ${dur} for launching: ${p}\n\nFor each day:\nDAY [X] — [Platform(s)]\nCONTENT: [what to post]\nHOOK: [exact opening line]\nDETAILS: [description in 1-2 sentences]\nTIME: [best posting time]\n\nBuild strategically: teaser → announcement → launch day → social proof → last chance → post-launch. Under 500 words.`,'lp-txt','lp-lbar','lp-out');
+}
+
+async function genBridge(){
+  const p=g('bridge-product')||'POD product';const type=g('bridge-type');
+  await ai(`You are a viral social media copywriter for a POD fashion brand.\n\nGenerate ${type} for: ${p}\n\nFor TikTok: write 3 hooks + 1 full caption with hashtags\nFor Instagram: 1 elevated caption + hashtag groups\nFor Reel script: full scene-by-scene 15-30 second script\nFor UGC ad: authentic-feeling organic ad script\nFor Email: compelling subject + full email body\nFor Video prompt: Kling/Runway-ready video prompt with movement, lighting, duration\n\nMake it feel real, not generated. Under 350 words.`,'bridge-txt','bridge-lbar','bridge-out');
+}
+
+async function genDigitalProduct(topic){
+  await ai(`You are a digital product creator for a POD education brand.\n\nCreate the full content outline and sample content for a digital product: ${topic}\n\nInclude:\n1. PRODUCT TITLE — compelling name\n2. WHAT'S INCLUDED — full list of what's in the pack\n3. SAMPLE CONTENT — 3-5 actual examples from the product (prompts, templates, copy, etc.)\n4. SALES DESCRIPTION — copy to sell this product (2-3 sentences)\n5. PRICE SUGGESTION — recommended price point\n\nMake it feel premium and worth buying. Under 450 words.`,'dp-txt','dp-lbar','dp-out');
+}
+
+async function genVideoPrompt(){side('bridge',null);nav('bridge')}
+async function genCopy(){nav('copy')}
+
+const mainMap={studio:'mockup',models:'model-builder',collections:'collections','copy':'listings',platforms:'pod-hub',digital:'digital-builder',bridge:'bridge',money:'profit-calc',pricing:'pricing',academy:'academy'};
+const sideMap={mockup:'mockup','design-editor':'design-editor',sketch:'sketch',scene:'scene','model-builder':'model-builder','model-presets':'model-presets',consistency:'consistency','collection-build':'collection-build',listings:'listings','launch-plan':'launch-plan','pod-hub':'pod-hub','digital-builder':'digital-builder','export-center':'export-center',phase2:'phase2','profit-calc':'profit-calc','pricing-helper':'pricing-helper','revenue-tracker':'revenue-tracker',preorder:'preorder','brand-deals':'brand-deals'};
+
+// ── MONETIZATION FUNCTIONS ──────────────────────────────
+function calcProfit(){
+  const cost=parseFloat(document.getElementById('pc-cost')?.value)||14;
+  const feeRate=parseFloat(document.getElementById('pc-platform')?.value)||6.5;
+  const price=parseFloat(document.getElementById('pc-price')?.value)||35;
+  const sales=parseInt(document.getElementById('pc-sales')?.value)||50;
+  const platformFee=price*(feeRate/100);
+  const netProfit=price-cost-platformFee;
+  const margin=(netProfit/price)*100;
+  const monthly=netProfit*sales;
+  const fmt=(n)=>'$'+Math.max(0,n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  const fmtK=(n)=>{const v=Math.max(0,n);return v>=1000?'$'+(v/1000).toFixed(1)+'k':fmt(v)};
+  const el=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val};
+  el('profit-per-sale',fmt(netProfit));
+  el('profit-margin',margin.toFixed(1)+'%');
+  el('monthly-revenue',fmtK(monthly));
+  el('proj-10',fmtK(netProfit*10));
+  el('proj-50',fmtK(netProfit*50));
+  el('proj-100',fmtK(netProfit*100));
+  el('proj-500',fmtK(netProfit*500));
+  const bd=document.getElementById('profit-breakdown');
+  if(bd)bd.innerHTML=`Sale price: ${fmt(price)}<br>POD cost: −${fmt(cost)}<br>Platform fee (${feeRate}%): −${fmt(platformFee)}<br>Net profit: ${fmt(netProfit)}`;
+}
+setTimeout(calcProfit, 300);
+
+async function genPricingAdvice(){
+  const context=g('pc-context')||'POD fashion product';
+  const cost=g('pc-cost')||'14';const price=g('pc-price')||'35';
+  await ai(`You are a POD pricing expert. Give specific pricing advice.\n\nProduct context: ${context}\nCurrent production cost: $${cost}\nCurrent selling price: $${price}\n\nProvide:\n1. PRICE VERDICT — is this price too low, about right, or could go higher?\n2. RECOMMENDED PRICE — specific number with reasoning\n3. PRICING STRATEGY — 2-3 specific tactics to maximize profit\n4. BUNDLE OPPORTUNITY — one bundle idea to increase average order value\n5. SEASONAL PRICING — any seasonal adjustments to consider\n\nBe specific and direct. Under 300 words.`,'pc-txt','pc-lbar','pc-out');
+}
+
+async function genPricingHelper(){
+  const product=g('ph-product')||'POD product';const quality=g('ph-quality');
+  const customer=g('ph-customer')||'fashion-conscious women';const platform=g('ph-platform');
+  const cost=g('ph-cost')||'14';const comp=g('ph-comp');
+  await ai(`You are a POD pricing strategist. Recommend the perfect price.\n\nProduct: ${product}\nQuality tier: ${quality}\nTarget customer: ${customer}\nPlatform: ${platform}\nProduction cost: $${cost}\nCompetitor range: ${comp}\n\nGenerate:\n\nRECOMMENDED PRICE: $[specific number] — your top recommendation\nPRICE RANGE: Low ($X) · Sweet spot ($X) · Premium ($X)\n\nWHY THIS PRICE WORKS: 2-3 sentences explaining the psychology\n\nMARGIN AT THIS PRICE: What margin % they'll earn\n\nPRICING TIERS (if applicable):\n- Standard version: $X\n- Premium version: $X  \n- Bundle: $X\n\nWARNING: One pricing mistake to avoid for this specific product/market\n\nACTION STEP: The one thing to do right now\n\nUnder 250 words. Be decisive — give a number, not a range as the main answer.`,'ph-txt','ph-lbar','ph-out');
+}
+
+async function genRevenueAnalysis(){
+  const question=g('rev-question')||'How do I grow my POD revenue?';
+  await ai(`You are a POD revenue growth expert for a creator named Envi Lee.\n\nHer current monthly revenue: ~$14,800\nRevenue split: Etsy $8,200 · Shopify $4,600 · TikTok Shop $2,000\nTop products: floral crop tee, luxury swim set, streetwear hoodie\n\nUser question: ${question}\n\nGive specific, actionable advice tailored to her exact situation:\n1. DIRECT ANSWER — address the question head-on\n2. TOP 3 ACTIONS — specific things to do this week\n3. BIGGEST OPPORTUNITY — the single highest-leverage move right now\n4. WHAT TO STOP — one thing that's holding her back\n\nUnder 300 words. Be specific to POD and her actual numbers.`,'rev-txt','rev-lbar','rev-out');
+}
+
+async function genPreOrder(){
+  const name=g('po-name')||'New Collection';const open=g('po-open');
+  const close=g('po-close');const ship=g('po-ship');
+  const units=g('po-units')||'100';const price=g('po-price')||'45';
+  const deposit=g('po-deposit')||'100';const incentive=g('po-incentive');
+  await ai(`You are a POD launch strategist. Create a complete pre-order campaign.\n\nCollection: ${name}\nPre-order opens: ${open||'TBD'}\nPre-order closes: ${close||'TBD'}\nEstimated ship date: ${ship||'TBD'}\nMax units: ${units} (creates scarcity)\nPrice: $${price}/unit\nDeposit: ${deposit}% upfront\nIncentive: ${incentive||'none specified'}\n\nGenerate the full campaign package:\n\nPRE-ORDER ANNOUNCEMENT POST (TikTok/Instagram):\n[Full caption with hook, details, urgency, and CTA]\n\nPRE-ORDER PAGE COPY:\n[Headline + product description + what's included + deposit info + ship date + urgency statement]\n\nSMS/EMAIL LAUNCH MESSAGE (for existing customers):\n[Short, personal, urgency-driven]\n\nCOUNTDOWN CONTENT IDEAS:\n3 specific posts to build hype in the week before launch\n\nSOLD OUT HANDLING:\nWhat to say and do when units run out\n\nUnder 450 words. Make it feel exclusive and urgent.`,'po-txt','po-lbar','po-out');
+}
+
+async function genBrandPitch(){
+  const brand=g('bd-brand')||'the brand';const type=g('bd-type');
+  const audience=g('bd-audience')||'50k+ followers';
+  const rate=g('bd-rate')||'negotiable';const why=g('bd-why');
+  await ai(`Write a professional brand pitch email for a POD creator and AI influencer named Envi Lee.\n\nPitching to: ${brand}\nDeal type: ${type}\nEnvi Lee's audience: ${audience}\nRequested rate: ${rate}\nWhy this brand fits: ${why||'strong audience alignment'}\n\nWrite a complete pitch email:\n\nSUBJECT LINE: [compelling, not generic]\n\nEMAIL BODY:\n- Opening: personal, shows she knows the brand\n- Who she is: 2-3 sentences — creator, POD business owner, AI influencer\n- Why she's reaching out: specific reason this brand fits her audience\n- What she offers: deliverables, reach, engagement, content quality\n- Social proof: mention audience size, engagement rate, past successes\n- The ask: clear rate and deal structure\n- Next step: specific CTA\n- Sign-off: professional but warm\n\nTone: confident, professional, not desperate. She's an equal partner, not begging.\nLength: 200-250 words. Short enough to actually get read.`,'bd-txt','bd-lbar','bd-out');
+}
+
+async function genRateCard(){
+  const platform=g('rc-platform')||'TikTok and Instagram';const niche=g('rc-niche')||'POD fashion and AI influencer';
+  await ai(`Build a professional rate card for a creator named Envi Lee.\n\nPlatforms & following: ${platform}\nNiche: ${niche}\n\nCreate a complete rate card:\n\nBRAND PARTNERSHIP RATES\n\nTIKTOK:\n• Single sponsored video: $X\n• 3-video package: $X\n• Monthly ambassador: $X\n\nINSTAGRAM:\n• Single Reel: $X\n• Feed post: $X\n• Stories (5-pack): $X\n• Monthly package: $X\n\nUGC CONTENT (brand keeps, doesn't post on her page):\n• Single UGC video: $X\n• UGC pack (5 videos): $X\n• Monthly UGC retainer: $X\n\nCOLLABORATION:\n• Co-designed collection: starting at $X + royalty\n• Brand ambassador (quarterly): $X\n\nWHAT'S INCLUDED IN EVERY DEAL:\n[3-4 bullet points of what brands get]\n\nWHAT'S NOT INCLUDED / ADD-ONS:\n[Usage rights, exclusivity, rush fees]\n\nPAYMENT TERMS: [Standard terms]\n\nBase rates on industry standards for her platform size. Make them strong — she shouldn't undercharge. Under 300 words.`,'rc-txt','rc-lbar','rc-out');
+}
+// ── END MONETIZATION FUNCTIONS ────────────────────────────
+
+function nav(k){
+  document.querySelectorAll('.tn').forEach(b=>b.classList.remove('on'));
+  const keys=Object.keys(mainMap);const idx=keys.indexOf(k);
+  if(idx>=0)document.querySelectorAll('.tn')[idx].classList.add('on');
+  showPg(mainMap[k]);
+}
+function side(k,el){
+  document.querySelectorAll('.si').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(sideMap[k])showPg(sideMap[k]);
+}
+function showPg(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('pg-'+id);
+  if(p)p.classList.add('on');
+}
+function copyEl(id){
+  const el=document.getElementById(id);
+  if(el&&navigator.clipboard)navigator.clipboard.writeText(el.textContent).then(()=>{const o=el.style.color;el.style.color='var(--t)';setTimeout(()=>el.style.color=o,600)});
+}
+</script>
+</body>
+</html>
