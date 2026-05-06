@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Envi Lee AI Creator Suite™ — Ecosystem Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#030306;--bg2:#07070d;--bg3:#0c0c14;--bg4:#11111a;
+  --s1:#161622;--s2:#1c1c2c;--s3:#222235;
+  --w:#f8f8ff;--w2:#d8d8ee;--w3:#a8a8cc;
+  --mu:#505070;--mu2:#707090;--mu3:#9090aa;
+  --b:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.1);--b3:rgba(255,255,255,0.16);
+
+  /* App accent colors */
+  --pod:#00f5ff;--pod2:rgba(0,245,255,0.12);--pod3:rgba(0,245,255,0.06);
+  --stu:#ffffff;--stu2:rgba(255,255,255,0.12);--stu3:rgba(255,255,255,0.06);
+  --cf:#00c853;--cf2:rgba(0,200,83,0.12);--cf3:rgba(0,200,83,0.06);
+
+  /* Suite gold */
+  --gold:#e8c76a;--gold2:rgba(232,199,106,0.12);--gold3:rgba(232,199,106,0.06);
+
+  --r:8px;--r2:12px;--r3:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--w);overflow-x:hidden}
+
+/* STAR FIELD BG */
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse at 20% 20%,rgba(0,245,255,0.03) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(0,200,83,0.03) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(232,199,106,0.02) 0%,transparent 60%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.008) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:500;background:rgba(3,3,6,0.97);border-bottom:0.5px solid var(--b2);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);position:relative;z-index:500}
+.suite-logo{display:flex;align-items:center;gap:12px}
+.logo-cluster{display:flex;gap:3px;align-items:center}
+.logo-gem{width:10px;height:10px;transform:rotate(45deg);flex-shrink:0}
+.logo-gem.pod{background:var(--pod)}
+.logo-gem.stu{background:var(--stu);opacity:.9}
+.logo-gem.cf{background:var(--cf)}
+.suite-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--w);letter-spacing:-0.3px}
+.suite-name em{font-style:normal;color:var(--gold)}
+.suite-sub{font-size:9px;color:var(--mu2);letter-spacing:1px;text-transform:uppercase;margin-top:1px;font-family:'DM Mono',monospace}
+.topnav{display:flex;gap:2px}
+.tn{background:none;border:none;padding:6px 11px;border-radius:6px;font-size:11px;color:var(--mu2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tn:hover{background:var(--s1);color:var(--w)}
+.tn.on{background:var(--s1);color:var(--w);border:0.5px solid var(--b2)}
+.top-right{display:flex;align-items:center;gap:10px}
+.credit-pill{display:flex;align-items:center;gap:6px;background:var(--gold2);border:0.5px solid rgba(232,199,106,0.25);border-radius:20px;padding:4px 12px;font-size:10px;color:var(--gold);font-family:'DM Mono',monospace}
+.credit-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:cp 2s ease infinite}
+@keyframes cp{0%,100%{opacity:1}50%{opacity:.4}}
+.plan-badge{background:var(--gold2);border:0.5px solid rgba(232,199,106,0.2);border-radius:20px;padding:4px 10px;font-size:10px;color:var(--gold);font-family:'DM Mono',monospace}
+.user-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pod),var(--cf));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;font-family:'Syne',sans-serif}
+
+/* LAYOUT */
+.shell{display:flex;min-height:calc(100vh - 58px);position:relative;z-index:1}
+.sidebar{width:224px;background:var(--bg2);border-right:0.5px solid var(--b);padding:16px 10px;flex-shrink:0;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.slabel{font-size:9px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:1.2px;padding:12px 10px 5px;font-family:'DM Mono',monospace}
+.si{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--mu2);transition:all .2s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.si:hover{background:var(--s1);color:var(--w)}
+.si.on{background:var(--s1);color:var(--w);border:0.5px solid var(--b2)}
+.si-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.app-divider{height:0.5px;background:var(--b);margin:6px 0}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;background:var(--bg);padding:28px}
+.pg{display:none;animation:pgIn .3s ease}
+.pg.on{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pg-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--w);margin-bottom:4px;letter-spacing:-.4px}
+.pg-sub{font-size:12px;color:var(--mu2);margin-bottom:24px;line-height:1.6}
+
+/* APP SWITCHER CARDS */
+.app-switcher{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.app-card{border-radius:var(--r3);padding:22px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;border:0.5px solid transparent}
+.app-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.app-card.pod-card{background:var(--pod3);border-color:rgba(0,245,255,0.15)}
+.app-card.pod-card::before{background:linear-gradient(90deg,var(--pod),rgba(0,245,255,0.3))}
+.app-card.pod-card:hover{background:var(--pod2);border-color:rgba(0,245,255,0.3)}
+.app-card.stu-card{background:var(--stu3);border-color:rgba(255,255,255,0.1)}
+.app-card.stu-card::before{background:linear-gradient(90deg,rgba(255,255,255,0.8),rgba(255,255,255,0.2))}
+.app-card.stu-card:hover{background:var(--stu2);border-color:rgba(255,255,255,0.18)}
+.app-card.cf-card{background:var(--cf3);border-color:rgba(0,200,83,0.15)}
+.app-card.cf-card::before{background:linear-gradient(90deg,var(--cf),rgba(0,200,83,0.3))}
+.app-card.cf-card:hover{background:var(--cf2);border-color:rgba(0,200,83,0.3)}
+.app-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:18px;font-weight:500;margin-bottom:12px}
+.app-icon.pod{background:rgba(0,245,255,0.15);color:var(--pod)}
+.app-icon.stu{background:rgba(255,255,255,0.1);color:var(--stu)}
+.app-icon.cf{background:rgba(0,200,83,0.15);color:var(--cf)}
+.app-card-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--w);margin-bottom:3px}
+.app-card-sub{font-size:11px;color:var(--mu3);margin-bottom:12px;line-height:1.5}
+.app-card-stats{display:flex;gap:12px}
+.acs{font-size:10px;color:var(--mu3);font-family:'DM Mono',monospace}
+.acs strong{display:block;font-size:14px;font-weight:500;color:var(--w);margin-bottom:1px}
+.launch-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:500;border:0.5px solid;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;transition:all .2s;background:none}
+.launch-btn.pod{border-color:rgba(0,245,255,0.3);color:var(--pod)}
+.launch-btn.pod:hover{background:rgba(0,245,255,0.1)}
+.launch-btn.stu{border-color:rgba(255,255,255,0.2);color:var(--w)}
+.launch-btn.stu:hover{background:rgba(255,255,255,0.07)}
+.launch-btn.cf{border-color:rgba(0,200,83,0.3);color:var(--cf)}
+.launch-btn.cf:hover{background:rgba(0,200,83,0.1)}
+
+/* PANELS */
+.panel{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:18px}
+.panel.hi{border-color:var(--b2)}
+.panel.gold{border-color:rgba(232,199,106,0.2)}
+.ptitle{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--mu2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--b)}
+.ptitle.pod{color:var(--pod)}
+.ptitle.stu{color:var(--mu3)}
+.ptitle.cf{color:var(--cf)}
+.ptitle.gold{color:var(--gold)}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--s1);border-radius:var(--r);padding:16px;border:0.5px solid var(--b);position:relative;overflow:hidden}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat.pod::after{background:var(--pod)}
+.stat.stu::after{background:var(--stu);opacity:.5}
+.stat.cf::after{background:var(--cf)}
+.stat.gold::after{background:var(--gold)}
+.stat-n{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--w)}
+.stat-l{font-size:10px;color:var(--mu2);margin-top:3px;font-family:'DM Mono',monospace}
+.stat-g{font-size:10px;margin-top:2px;font-family:'DM Mono',monospace}
+.stat-g.pod{color:var(--pod)}
+.stat-g.cf{color:var(--cf)}
+.stat-g.gold{color:var(--gold)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.fc{display:flex;flex-direction:column;gap:10px}
+.mb16{margin-bottom:16px}
+.mb24{margin-bottom:24px}
+.mt8{margin-top:8px}
+.mt12{margin-top:12px}
+.w100{width:100%}
+
+/* ACTIVITY ROWS */
+.act-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b);margin-bottom:6px}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.act-info{flex:1}
+.act-title{font-size:12px;color:var(--w2)}
+.act-meta{font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace;margin-top:2px}
+.act-time{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* CREDIT METER */
+.credit-bar-wrap{margin-bottom:12px}
+.credit-bar-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.credit-bar-name{font-size:11px;color:var(--mu3)}
+.credit-bar-val{font-size:11px;font-family:'DM Mono',monospace;color:var(--w2)}
+.credit-bar{height:6px;background:var(--s2);border-radius:3px;overflow:hidden}
+.credit-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* BUTTONS */
+.btn{padding:8px 14px;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;border:0.5px solid var(--b2);background:var(--s2);color:var(--w2);transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn:hover{background:var(--s3);border-color:var(--b3)}
+.btn.gold{background:var(--gold2);border-color:rgba(232,199,106,0.3);color:var(--gold)}
+.btn.gold:hover{background:rgba(232,199,106,0.2)}
+.btn.pod{background:var(--pod3);border-color:rgba(0,245,255,0.25);color:var(--pod)}
+.btn.cf{background:var(--cf3);border-color:rgba(0,200,83,0.25);color:var(--cf)}
+.btn.w100{width:100%}
+
+/* FORM */
+.inp{background:var(--bg3);border:0.5px solid var(--b);border-radius:7px;padding:9px 12px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%}
+.inp:focus{outline:none;border-color:var(--b3)}
+.inp::placeholder{color:var(--mu)}
+.sel{background:var(--bg3);border:0.5px solid var(--b);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%}
+.sel:focus{outline:none;border-color:var(--b3)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+.fl{font-size:9px;font-weight:600;color:var(--mu2);text-transform:uppercase;letter-spacing:.7px;font-family:'DM Mono',monospace}
+
+/* AI OUTPUT */
+.ai-out{background:var(--bg4);border:0.5px solid var(--b2);border-radius:var(--r2);padding:14px;display:none;margin-top:12px;animation:pgIn .35s ease}
+.ai-out.show{display:block}
+.ai-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:aip 1.8s ease infinite;flex-shrink:0}
+@keyframes aip{0%,100%{opacity:1}50%{opacity:.2}}
+.ai-text{font-size:12px;color:var(--w2);line-height:1.85;white-space:pre-wrap}
+.lbar{height:2px;background:rgba(232,199,106,0.08);overflow:hidden;margin:8px 0;display:none;border-radius:1px}
+.lbar.go{display:block}
+.lbar-fill{height:100%;background:linear-gradient(90deg,var(--pod),var(--gold),var(--cf));background-size:200% 100%;animation:lm 1.8s linear infinite}
+@keyframes lm{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* PILLS */
+.pill{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:600;font-family:'DM Mono',monospace}
+.pill-pod{background:var(--pod3);color:var(--pod);border:0.5px solid rgba(0,245,255,0.2)}
+.pill-cf{background:var(--cf3);color:var(--cf);border:0.5px solid rgba(0,200,83,0.2)}
+.pill-gold{background:var(--gold2);color:var(--gold);border:0.5px solid rgba(232,199,106,0.25)}
+.pill-mu{background:var(--s2);color:var(--mu3);border:0.5px solid var(--b)}
+
+/* PROGRESS */
+.prog{margin-bottom:10px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.prog-lbl span:first-child{color:var(--mu2)}
+.prog-lbl span:last-child{color:var(--gold);font-family:'DM Mono',monospace}
+.prog-bar{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+
+/* ONBOARDING STEPS */
+.step{display:flex;align-items:flex-start;gap:14px;padding:14px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b);margin-bottom:8px;cursor:pointer;transition:border .2s}
+.step:hover{border-color:var(--b2)}
+.step.done{opacity:.5}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;flex-shrink:0}
+.step-num.active{background:var(--gold);color:#000}
+.step-num.done{background:var(--cf);color:#000}
+.step-num.locked{background:var(--s2);color:var(--mu)}
+.step-info{flex:1}
+.step-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w);margin-bottom:3px}
+.step-desc{font-size:11px;color:var(--mu2);line-height:1.5}
+
+/* AFFILIATE */
+.ref-box{background:var(--bg3);border:0.5px solid rgba(232,199,106,0.2);border-radius:var(--r2);padding:16px;margin-bottom:12px}
+.ref-link{font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--bg);border:0.5px solid var(--b2);border-radius:6px;padding:8px 12px;margin-top:8px;word-break:break-all}
+
+/* ADMIN TABLE */
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;padding:8px 12px;text-align:left;border-bottom:0.5px solid var(--b)}
+.admin-table td{font-size:12px;color:var(--w2);padding:10px 12px;border-bottom:0.5px solid var(--b)}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover td{background:var(--s1)}
+
+/* PRICING GRID */
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pc{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:20px;position:relative}
+.pc.pop{border-color:var(--gold)}
+.pc.pop::before{content:'Best value';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;font-family:'Syne',sans-serif;white-space:nowrap}
+.pc-tier{font-family:'DM Mono',monospace;font-size:10px;color:var(--mu2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.pc-price{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--w);line-height:1}
+.pc-price sup{font-size:15px;font-weight:500;vertical-align:super}
+.pc-period{font-size:10px;color:var(--mu2);margin-top:3px;margin-bottom:16px;font-family:'DM Mono',monospace}
+.pf{font-size:11px;color:var(--mu2);padding:5px 0;border-bottom:0.5px solid var(--b);display:flex;align-items:center;gap:7px;line-height:1.4}
+.pf::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.pf.dim::before{background:var(--s3)}.pf.dim{opacity:.3}
+
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="suite-logo">
+    <div class="logo-cluster">
+      <div class="logo-gem pod"></div>
+      <div class="logo-gem stu"></div>
+      <div class="logo-gem cf"></div>
+    </div>
+    <div>
+      <div class="suite-name">Envi Lee <em>AI Creator Suite™</em></div>
+      <div class="suite-sub">Ecosystem Dashboard · All 3 apps in one place</div>
+    </div>
+  </div>
+  <nav class="topnav">
+    <button class="tn on" onclick="nav('home')">Home</button>
+    <button class="tn" onclick="nav('apps')">My Apps</button>
+    <button class="tn" onclick="nav('credits')">Credits</button>
+    <button class="tn" onclick="nav('billing')">Billing</button>
+    <button class="tn" onclick="nav('onboarding')">Onboarding</button>
+    <button class="tn" onclick="nav('affiliate')">Affiliate</button>
+    <button class="tn" onclick="nav('admin')">Admin</button>
+    <button class="tn" onclick="nav('settings')">Settings</button>
+  </nav>
+  <div class="top-right">
+    <div class="credit-pill"><div class="credit-dot"></div>482 credits</div>
+    <div class="plan-badge">Boss Plan</div>
+    <div class="user-av">EL</div>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="slabel">Suite</div>
+    <button class="si on" onclick="side('home',this)"><span style="color:var(--gold)">◈</span> &nbsp;Home Dashboard</button>
+    <button class="si" onclick="side('apps',this)"><span style="color:var(--mu2)">⬡</span> &nbsp;All Apps</button>
+    <button class="si" onclick="side('credits',this)"><span style="color:var(--gold)">◷</span> &nbsp;Credits & Usage</button>
+    <div class="app-divider"></div>
+    <div class="slabel">POD Pro Studio™</div>
+    <button class="si" onclick="launchApp('pod')"><span style="color:var(--pod)">◈</span> &nbsp;Open POD Studio</button>
+    <button class="si" onclick="side('pod-stats',this)"><span style="color:var(--pod)">⊹</span> &nbsp;POD Stats</button>
+    <div class="app-divider"></div>
+    <div class="slabel">AI Studios™</div>
+    <button class="si" onclick="launchApp('stu')"><span style="color:var(--stu)">◈</span> &nbsp;Open AI Studios</button>
+    <button class="si" onclick="side('stu-stats',this)"><span style="color:var(--stu)">⊹</span> &nbsp;Studios Stats</button>
+    <div class="app-divider"></div>
+    <div class="slabel">CineFlow AI™</div>
+    <button class="si" onclick="launchApp('cf')"><span style="color:var(--cf)">◈</span> &nbsp;Open CineFlow</button>
+    <button class="si" onclick="side('cf-stats',this)"><span style="color:var(--cf)">⊹</span> &nbsp;CineFlow Stats</button>
+    <div class="app-divider"></div>
+    <div class="slabel">Account</div>
+    <button class="si" onclick="side('billing',this)"><span style="color:var(--gold)">◉</span> &nbsp;Billing</button>
+    <button class="si" onclick="side('onboarding',this)"><span style="color:var(--mu2)">⊳</span> &nbsp;Onboarding</button>
+    <button class="si" onclick="side('affiliate',this)"><span style="color:var(--gold)">◎</span> &nbsp;Affiliate Program</button>
+    <button class="si" onclick="side('admin',this)"><span style="color:var(--mu2)">⊞</span> &nbsp;Admin Dashboard</button>
+  </aside>
+
+  <main class="main">
+
+    <!-- HOME DASHBOARD -->
+    <div class="pg on" id="pg-home">
+      <div class="pg-title">Welcome back, <span style="color:var(--gold)">Envi Lee</span> ✦</div>
+      <div class="pg-sub">Your complete AI creator empire — 3 apps, one dashboard, everything you need to build, create, and sell.</div>
+
+      <!-- APP SWITCHER -->
+      <div class="app-switcher">
+        <div class="app-card pod-card" onclick="launchApp('pod')">
+          <div class="app-icon pod">◈</div>
+          <div class="app-card-name">POD Pro Mockup Studio™</div>
+          <div class="app-card-sub">Mockups, AI models, product listings, collections, and digital products</div>
+          <div class="app-card-stats">
+            <div class="acs"><strong>84</strong>Mockups</div>
+            <div class="acs"><strong>12</strong>Collections</div>
+            <div class="acs"><strong>3</strong>Platforms</div>
+          </div>
+          <button class="launch-btn pod">Launch POD Studio ↗</button>
+        </div>
+        <div class="app-card stu-card" onclick="launchApp('stu')">
+          <div class="app-icon stu">◉</div>
+          <div class="app-card-name">Envi Lee AI Studios™</div>
+          <div class="app-card-sub">Movies, shows, reality TV, AI artists, concerts, podcasts, and long-form video</div>
+          <div class="app-card-stats">
+            <div class="acs"><strong>42</strong>Scripts</div>
+            <div class="acs"><strong>14</strong>Characters</div>
+            <div class="acs"><strong>8</strong>Projects</div>
+          </div>
+          <button class="launch-btn stu">Launch AI Studios ↗</button>
+        </div>
+        <div class="app-card cf-card" onclick="launchApp('cf')">
+          <div class="app-icon cf">⊳</div>
+          <div class="app-card-name">CineFlow AI™</div>
+          <div class="app-card-sub">Cinematic prompts, 30-day calendars, UGC ads, hooks, and AI help bot</div>
+          <div class="app-card-stats">
+            <div class="acs"><strong>247</strong>Prompts</div>
+            <div class="acs"><strong>30</strong>Calendar days</div>
+            <div class="acs"><strong>18</strong>UGC ads</div>
+          </div>
+          <button class="launch-btn cf">Launch CineFlow ↗</button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-row mb24">
+        <div class="stat gold">
+          <div class="stat-n">$48.2k</div>
+          <div class="stat-l">Total revenue this month</div>
+          <div class="stat-g gold">↑ +22% vs last month</div>
+        </div>
+        <div class="stat pod">
+          <div class="stat-n">373</div>
+          <div class="stat-l">Total creations this month</div>
+          <div class="stat-g pod">↑ across all 3 apps</div>
+        </div>
+        <div class="stat cf">
+          <div class="stat-n">482</div>
+          <div class="stat-l">Credits remaining</div>
+          <div class="stat-g cf">↑ Boss plan — unlimited</div>
+        </div>
+        <div class="stat stu">
+          <div class="stat-n">7</div>
+          <div class="stat-l">Active brand deals</div>
+          <div class="stat-g" style="color:var(--mu3)">3 pending review</div>
+        </div>
+      </div>
+
+      <div class="g2 mb24">
+        <div class="panel">
+          <div class="ptitle">Recent activity — all apps</div>
+          <div class="act-row"><div class="act-dot" style="background:var(--pod)"></div><div class="act-info"><div class="act-title">Summer Swim Collection — 8 mockups generated</div><div class="act-meta">POD Pro Studio · Mockup Generator</div></div><div class="act-time">2h ago</div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--stu)"></div><div class="act-info"><div class="act-title">Baddie House Ep 5 script written</div><div class="act-meta">AI Studios · Episode Script Generator</div></div><div class="act-time">4h ago</div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--cf)"></div><div class="act-info"><div class="act-title">30-day calendar built — POD business niche</div><div class="act-meta">CineFlow AI · Calendar Builder</div></div><div class="act-time">Yesterday</div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--pod)"></div><div class="act-info"><div class="act-title">Brand pitch email generated — FashionNova</div><div class="act-meta">POD Pro Studio · Brand Deals</div></div><div class="act-time">Yesterday</div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--cf)"></div><div class="act-info"><div class="act-title">10 viral hooks generated — AI influencer niche</div><div class="act-meta">CineFlow AI · Hook Library</div></div><div class="act-time">2 days ago</div></div>
+          <div class="act-row"><div class="act-dot" style="background:var(--stu)"></div><div class="act-info"><div class="act-title">Nova Star AI artist profile built</div><div class="act-meta">AI Studios · Live Stage ★</div></div><div class="act-time">2 days ago</div></div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle gold">Credit usage today</div>
+            <div class="credit-bar-wrap">
+              <div class="credit-bar-label"><span class="credit-bar-name">POD Pro Studio</span><span class="credit-bar-val">12 credits</span></div>
+              <div class="credit-bar"><div class="credit-fill" style="width:30%;background:var(--pod)"></div></div>
+            </div>
+            <div class="credit-bar-wrap">
+              <div class="credit-bar-label"><span class="credit-bar-name">AI Studios</span><span class="credit-bar-val">24 credits</span></div>
+              <div class="credit-bar"><div class="credit-fill" style="width:60%;background:rgba(255,255,255,0.6)"></div></div>
+            </div>
+            <div class="credit-bar-wrap">
+              <div class="credit-bar-label"><span class="credit-bar-name">CineFlow AI</span><span class="credit-bar-val">8 credits</span></div>
+              <div class="credit-bar"><div class="credit-fill" style="width:20%;background:var(--cf)"></div></div>
+            </div>
+            <div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace;margin-top:8px">44 credits used today · 482 remaining</div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Today's priorities</div>
+            <div class="fc">
+              <div style="padding:9px 12px;background:var(--pod3);border:0.5px solid rgba(0,245,255,0.15);border-radius:var(--r);font-size:12px;color:var(--pod);cursor:pointer" onclick="launchApp('pod')">◈ Generate swim collection mockups ↗</div>
+              <div style="padding:9px 12px;background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);font-size:12px;color:var(--w2);cursor:pointer" onclick="launchApp('stu')">◉ Write Baddie House Episode 5</div>
+              <div style="padding:9px 12px;background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);font-size:12px;color:var(--w2);cursor:pointer" onclick="launchApp('cf')">⊳ Post today's TikTok content</div>
+              <div style="padding:9px 12px;background:var(--gold2);border:0.5px solid rgba(232,199,106,0.2);border-radius:var(--r);font-size:12px;color:var(--gold);cursor:pointer" onclick="side('billing',null);nav('billing')">✦ Reply to Shein brand deal offer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL APPS -->
+    <div class="pg" id="pg-apps">
+      <div class="pg-title">My <span style="color:var(--gold)">Apps</span></div>
+      <div class="pg-sub">Launch any app or view its detailed stats. Your Boss plan gives you full access to all three.</div>
+      <div class="app-switcher" style="margin-bottom:24px">
+        <div class="app-card pod-card" onclick="launchApp('pod')">
+          <div class="app-icon pod">◈</div>
+          <div class="app-card-name">POD Pro Mockup Studio™</div>
+          <div class="app-card-sub">Mockups · AI models · Product listings · Collections · Digital products</div>
+          <div class="app-card-stats">
+            <div class="acs"><strong>84</strong>Mockups</div>
+            <div class="acs"><strong>12</strong>Collections</div>
+          </div>
+          <button class="launch-btn pod">Open app ↗</button>
+        </div>
+        <div class="app-card stu-card" onclick="launchApp('stu')">
+          <div class="app-icon stu">◉</div>
+          <div class="app-card-name">Envi Lee AI Studios™</div>
+          <div class="app-card-sub">Scripts · Characters · Live Stage · Podcasts · Long-form video</div>
+          <div class="app-card-stats">
+            <div class="acs"><strong>42</strong>Scripts</div>
+            <div class="acs"><strong>14</strong>Characters</div>
+          </div>
+          <button class="launch-btn stu">Open app ↗</button>
+        </div>
+        <div class="app-card cf-card" onclick="launchApp('cf')">
+          <div class="app-icon cf">⊳</div>
+          <div class="app-card-name">CineFlow AI™</div>
+          <div class="app-card-sub">Cinematic prompts · Calendar · UGC ads · Hooks · AI bot</div>
+          <div class="app-card-stats">
+            <div class="acs"><strong>247</strong>Prompts</div>
+            <div class="acs"><strong>30</strong>Calendar days</div>
+          </div>
+          <button class="launch-btn cf">Open app ↗</button>
+        </div>
+      </div>
+      <div class="g3">
+        <div class="panel">
+          <div class="ptitle pod">POD Studio — this week</div>
+          <div class="prog"><div class="prog-lbl"><span>Mockups created</span><span style="color:var(--pod)">14</span></div><div class="prog-bar"><div class="prog-fill" style="width:70%;background:var(--pod)"></div></div></div>
+          <div class="prog"><div class="prog-lbl"><span>Collections active</span><span style="color:var(--pod)">3</span></div><div class="prog-bar"><div class="prog-fill" style="width:30%;background:var(--pod)"></div></div></div>
+          <div class="prog"><div class="prog-lbl"><span>Listings exported</span><span style="color:var(--pod)">8</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%;background:var(--pod)"></div></div></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle stu">AI Studios — this week</div>
+          <div class="prog"><div class="prog-lbl"><span>Scripts written</span><span style="color:var(--mu3)">6</span></div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:rgba(255,255,255,0.5)"></div></div></div>
+          <div class="prog"><div class="prog-lbl"><span>Characters used</span><span style="color:var(--mu3)">4</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%;background:rgba(255,255,255,0.5)"></div></div></div>
+          <div class="prog"><div class="prog-lbl"><span>Video prompts exported</span><span style="color:var(--mu3)">11</span></div><div class="prog-bar"><div class="prog-fill" style="width:55%;background:rgba(255,255,255,0.5)"></div></div></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle cf">CineFlow — this week</div>
+          <div class="prog"><div class="prog-lbl"><span>Prompts generated</span><span style="color:var(--cf)">28</span></div><div class="prog-bar"><div class="prog-fill" style="width:80%;background:var(--cf)"></div></div></div>
+          <div class="prog"><div class="prog-lbl"><span>Captions written</span><span style="color:var(--cf)">15</span></div><div class="prog-bar"><div class="prog-fill" style="width:50%;background:var(--cf)"></div></div></div>
+          <div class="prog"><div class="prog-lbl"><span>UGC ads built</span><span style="color:var(--cf)">4</span></div><div class="prog-bar"><div class="prog-fill" style="width:20%;background:var(--cf)"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREDITS -->
+    <div class="pg" id="pg-credits">
+      <div class="pg-title">Credits <span style="color:var(--gold)">& Usage</span></div>
+      <div class="pg-sub">One credit wallet shared across all 3 apps. Buy once, use anywhere.</div>
+      <div class="stats-row mb24">
+        <div class="stat gold"><div class="stat-n">482</div><div class="stat-l">Credits remaining</div><div class="stat-g gold">↑ Replenish on 1st</div></div>
+        <div class="stat pod"><div class="stat-n">44</div><div class="stat-l">Used today</div></div>
+        <div class="stat cf"><div class="stat-n">1,240</div><div class="stat-l">Used this month</div></div>
+        <div class="stat stu"><div class="stat-n">1,500</div><div class="stat-l">Monthly allowance</div><div class="stat-g" style="color:var(--mu3)">Boss Plan</div></div>
+      </div>
+      <div class="g2 mb24">
+        <div class="panel gold">
+          <div class="ptitle gold">Usage by app — this month</div>
+          <div class="credit-bar-wrap">
+            <div class="credit-bar-label"><span class="credit-bar-name" style="color:var(--pod)">POD Pro Studio</span><span class="credit-bar-val">380 credits</span></div>
+            <div class="credit-bar"><div class="credit-fill" style="width:31%;background:var(--pod)"></div></div>
+          </div>
+          <div class="credit-bar-wrap">
+            <div class="credit-bar-label"><span class="credit-bar-name" style="color:var(--w3)">AI Studios</span><span class="credit-bar-val">620 credits</span></div>
+            <div class="credit-bar"><div class="credit-fill" style="width:50%;background:rgba(255,255,255,0.5)"></div></div>
+          </div>
+          <div class="credit-bar-wrap">
+            <div class="credit-bar-label"><span class="credit-bar-name" style="color:var(--cf)">CineFlow AI</span><span class="credit-bar-val">240 credits</span></div>
+            <div class="credit-bar"><div class="credit-fill" style="width:19%;background:var(--cf)"></div></div>
+          </div>
+          <div style="margin-top:14px;padding-top:12px;border-top:0.5px solid var(--b)">
+            <div style="font-size:11px;color:var(--mu2);margin-bottom:8px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px">Credit costs per action</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:9px;color:var(--mu2);font-family:'DM Mono',monospace">Text / script</div><div style="font-size:14px;font-weight:500;color:var(--w);font-family:'Syne',sans-serif;margin-top:2px">1 credit</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:9px;color:var(--mu2);font-family:'DM Mono',monospace">Video prompt</div><div style="font-size:14px;font-weight:500;color:var(--w);font-family:'Syne',sans-serif;margin-top:2px">1 credit</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:9px;color:var(--mu2);font-family:'DM Mono',monospace">Image mockup</div><div style="font-size:14px;font-weight:500;color:var(--w);font-family:'Syne',sans-serif;margin-top:2px">5 credits</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:9px;color:var(--mu2);font-family:'DM Mono',monospace">Voice prompt</div><div style="font-size:14px;font-weight:500;color:var(--w);font-family:'Syne',sans-serif;margin-top:2px">5 credits</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:9px;color:var(--mu2);font-family:'DM Mono',monospace">Calendar (30-day)</div><div style="font-size:14px;font-weight:500;color:var(--w);font-family:'Syne',sans-serif;margin-top:2px">10 credits</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-size:9px;color:var(--mu2);font-family:'DM Mono',monospace">Video gen (future)</div><div style="font-size:14px;font-weight:500;color:var(--w);font-family:'Syne',sans-serif;margin-top:2px">20–100</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle gold">Buy more credits</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+              <div style="background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;text-align:center;cursor:pointer;transition:border .2s" onmouseover="this.style.borderColor='rgba(232,199,106,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--w)">500</div><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">credits</div><div style="font-size:13px;color:var(--gold);margin-top:6px;font-weight:500">$9</div></div>
+              <div style="background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;text-align:center;cursor:pointer;transition:border .2s" onmouseover="this.style.borderColor='rgba(232,199,106,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--w)">1,500</div><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">credits</div><div style="font-size:13px;color:var(--gold);margin-top:6px;font-weight:500">$19</div></div>
+              <div style="background:var(--gold2);border:0.5px solid rgba(232,199,106,0.3);border-radius:var(--r);padding:12px;text-align:center;cursor:pointer"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--w)">5,000</div><div style="font-size:10px;color:var(--gold);font-family:'DM Mono',monospace">credits</div><div style="font-size:13px;color:var(--gold);margin-top:6px;font-weight:500">$49 — best value</div></div>
+              <div style="background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:12px;text-align:center;cursor:pointer;transition:border .2s" onmouseover="this.style.borderColor='rgba(232,199,106,0.3)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--w)">Unlimited</div><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">with Boss plan</div><div style="font-size:13px;color:var(--mu3);margin-top:6px;font-weight:500">Already active ✦</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Credit history</div>
+            <div class="act-row"><div class="act-dot" style="background:var(--cf)"></div><div class="act-info"><div class="act-title">30-day calendar generated</div><div class="act-meta">CineFlow AI</div></div><div class="act-time" style="color:var(--mu)">−10</div></div>
+            <div class="act-row"><div class="act-dot" style="background:var(--stu)"></div><div class="act-info"><div class="act-title">Movie script generated</div><div class="act-meta">AI Studios</div></div><div class="act-time" style="color:var(--mu)">−1</div></div>
+            <div class="act-row"><div class="act-dot" style="background:var(--pod)"></div><div class="act-info"><div class="act-title">8 mockups generated</div><div class="act-meta">POD Pro Studio</div></div><div class="act-time" style="color:var(--mu)">−40</div></div>
+            <div class="act-row"><div class="act-dot" style="background:var(--gold)"></div><div class="act-info"><div class="act-title">Monthly plan credits added</div><div class="act-meta">Boss Plan renewal</div></div><div class="act-time" style="color:var(--cf)">+1,500</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="pg" id="pg-billing">
+      <div class="pg-title">Billing <span style="color:var(--gold)">& Plans</span></div>
+      <div class="pg-sub">One subscription unlocks all 3 apps. Manage your plan, payment method, and billing history here.</div>
+      <div style="background:var(--gold2);border:1px solid rgba(232,199,106,0.3);border-radius:var(--r2);padding:18px 22px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--w)">Boss Plan — Active ✦</div>
+          <div style="font-size:12px;color:var(--mu3);margin-top:3px">All 3 apps · Unlimited generations · 1,500 credits/month · Renews June 1, 2026</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gold)">$67<span style="font-size:12px;font-weight:400;color:var(--mu3)">/mo</span></div>
+          <button class="btn gold mt8">Manage plan</button>
+        </div>
+      </div>
+      <div class="price-grid mb24">
+        <div class="pc">
+          <div class="pc-tier">Starter</div>
+          <div class="pc-price"><sup>$</sup>19</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">All 3 apps (limited)</div>
+          <div class="pf">200 credits / month</div>
+          <div class="pf">Basic prompt types</div>
+          <div class="pf">7-day calendars only</div>
+          <div class="pf dim">Brand deal tools</div>
+          <div class="pf dim">Admin dashboard</div>
+          <button class="btn w100 mt12">Downgrade</button>
+        </div>
+        <div class="pc">
+          <div class="pc-tier">Creator</div>
+          <div class="pc-price"><sup>$</sup>37</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">All 3 apps (full access)</div>
+          <div class="pf">750 credits / month</div>
+          <div class="pf">All prompt types</div>
+          <div class="pf">30-day calendars</div>
+          <div class="pf">Brand deal basic tools</div>
+          <div class="pf dim">Admin dashboard</div>
+          <button class="btn w100 mt12">Downgrade</button>
+        </div>
+        <div class="pc pop">
+          <div class="pc-tier">Boss</div>
+          <div class="pc-price"><sup>$</sup>67</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">All 3 apps — full access</div>
+          <div class="pf">1,500 credits / month</div>
+          <div class="pf">All tools unlocked</div>
+          <div class="pf">Brand deal full suite</div>
+          <div class="pf">Admin dashboard access</div>
+          <div class="pf">Priority AI generation</div>
+          <button class="btn gold w100 mt12">Current plan ✦</button>
+        </div>
+        <div class="pc">
+          <div class="pc-tier">Agency</div>
+          <div class="pc-price"><sup>$</sup>147</div>
+          <div class="pc-period">per month</div>
+          <div class="pf">Everything in Boss</div>
+          <div class="pf">5 team seats</div>
+          <div class="pf">5,000 credits / month</div>
+          <div class="pf">Client workspaces</div>
+          <div class="pf">White-label exports</div>
+          <div class="pf">API access</div>
+          <button class="btn w100 mt12">Upgrade</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ptitle gold">Billing history</div>
+        <table class="admin-table">
+          <thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>May 1, 2026</td><td>Boss Plan — monthly</td><td style="color:var(--gold)">$67.00</td><td><span class="pill pill-cf">Paid</span></td></tr>
+            <tr><td>Apr 1, 2026</td><td>Boss Plan — monthly</td><td style="color:var(--gold)">$67.00</td><td><span class="pill pill-cf">Paid</span></td></tr>
+            <tr><td>Mar 1, 2026</td><td>Boss Plan — monthly</td><td style="color:var(--gold)">$67.00</td><td><span class="pill pill-cf">Paid</span></td></tr>
+            <tr><td>Mar 15, 2026</td><td>Credit top-up — 5,000 credits</td><td style="color:var(--gold)">$49.00</td><td><span class="pill pill-cf">Paid</span></td></tr>
+            <tr><td>Feb 1, 2026</td><td>Boss Plan — monthly</td><td style="color:var(--gold)">$67.00</td><td><span class="pill pill-cf">Paid</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ONBOARDING -->
+    <div class="pg" id="pg-onboarding">
+      <div class="pg-title">Student <span style="color:var(--gold)">Onboarding</span></div>
+      <div class="pg-sub">Your guided journey from day one. Complete each step to unlock the full power of all 3 apps and the Skool community.</div>
+      <div class="g2 mb24">
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle gold">Your onboarding progress</div>
+            <div class="prog"><div class="prog-lbl"><span>Getting started</span><span>Complete ✦</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--gold)"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>POD Pro Studio setup</span><span>80%</span></div><div class="prog-bar"><div class="prog-fill" style="width:80%;background:var(--pod)"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>AI Studios first project</span><span>60%</span></div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:rgba(255,255,255,0.5)"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>CineFlow first calendar</span><span>40%</span></div><div class="prog-bar"><div class="prog-fill" style="width:40%;background:var(--cf)"></div></div></div>
+            <div class="prog"><div class="prog-lbl"><span>First sale or brand deal</span><span>20%</span></div><div class="prog-bar"><div class="prog-fill" style="width:20%;background:var(--gold)"></div></div></div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Skool community connection</div>
+            <div style="background:var(--gold2);border:0.5px solid rgba(232,199,106,0.25);border-radius:var(--r);padding:14px;margin-bottom:12px">
+              <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w);margin-bottom:4px">Envi Lee Baddie Academy</div>
+              <div style="font-size:11px;color:var(--mu2);line-height:1.6;margin-bottom:10px">Live coaching, community support, and exclusive resources. Your Skool membership is the heartbeat of everything.</div>
+              <button class="btn gold">Join Skool Community ↗</button>
+            </div>
+            <div style="background:var(--pod3);border:0.5px solid rgba(0,245,255,0.15);border-radius:var(--r);padding:14px">
+              <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w);margin-bottom:4px">Envi Lee POD Academy</div>
+              <div style="font-size:11px;color:var(--mu2);line-height:1.6;margin-bottom:10px">POD-specific community, assignments, and first sale support.</div>
+              <button class="btn pod">Join POD Academy ↗</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="ptitle gold">Step-by-step onboarding</div>
+            <div class="step done" onclick="launchApp('pod')">
+              <div class="step-num done">✓</div>
+              <div class="step-info">
+                <div class="step-title">Set up your account</div>
+                <div class="step-desc">Complete your profile, choose your plan, and connect your Skool membership</div>
+              </div>
+              <span class="pill pill-cf">Done</span>
+            </div>
+            <div class="step" onclick="launchApp('pod')">
+              <div class="step-num active">2</div>
+              <div class="step-info">
+                <div class="step-title">Create your first mockup in POD Studio</div>
+                <div class="step-desc">Upload a design, choose a product, and generate your first professional mockup</div>
+              </div>
+              <span class="pill pill-gold">Active</span>
+            </div>
+            <div class="step" onclick="launchApp('stu')">
+              <div class="step-num locked">3</div>
+              <div class="step-info">
+                <div class="step-title">Build your first AI character in AI Studios</div>
+                <div class="step-desc">Create a reusable AI actor or influencer twin with full character profile</div>
+              </div>
+              <span class="pill pill-mu">Next</span>
+            </div>
+            <div class="step" onclick="launchApp('cf')">
+              <div class="step-num locked">4</div>
+              <div class="step-info">
+                <div class="step-title">Build your 30-day content calendar</div>
+                <div class="step-desc">Generate a full month of content ideas, hooks, and captions in CineFlow</div>
+              </div>
+              <span class="pill pill-mu">Next</span>
+            </div>
+            <div class="step" onclick="launchApp('pod')">
+              <div class="step-num locked">5</div>
+              <div class="step-info">
+                <div class="step-title">List your first product on a platform</div>
+                <div class="step-desc">Export to Etsy, Shopify, or TikTok Shop and make your first listing live</div>
+              </div>
+              <span class="pill pill-mu">Next</span>
+            </div>
+            <div class="step" onclick="side('billing',null);nav('billing')">
+              <div class="step-num locked">6</div>
+              <div class="step-info">
+                <div class="step-title">Close your first sale or brand deal</div>
+                <div class="step-desc">Make your first dollar with your POD store or land your first brand partnership</div>
+              </div>
+              <span class="pill pill-mu">Next</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFFILIATE -->
+    <div class="pg" id="pg-affiliate">
+      <div class="pg-title">Affiliate <span style="color:var(--gold)">Program</span></div>
+      <div class="pg-sub">Share your unique link and earn 30% commission on every subscription you refer. No cap. No expiry. The more you share, the more you earn.</div>
+      <div class="stats-row mb24">
+        <div class="stat gold"><div class="stat-n">$847</div><div class="stat-l">Affiliate earnings</div><div class="stat-g gold">↑ This month</div></div>
+        <div class="stat cf"><div class="stat-n">14</div><div class="stat-l">Active referrals</div><div class="stat-g cf">↑ 3 this week</div></div>
+        <div class="stat pod"><div class="stat-n">30%</div><div class="stat-l">Commission rate</div><div class="stat-g pod">↑ Recurring</div></div>
+        <div class="stat stu"><div class="stat-n">$2,847</div><div class="stat-l">Total earned</div><div class="stat-g" style="color:var(--mu3)">All time</div></div>
+      </div>
+      <div class="g2 mb24">
+        <div>
+          <div class="panel gold mb16">
+            <div class="ptitle gold">Your referral link</div>
+            <div style="font-size:12px;color:var(--mu2);margin-bottom:10px">Share this link anywhere — TikTok, Instagram, email, Skool. Every subscription earns you 30% recurring commission.</div>
+            <div class="ref-box">
+              <div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace;margin-bottom:4px">Your unique link</div>
+              <div class="ref-link">envilee.ai/ref/ENVI2026</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn gold" onclick="navigator.clipboard&&navigator.clipboard.writeText('envilee.ai/ref/ENVI2026').then(()=>alert('Link copied!'))">Copy link</button>
+              <button class="btn">Share on TikTok</button>
+              <button class="btn">Share on Instagram</button>
+            </div>
+          </div>
+          <div class="panel gold">
+            <div class="ptitle gold">Commission structure</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">Starter referral</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-top:3px">$5.70/mo</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">Creator referral</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-top:3px">$11.10/mo</div></div>
+              <div style="background:var(--gold2);border:0.5px solid rgba(232,199,106,0.2);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--gold);font-family:'DM Mono',monospace">Boss referral</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-top:3px">$20.10/mo</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">Agency referral</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-top:3px">$44.10/mo</div></div>
+            </div>
+            <div style="font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;margin-top:10px">Commissions paid monthly via Stripe. Minimum $50 payout threshold.</div>
+          </div>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle gold">Active referrals</div>
+            <table class="admin-table">
+              <thead><tr><th>Name</th><th>Plan</th><th>Joined</th><th>Earning</th></tr></thead>
+              <tbody>
+                <tr><td>@baddie_queen</td><td><span class="pill pill-gold">Boss</span></td><td style="color:var(--mu2)">Apr 2026</td><td style="color:var(--gold)">$20.10</td></tr>
+                <tr><td>@creative_nia</td><td><span class="pill pill-pod">Creator</span></td><td style="color:var(--mu2)">Apr 2026</td><td style="color:var(--gold)">$11.10</td></tr>
+                <tr><td>@luxe_builds</td><td><span class="pill pill-gold">Boss</span></td><td style="color:var(--mu2)">Mar 2026</td><td style="color:var(--gold)">$20.10</td></tr>
+                <tr><td>@pod_sisters</td><td><span class="pill pill-pod">Creator</span></td><td style="color:var(--mu2)">Mar 2026</td><td style="color:var(--gold)">$11.10</td></tr>
+                <tr><td>@ai_creator_z</td><td><span class="pill pill-gold">Boss</span></td><td style="color:var(--mu2)">Feb 2026</td><td style="color:var(--gold)">$20.10</td></tr>
+              </tbody>
+            </table>
+            <button class="btn gold mt8 w100">View all 14 referrals</button>
+          </div>
+          <div class="panel">
+            <div class="ptitle gold">Content to share</div>
+            <div class="fc">
+              <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b);cursor:pointer" onclick="genAffiliateContent('TikTok')">
+                <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:2px">TikTok promo script</div>
+                <div style="font-size:10px;color:var(--mu2)">Generate a TikTok video script promoting your affiliate link</div>
+              </div>
+              <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b);cursor:pointer" onclick="genAffiliateContent('Instagram')">
+                <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:2px">Instagram caption</div>
+                <div style="font-size:10px;color:var(--mu2)">Generate an Instagram caption to drive affiliate signups</div>
+              </div>
+              <div style="padding:10px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b);cursor:pointer" onclick="genAffiliateContent('email')">
+                <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w);margin-bottom:2px">Email to your list</div>
+                <div style="font-size:10px;color:var(--mu2)">Generate a promo email for your subscriber list</div>
+              </div>
+            </div>
+            <div class="lbar mt8" id="aff-lbar"><div class="lbar-fill"></div></div>
+            <div class="ai-out mt8" id="aff-out"><div class="ai-lbl">Affiliate Content</div><div class="ai-text" id="aff-txt"></div><button class="btn gold mt8" onclick="copyEl('aff-txt')">Copy ↗</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="pg" id="pg-admin">
+      <div class="pg-title">Admin <span style="color:var(--gold)">Dashboard</span></div>
+      <div class="pg-sub">Manage your users, subscriptions, content, and academy resources. Only visible to you — your private backend.</div>
+      <div class="stats-row mb24">
+        <div class="stat gold"><div class="stat-n">847</div><div class="stat-l">Total users</div><div class="stat-g gold">↑ +28 this week</div></div>
+        <div class="stat cf"><div class="stat-n">$18.4k</div><div class="stat-l">MRR</div><div class="stat-g cf">↑ +12%</div></div>
+        <div class="stat pod"><div class="stat-n">312</div><div class="stat-l">Active this month</div><div class="stat-g pod">↑ 37% active rate</div></div>
+        <div class="stat stu"><div class="stat-n">6.2%</div><div class="stat-l">Churn rate</div><div class="stat-g" style="color:var(--mu3)">↓ down from 8.1%</div></div>
+      </div>
+      <div class="g2 mb24">
+        <div class="panel">
+          <div class="ptitle gold">User management</div>
+          <table class="admin-table">
+            <thead><tr><th>User</th><th>Plan</th><th>App usage</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>@baddie_queen</td><td><span class="pill pill-gold">Boss</span></td><td style="color:var(--mu2)">All 3 apps</td><td><span class="pill pill-cf">Active</span></td></tr>
+              <tr><td>@creative_nia</td><td><span class="pill pill-pod">Creator</span></td><td style="color:var(--mu2)">POD + CineFlow</td><td><span class="pill pill-cf">Active</span></td></tr>
+              <tr><td>@newstudent_zoe</td><td><span class="pill pill-mu">Starter</span></td><td style="color:var(--mu2)">CineFlow only</td><td><span class="pill pill-mu">Onboarding</span></td></tr>
+              <tr><td>@luxe_builds</td><td><span class="pill pill-gold">Boss</span></td><td style="color:var(--mu2)">All 3 apps</td><td><span class="pill pill-cf">Active</span></td></tr>
+              <tr><td>@pod_sisters</td><td><span class="pill pill-pod">Creator</span></td><td style="color:var(--mu2)">POD Studio</td><td><span class="pill pill-mu">Low usage</span></td></tr>
+            </tbody>
+          </table>
+          <button class="btn gold mt8 w100">View all 847 users ↗</button>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle gold">Revenue overview</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">Starter plans</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--w);margin-top:3px">$2,470</div><div style="font-size:10px;color:var(--mu2)">130 users × $19</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">Creator plans</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--w);margin-top:3px">$5,920</div><div style="font-size:10px;color:var(--mu2)">160 users × $37</div></div>
+              <div style="background:var(--gold2);border:0.5px solid rgba(232,199,106,0.2);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--gold);font-family:'DM Mono',monospace">Boss plans</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-top:3px">$8,710</div><div style="font-size:10px;color:var(--mu2)">130 users × $67</div></div>
+              <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px"><div style="font-size:10px;color:var(--mu2);font-family:'DM Mono',monospace">Agency plans</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--w);margin-top:3px">$1,323</div><div style="font-size:10px;color:var(--mu2)">9 users × $147</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle gold">Content management</div>
+            <div class="fc">
+              <button class="btn gold w100">Upload new prompt pack</button>
+              <button class="btn w100">Add academy resource</button>
+              <button class="btn w100">Send announcement to all users</button>
+              <button class="btn w100">Update pricing tiers</button>
+              <button class="btn w100">Export user data CSV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="ptitle gold">Recent signups</div>
+        <table class="admin-table">
+          <thead><tr><th>User</th><th>Email</th><th>Plan</th><th>Referral</th><th>Signed up</th></tr></thead>
+          <tbody>
+            <tr><td>@newuser_maya</td><td style="color:var(--mu2)">maya@email.com</td><td><span class="pill pill-gold">Boss</span></td><td style="color:var(--gold)">envilee.ai/ref/ENVI2026</td><td style="color:var(--mu2)">Today</td></tr>
+            <tr><td>@creator_kim</td><td style="color:var(--mu2)">kim@email.com</td><td><span class="pill pill-pod">Creator</span></td><td style="color:var(--mu)">Direct</td><td style="color:var(--mu2)">Yesterday</td></tr>
+            <tr><td>@pod_newbie</td><td style="color:var(--mu2)">newbie@email.com</td><td><span class="pill pill-mu">Starter</span></td><td style="color:var(--gold)">@baddie_queen</td><td style="color:var(--mu2)">2 days ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="pg" id="pg-settings">
+      <div class="pg-title">Account <span style="color:var(--gold)">Settings</span></div>
+      <div class="pg-sub">Manage your profile, connected apps, notifications, and integrations.</div>
+      <div class="g2">
+        <div class="panel hi">
+          <div class="ptitle gold">Profile</div>
+          <div class="field"><div class="fl">Display name</div><input class="inp" value="Envi Lee"/></div>
+          <div class="field"><div class="fl">Email</div><input class="inp" value="envi@envilee.com"/></div>
+          <div class="field"><div class="fl">Skool username</div><input class="inp" placeholder="Your Skool community username"/></div>
+          <div class="field"><div class="fl">Default brand voice</div>
+            <select class="sel"><option>Luxury & elevated</option><option>Bold & confident</option><option>Fun & relatable</option></select>
+          </div>
+          <button class="btn gold mt8">Save profile</button>
+        </div>
+        <div>
+          <div class="panel mb16">
+            <div class="ptitle">Connected platforms</div>
+            <div class="fc">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">Printify</span><span class="pill pill-cf">Connected</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">Etsy</span><span class="pill pill-cf">Connected</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">Shopify</span><span class="pill pill-mu">Not connected</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">TikTok Shop</span><span class="pill pill-mu">Not connected</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ptitle">Notifications</div>
+            <div class="fc">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--w2)">New referral signup <span class="pill pill-cf">On</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--w2)">Credit low warning <span class="pill pill-cf">On</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--w2)">New platform feature <span class="pill pill-cf">On</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--w2)">Weekly usage report <span class="pill pill-mu">Off</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP STAT PAGES -->
+    <div class="pg" id="pg-pod-stats">
+      <div class="pg-title" style="color:var(--pod)">POD Pro Studio™ <span style="color:var(--w2)">— Stats</span></div>
+      <div class="pg-sub">Detailed usage and performance stats for your POD Pro Mockup Studio.</div>
+      <div class="stats-row">
+        <div class="stat pod"><div class="stat-n">84</div><div class="stat-l">Mockups generated</div></div>
+        <div class="stat pod"><div class="stat-n">12</div><div class="stat-l">Collections built</div></div>
+        <div class="stat pod"><div class="stat-n">48</div><div class="stat-l">Listings exported</div></div>
+        <div class="stat pod"><div class="stat-n">$14.8k</div><div class="stat-l">POD revenue this month</div></div>
+      </div>
+      <button class="btn pod mt12" onclick="launchApp('pod')">Open POD Studio ↗</button>
+    </div>
+    <div class="pg" id="pg-stu-stats">
+      <div class="pg-title" style="color:var(--w3)">AI Studios™ <span style="color:var(--w2)">— Stats</span></div>
+      <div class="pg-sub">Detailed usage and performance stats for Envi Lee AI Studios.</div>
+      <div class="stats-row">
+        <div class="stat stu"><div class="stat-n">42</div><div class="stat-l">Scripts written</div></div>
+        <div class="stat stu"><div class="stat-n">14</div><div class="stat-l">Characters built</div></div>
+        <div class="stat stu"><div class="stat-n">8</div><div class="stat-l">Active projects</div></div>
+        <div class="stat stu"><div class="stat-n">73</div><div class="stat-l">Video prompts exported</div></div>
+      </div>
+      <button class="btn mt12" onclick="launchApp('stu')">Open AI Studios ↗</button>
+    </div>
+    <div class="pg" id="pg-cf-stats">
+      <div class="pg-title" style="color:var(--cf)">CineFlow AI™ <span style="color:var(--w2)">— Stats</span></div>
+      <div class="pg-sub">Detailed usage and performance stats for CineFlow AI.</div>
+      <div class="stats-row">
+        <div class="stat cf"><div class="stat-n">247</div><div class="stat-l">Prompts generated</div></div>
+        <div class="stat cf"><div class="stat-n">30</div><div class="stat-l">Calendar days built</div></div>
+        <div class="stat cf"><div class="stat-n">18</div><div class="stat-l">UGC ads created</div></div>
+        <div class="stat cf"><div class="stat-n">84</div><div class="stat-l">Hooks saved</div></div>
+      </div>
+      <button class="btn cf mt12" onclick="launchApp('cf')">Open CineFlow ↗</button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
+
+async function ai(prompt,txtId,lbarId,outId){
+  const txt=document.getElementById(txtId),lb=lbarId?document.getElementById(lbarId):null,out=outId?document.getElementById(outId):null;
+  if(lb)lb.classList.add('go');
+  if(txt)txt.textContent='Generating…';
+  if(out){out.style.display='block';out.classList.add('show')}
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(txt)txt.textContent=d.content&&d.content[0]?d.content[0].text:'Generation failed.';
+  }catch(e){if(txt)txt.textContent='Connection error. Please try again.'}
+  if(lb)lb.classList.remove('go');
+}
+
+function copyEl(id){
+  const el=document.getElementById(id);
+  if(el&&navigator.clipboard)navigator.clipboard.writeText(el.textContent).then(()=>{const o=el.style.color;el.style.color='var(--gold)';setTimeout(()=>el.style.color=o,600)});
+}
+
+function launchApp(app){
+  const names={pod:'POD Pro Mockup Studio™',stu:'Envi Lee AI Studios™',cf:'CineFlow AI™'};
+  const files={pod:'POD_Pro_Mockup_Studio_v2.html',stu:'EnviLee_AI_Studios_COMPLETE.html',cf:'CineFlow_AI_COMPLETE.html'};
+  alert(`Opening ${names[app]}...\n\nIn the live build, this navigates to the ${names[app]} app with shared session.\n\nFile: ${files[app]}`);
+}
+
+async function genAffiliateContent(platform){
+  await ai(`Write compelling ${platform} content to promote the Envi Lee AI Creator Suite affiliate program.\n\nKey points to include:\n- 3 apps in one suite: POD Pro Mockup Studio, AI Studios, and CineFlow AI\n- Helps creators build POD businesses, AI influencer brands, and cinematic content\n- Affiliate link: envilee.ai/ref/ENVI2026\n- 30% recurring commission\n\nFor TikTok: write a 30-second script with hook + content + CTA\nFor Instagram: write a caption with hook + body + CTA + hashtags\nFor email: write subject line + email body\n\nMake it authentic, not salesy. Written as someone who genuinely uses and loves the platform. Under 300 words.`,'aff-txt','aff-lbar','aff-out');
+}
+
+const mainMap={home:'home',apps:'apps',credits:'credits',billing:'billing',onboarding:'onboarding',affiliate:'affiliate',admin:'admin',settings:'settings'};
+const sideMap={home:'home',apps:'apps',credits:'credits','pod-stats':'pod-stats','stu-stats':'stu-stats','cf-stats':'cf-stats',billing:'billing',onboarding:'onboarding',affiliate:'affiliate',admin:'admin'};
+
+function nav(k){
+  document.querySelectorAll('.tn').forEach(b=>b.classList.remove('on'));
+  const keys=Object.keys(mainMap),idx=keys.indexOf(k);
+  if(idx>=0)document.querySelectorAll('.tn')[idx].classList.add('on');
+  showPg(mainMap[k]);
+}
+function side(k,el){
+  document.querySelectorAll('.si').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(sideMap[k])showPg(sideMap[k]);
+}
+function showPg(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('pg-'+id);
+  if(p)p.classList.add('on');
+}
+</script>
+</body>
+</html>
