@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Envi Lee AI Creator Suite™</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#000;--bg2:#080808;--bg3:#0f0f0f;--bg4:#141414;
+  --s1:#1a1a1a;--s2:#222;--s3:#2a2a2a;
+  --w:#f8f8ff;--w2:#d0d0e8;--w3:#9898bb;
+  --mu:#444;--mu2:#666;--mu3:#888;
+  --b:rgba(255,255,255,0.08);--b2:rgba(255,255,255,0.14);
+  --gold:#e8c76a;--gold2:rgba(232,199,106,0.15);--goldb:rgba(232,199,106,0.3);
+  --pod:#00f5ff;--pod2:rgba(0,245,255,0.12);
+  --stu:rgba(255,255,255,0.9);--stu2:rgba(255,255,255,0.08);
+  --cf:#00c853;--cf2:rgba(0,200,83,0.12);
+  --r:10px;--r2:14px;--r3:18px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--w);height:100%;overflow:hidden;position:fixed;width:100%;touch-action:manipulation}
+
+/* MOBILE HEADER */
+.mhdr{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.97);border-bottom:0.5px solid var(--b2);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;backdrop-filter:blur(20px)}
+.mhdr-logo{display:flex;align-items:center;gap:8px}
+.mhdr-gems{display:flex;gap:3px}
+.mgem{width:7px;height:7px;transform:rotate(45deg)}
+.mgem.pod{background:var(--pod)}
+.mgem.stu{background:#fff;opacity:.8}
+.mgem.cf{background:var(--cf)}
+.mhdr-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--w)}
+.mhdr-name em{font-style:normal;color:var(--gold)}
+.mhdr-right{display:flex;align-items:center;gap:8px}
+.credit-chip{background:var(--gold2);border:0.5px solid var(--goldb);border-radius:20px;padding:4px 9px;font-size:10px;color:var(--gold);font-family:'DM Mono',monospace}
+.mav{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--pod),var(--cf));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#000;font-family:'Syne',sans-serif}
+
+/* SCROLL AREA */
+.scroll-area{position:fixed;top:54px;bottom:calc(64px + var(--safe-bottom));left:0;right:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* PAGES */
+.pg{display:none;padding:16px;animation:pgIn .25s ease}
+.pg.on{display:block}
+@keyframes pgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(0,0,0,0.97);border-top:0.5px solid var(--b2);display:flex;padding-bottom:var(--safe-bottom);backdrop-filter:blur(20px)}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;cursor:pointer;transition:all .15s;border:none;background:none;-webkit-tap-highlight-color:transparent}
+.bni .icon{font-size:20px;line-height:1;margin-bottom:3px;font-family:'DM Mono',monospace;color:var(--mu2);transition:all .2s}
+.bni .label{font-size:9px;color:var(--mu);font-family:'DM Mono',monospace;letter-spacing:.3px;transition:color .2s}
+.bni.on .icon.pod{color:var(--pod)}
+.bni.on .icon.stu{color:var(--w)}
+.bni.on .icon.cf{color:var(--cf)}
+.bni.on .icon.gold{color:var(--gold)}
+.bni.on .icon.hub{color:var(--gold)}
+.bni.on .label{color:var(--w3)}
+
+/* TYPOGRAPHY */
+.pg-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--w);margin-bottom:3px;letter-spacing:-.3px}
+.hi.pod{color:var(--pod)}
+.hi.stu{color:var(--mu3)}
+.hi.cf{color:var(--cf)}
+.hi.gold{color:var(--gold)}
+.pg-sub{font-size:12px;color:var(--mu2);margin-bottom:16px;line-height:1.6}
+
+/* PANELS */
+.panel{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:14px;margin-bottom:12px}
+.panel.pod-b{border-color:rgba(0,245,255,0.2)}
+.panel.cf-b{border-color:rgba(0,200,83,0.2)}
+.panel.gold-b{border-color:var(--goldb)}
+.ptitle{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--b)}
+.ptitle.pod{color:var(--pod)}
+.ptitle.cf{color:var(--cf)}
+.ptitle.gold{color:var(--gold)}
+.ptitle.stu{color:var(--mu3)}
+
+/* FORM */
+.inp{background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%;transition:border .2s;-webkit-appearance:none}
+.inp:focus{outline:none;border-color:var(--b2)}
+.inp::placeholder{color:var(--mu)}
+textarea.inp{resize:none;min-height:90px;line-height:1.6}
+.sel{background:var(--bg3);border:0.5px solid var(--b);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--w);font-family:'DM Sans',sans-serif;width:100%;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.sel:focus{outline:none;border-color:var(--b2)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.fl{font-size:10px;font-weight:600;color:var(--mu2);text-transform:uppercase;letter-spacing:.7px;font-family:'DM Mono',monospace}
+
+/* BUTTONS */
+.btn{padding:13px 16px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:0.5px solid var(--b2);background:var(--s2);color:var(--w2);transition:all .15s;font-family:'DM Sans',sans-serif;text-align:center;display:block;width:100%;-webkit-appearance:none;active:scale(.97)}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn.pod{background:var(--pod);color:#000;border-color:var(--pod);font-weight:700}
+.btn.cf{background:var(--cf);color:#000;border-color:var(--cf);font-weight:700}
+.btn.gold{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
+.btn.stu{background:var(--w);color:#000;border-color:var(--w);font-weight:700}
+.btn.ou{background:transparent;border-color:var(--b2);color:var(--mu3)}
+.btn-row{display:flex;gap:8px;margin-top:10px}
+.btn-row .btn{flex:1;padding:11px 10px;font-size:12px}
+
+/* AI OUTPUT */
+.ai-out{background:var(--bg4);border:0.5px solid var(--b2);border-radius:var(--r2);padding:14px;display:none;margin-top:10px;animation:pgIn .3s ease}
+.ai-out.show{display:block}
+.ai-lbl{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;animation:aip 1.8s ease infinite;flex-shrink:0}
+.ai-lbl.pod{color:var(--pod)}.ai-lbl.pod::before{background:var(--pod)}
+.ai-lbl.cf{color:var(--cf)}.ai-lbl.cf::before{background:var(--cf)}
+.ai-lbl.gold{color:var(--gold)}.ai-lbl.gold::before{background:var(--gold)}
+.ai-lbl.stu{color:var(--mu3)}.ai-lbl.stu::before{background:var(--w3)}
+@keyframes aip{0%,100%{opacity:1}50%{opacity:.2}}
+.ai-text{font-size:13px;color:var(--w2);line-height:1.8;white-space:pre-wrap}
+.lbar{height:2px;background:var(--b);overflow:hidden;margin:8px 0;display:none;border-radius:1px}
+.lbar.go{display:block}
+.lbar-fill.pod{animation:lm .pod 1.6s linear infinite}
+.lbar-fill{height:100%;border-radius:1px;animation:lm 1.6s linear infinite}
+@keyframes lm{0%{transform:translateX(-100%)}100%{transform:translateX(200%)};}
+
+/* HOME CARDS */
+.home-app-card{border-radius:var(--r2);padding:16px;border:0.5px solid;margin-bottom:12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.home-app-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.home-app-card.pod{background:var(--pod2);border-color:rgba(0,245,255,0.2)}
+.home-app-card.pod::before{background:var(--pod)}
+.home-app-card.stu{background:var(--stu2);border-color:rgba(255,255,255,0.1)}
+.home-app-card.stu::before{background:rgba(255,255,255,0.7)}
+.home-app-card.cf{background:var(--cf2);border-color:rgba(0,200,83,0.2)}
+.home-app-card.cf::before{background:var(--cf)}
+.hac-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--w);margin-bottom:2px}
+.hac-sub{font-size:11px;color:var(--mu3);margin-bottom:10px;line-height:1.5}
+.hac-stats{display:flex;gap:14px;margin-bottom:10px}
+.hs{font-family:'DM Mono',monospace;font-size:10px;color:var(--mu3)}
+.hs strong{display:block;font-size:14px;color:var(--w);font-family:'Syne',sans-serif;font-weight:700}
+
+/* STAT ROW */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:var(--s1);border-radius:var(--r);padding:12px;border:0.5px solid var(--b);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat.pod::before{background:var(--pod)}
+.stat.cf::before{background:var(--cf)}
+.stat.gold::before{background:var(--gold)}
+.stat.stu::before{background:rgba(255,255,255,0.5)}
+.stat-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--w)}
+.stat-l{font-size:10px;color:var(--mu2);margin-top:2px;font-family:'DM Mono',monospace}
+
+/* TOOL GRID */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tool-btn{background:var(--s1);border:0.5px solid var(--b);border-radius:var(--r2);padding:14px 12px;cursor:pointer;transition:all .2s;text-align:left;display:flex;flex-direction:column;gap:5px;-webkit-tap-highlight-color:transparent}
+.tool-btn:active{transform:scale(.96)}
+.tool-btn.pod:hover,.tool-btn.pod:active{border-color:rgba(0,245,255,0.3);background:var(--pod2)}
+.tool-btn.cf:hover,.tool-btn.cf:active{border-color:rgba(0,200,83,0.3);background:var(--cf2)}
+.tool-btn.stu:hover,.tool-btn.stu:active{border-color:rgba(255,255,255,0.15);background:var(--stu2)}
+.tool-btn.gold:hover,.tool-btn.gold:active{border-color:var(--goldb);background:var(--gold2)}
+.tb-icon{font-family:'DM Mono',monospace;font-size:18px;line-height:1}
+.tb-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--w)}
+.tb-desc{font-size:10px;color:var(--mu3);line-height:1.4}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;margin-top:4px}
+.sec-hdr-line{flex:1;height:0.5px;background:var(--b)}
+.sec-hdr-text{font-family:'DM Mono',monospace;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+
+/* PILLS */
+.pill{font-size:9px;padding:2px 7px;border-radius:8px;font-weight:600;font-family:'DM Mono',monospace}
+.pill-pod{background:var(--pod2);color:var(--pod)}
+.pill-cf{background:var(--cf2);color:var(--cf)}
+.pill-gold{background:var(--gold2);color:var(--gold)}
+.pill-mu{background:var(--s2);color:var(--mu3)}
+
+/* PROGRESS */
+.prog{margin-bottom:8px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.prog-lbl span:first-child{color:var(--mu3)}
+.prog-lbl span:last-child{color:var(--gold);font-family:'DM Mono',monospace}
+.prog-bar{height:4px;background:var(--s2);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+
+/* CHAT */
+.chat-msgs{max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px;-webkit-overflow-scrolling:touch}
+.chat-msgs::-webkit-scrollbar{display:none}
+.msg{max-width:88%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.6}
+.msg.user{background:var(--cf2);color:var(--w2);border:0.5px solid rgba(0,200,83,0.2);align-self:flex-end;border-radius:12px 12px 2px 12px}
+.msg.bot{background:var(--s2);color:var(--w2);border:0.5px solid var(--b);align-self:flex-start;border-radius:12px 12px 12px 2px}
+.chat-row{display:flex;gap:8px}
+.chat-row .inp{flex:1;min-height:auto;padding:12px 14px}
+
+/* QUICK CHIPS */
+.chip-row{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.chip-row::-webkit-scrollbar{display:none}
+.chip{background:var(--s2);border:0.5px solid var(--b);border-radius:20px;padding:7px 12px;font-size:11px;color:var(--mu3);cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:'DM Mono',monospace;-webkit-tap-highlight-color:transparent}
+.chip:active{transform:scale(.95)}
+.chip.on,.chip:hover{background:var(--s3);color:var(--w)}
+.chip.pod.on{background:var(--pod2);border-color:rgba(0,245,255,0.3);color:var(--pod)}
+.chip.cf.on{background:var(--cf2);border-color:rgba(0,200,83,0.3);color:var(--cf)}
+.chip.gold.on{background:var(--gold2);border-color:var(--goldb);color:var(--gold)}
+
+/* ACTIVITY ROW */
+.act-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:var(--r);margin-bottom:6px;border:0.5px solid var(--b)}
+.act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.act-info{flex:1}
+.act-title{font-size:12px;color:var(--w2);line-height:1.4}
+.act-time{font-size:10px;color:var(--mu);font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* REFERRAL BOX */
+.ref-box{background:var(--bg3);border:0.5px solid var(--goldb);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.ref-link{font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);margin-top:5px;word-break:break-all;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- MOBILE HEADER -->
+<header class="mhdr">
+  <div class="mhdr-logo">
+    <div class="mhdr-gems">
+      <div class="mgem pod"></div>
+      <div class="mgem stu"></div>
+      <div class="mgem cf"></div>
+    </div>
+    <div class="mhdr-name">Envi Lee <em>Suite™</em></div>
+  </div>
+  <div class="mhdr-right">
+    <div class="credit-chip">482 cr</div>
+    <div class="mav">EL</div>
+  </div>
+</header>
+
+<!-- SCROLL AREA -->
+<div class="scroll-area">
+
+  <!-- HOME -->
+  <div class="pg on" id="pg-home">
+    <div class="pg-title">Hey <span class="hi gold">Envi Lee</span> ✦</div>
+    <div class="pg-sub">Your AI creator empire — ready on mobile.</div>
+
+    <div class="stat-row">
+      <div class="stat gold"><div class="stat-n">$48.2k</div><div class="stat-l">Revenue this month</div></div>
+      <div class="stat pod"><div class="stat-n">373</div><div class="stat-l">Creations made</div></div>
+      <div class="stat cf"><div class="stat-n">482</div><div class="stat-l">Credits left</div></div>
+      <div class="stat stu"><div class="stat-n">7</div><div class="stat-l">Brand deals active</div></div>
+    </div>
+
+    <div class="home-app-card pod" onclick="nav('pod')">
+      <div style="font-family:'DM Mono',monospace;font-size:20px;color:var(--pod);margin-bottom:6px">◈</div>
+      <div class="hac-name" style="color:var(--pod)">POD Pro Studio™</div>
+      <div class="hac-sub">Mockups, products, listings, and monetization tools</div>
+      <div class="hac-stats">
+        <div class="hs"><strong>84</strong>Mockups</div>
+        <div class="hs"><strong>12</strong>Collections</div>
+        <div class="hs"><strong>$14.8k</strong>Revenue</div>
+      </div>
+      <div class="btn pod" style="font-size:12px;padding:10px">Open POD Studio ↗</div>
+    </div>
+
+    <div class="home-app-card stu" onclick="nav('studios')">
+      <div style="font-family:'DM Mono',monospace;font-size:20px;color:var(--mu3);margin-bottom:6px">◉</div>
+      <div class="hac-name">AI Studios™</div>
+      <div class="hac-sub">Scripts, characters, shows, concerts, and podcasts</div>
+      <div class="hac-stats">
+        <div class="hs"><strong>42</strong>Scripts</div>
+        <div class="hs"><strong>14</strong>Characters</div>
+        <div class="hs"><strong>8</strong>Projects</div>
+      </div>
+      <div class="btn stu" style="font-size:12px;padding:10px">Open AI Studios ↗</div>
+    </div>
+
+    <div class="home-app-card cf" onclick="nav('cineflow')">
+      <div style="font-family:'DM Mono',monospace;font-size:20px;color:var(--cf);margin-bottom:6px">⊳</div>
+      <div class="hac-name" style="color:var(--cf)">CineFlow AI™</div>
+      <div class="hac-sub">Cinematic prompts, calendars, UGC ads, and hooks</div>
+      <div class="hac-stats">
+        <div class="hs"><strong>247</strong>Prompts</div>
+        <div class="hs"><strong>30</strong>Calendar days</div>
+        <div class="hs"><strong>18</strong>UGC ads</div>
+      </div>
+      <div class="btn cf" style="font-size:12px;padding:10px">Open CineFlow ↗</div>
+    </div>
+
+    <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-text">Recent activity</div><div class="sec-hdr-line"></div></div>
+    <div class="act-row"><div class="act-dot" style="background:var(--pod)"></div><div class="act-info"><div class="act-title">8 swim collection mockups generated</div></div><div class="act-time">2h ago</div></div>
+    <div class="act-row"><div class="act-dot" style="background:#fff"></div><div class="act-info"><div class="act-title">Baddie House Ep 5 script written</div></div><div class="act-time">4h ago</div></div>
+    <div class="act-row"><div class="act-dot" style="background:var(--cf)"></div><div class="act-info"><div class="act-title">30-day calendar built for POD niche</div></div><div class="act-time">Yesterday</div></div>
+  </div>
+
+  <!-- POD PRO STUDIO -->
+  <div class="pg" id="pg-pod">
+    <div class="pg-title">POD Pro <span class="hi pod">Studio™</span></div>
+    <div class="pg-sub">Generate mockups, write listings, build collections, and track revenue — all from your phone.</div>
+
+    <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-text">Quick create</div><div class="sec-hdr-line"></div></div>
+    <div class="tool-grid">
+      <div class="tool-btn pod" onclick="showTool('pod-mockup')"><div class="tb-icon" style="color:var(--pod)">◈</div><div class="tb-name">Mockup Generator</div><div class="tb-desc">12 product types</div></div>
+      <div class="tool-btn pod" onclick="showTool('pod-listing')"><div class="tb-icon" style="color:var(--pod)">⊹</div><div class="tb-name">Product Listing</div><div class="tb-desc">Title, description, SEO</div></div>
+      <div class="tool-btn pod" onclick="showTool('pod-profit')"><div class="tb-icon" style="color:var(--pod)">◷</div><div class="tb-name">Profit Calculator</div><div class="tb-desc">Real-time margins</div></div>
+      <div class="tool-btn pod" onclick="showTool('pod-pitch')"><div class="tb-icon" style="color:var(--pod)">◉</div><div class="tb-name">Brand Pitch</div><div class="tb-desc">Email generator</div></div>
+    </div>
+
+    <!-- MOCKUP GENERATOR -->
+    <div id="tool-pod-mockup" class="panel pod-b" style="display:none">
+      <div class="ptitle pod">AI Mockup Generator</div>
+      <div class="field"><div class="fl">Product type</div>
+        <select class="sel" id="m-product"><option>T-Shirt</option><option>Hoodie</option><option>Swimwear</option><option>Leggings</option><option>Hat</option><option>Bag</option><option>Mug</option><option>Phone case</option></select>
+      </div>
+      <div class="field"><div class="fl">Design description</div>
+        <textarea class="inp" id="m-design" placeholder="Describe your design — colors, style, text, graphics, vibe..."></textarea>
+      </div>
+      <div class="field"><div class="fl">Model / setting</div>
+        <select class="sel" id="m-setting"><option>Black woman — natural hair, confident</option><option>Black woman — luxury lifestyle setting</option><option>Flat lay — clean studio</option><option>Outdoor lifestyle shot</option><option>Urban streetwear setting</option></select>
+      </div>
+      <button class="btn pod" onclick="genMockupPrompt()">Generate mockup prompt ↗</button>
+      <div class="lbar mt8" id="m-lbar"><div class="lbar-fill" style="background:var(--pod)"></div></div>
+      <div class="ai-out" id="m-out"><div class="ai-lbl pod">Mockup Prompt</div><div class="ai-text" id="m-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('m-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- PRODUCT LISTING -->
+    <div id="tool-pod-listing" class="panel pod-b" style="display:none">
+      <div class="ptitle pod">Product Listing Writer</div>
+      <div class="field"><div class="fl">Product name</div><input class="inp" id="pl-name" placeholder="e.g. Luxe Floral Crop Tee"/></div>
+      <div class="field"><div class="fl">Product details</div><textarea class="inp" id="pl-details" placeholder="Color, fabric, style, who it's for, what makes it special..."></textarea></div>
+      <div class="field"><div class="fl">Platform</div>
+        <select class="sel" id="pl-platform"><option>Etsy</option><option>Shopify</option><option>TikTok Shop</option><option>Amazon</option></select>
+      </div>
+      <button class="btn pod" onclick="genListing()">Write full listing ↗</button>
+      <div class="lbar mt8" id="pl-lbar"><div class="lbar-fill" style="background:var(--pod)"></div></div>
+      <div class="ai-out" id="pl-out"><div class="ai-lbl pod">Product Listing</div><div class="ai-text" id="pl-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('pl-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- PROFIT CALCULATOR -->
+    <div id="tool-pod-profit" class="panel pod-b" style="display:none">
+      <div class="ptitle pod">Profit Calculator</div>
+      <div class="field"><div class="fl">Production cost ($)</div><input class="inp" id="pc-cost" type="number" value="14" oninput="calcProfit()"/></div>
+      <div class="field"><div class="fl">Your selling price ($)</div><input class="inp" id="pc-price" type="number" value="35" oninput="calcProfit()"/></div>
+      <div class="field"><div class="fl">Platform fee</div>
+        <select class="sel" id="pc-fee" onchange="calcProfit()"><option value="6.5">Etsy 6.5%</option><option value="2.9">Shopify 2.9%</option><option value="5">TikTok Shop 5%</option><option value="0">Own site 0%</option></select>
+      </div>
+      <div class="panel" style="background:var(--bg3);margin-top:4px;margin-bottom:4px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center">
+          <div><div id="r-profit" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--pod)">$16.73</div><div style="font-size:10px;color:var(--mu3)">Profit/sale</div></div>
+          <div><div id="r-margin" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gold)">47.8%</div><div style="font-size:10px;color:var(--mu3)">Margin</div></div>
+        </div>
+        <div id="r-breakdown" style="font-size:11px;color:var(--mu3);font-family:'DM Mono',monospace;margin-top:8px;line-height:1.8;text-align:center">Sale $35 · Cost −$14 · Fee −$2.28 = $16.72</div>
+      </div>
+      <button class="btn pod" onclick="genPricingAdviceMobile()">Get AI pricing advice ↗</button>
+      <div class="lbar mt8" id="pca-lbar"><div class="lbar-fill" style="background:var(--pod)"></div></div>
+      <div class="ai-out" id="pca-out"><div class="ai-lbl pod">Pricing Advice</div><div class="ai-text" id="pca-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('pca-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- BRAND PITCH -->
+    <div id="tool-pod-pitch" class="panel pod-b" style="display:none">
+      <div class="ptitle pod">Brand Pitch Email</div>
+      <div class="field"><div class="fl">Brand to pitch</div><input class="inp" id="bp-brand" placeholder="e.g. FashionNova, Target, Shein"/></div>
+      <div class="field"><div class="fl">Deal type</div>
+        <select class="sel" id="bp-type"><option>Sponsored content</option><option>Brand ambassador</option><option>UGC content package</option><option>Collection collab</option></select>
+      </div>
+      <div class="field"><div class="fl">Your audience & rate</div><input class="inp" id="bp-details" placeholder="e.g. 85k TikTok, asking $3,500 for 4 posts"/></div>
+      <button class="btn pod" onclick="genPitchMobile()">Write pitch email ↗</button>
+      <div class="lbar mt8" id="bp-lbar"><div class="lbar-fill" style="background:var(--pod)"></div></div>
+      <div class="ai-out" id="bp-out"><div class="ai-lbl pod">Brand Pitch Email</div><div class="ai-text" id="bp-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('bp-txt')">Copy ↗</button></div></div>
+    </div>
+  </div>
+
+  <!-- AI STUDIOS -->
+  <div class="pg" id="pg-studios">
+    <div class="pg-title">AI <span class="hi stu">Studios™</span></div>
+    <div class="pg-sub">Write scripts, build characters, and create content — your Hollywood in your pocket.</div>
+
+    <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-text">Quick create</div><div class="sec-hdr-line"></div></div>
+    <div class="tool-grid">
+      <div class="tool-btn stu" onclick="showTool('stu-script')"><div class="tb-icon" style="color:var(--mu3)">⊳</div><div class="tb-name">Script Writer</div><div class="tb-desc">5 script types</div></div>
+      <div class="tool-btn stu" onclick="showTool('stu-character')"><div class="tb-icon" style="color:var(--mu3)">◉</div><div class="tb-name">Character Builder</div><div class="tb-desc">AI actor creator</div></div>
+      <div class="tool-btn stu" onclick="showTool('stu-scene')"><div class="tb-icon" style="color:var(--mu3)">◈</div><div class="tb-name">Scene Builder</div><div class="tb-desc">+ video prompt</div></div>
+      <div class="tool-btn stu" onclick="showTool('stu-podcast')"><div class="tb-icon" style="color:var(--mu3)">◷</div><div class="tb-name">Podcast / Talk Show</div><div class="tb-desc">Full episode script</div></div>
+    </div>
+
+    <!-- SCRIPT WRITER -->
+    <div id="tool-stu-script" class="panel" style="display:none;border-color:rgba(255,255,255,0.12)">
+      <div class="ptitle stu">Script Writer</div>
+      <div class="field"><div class="fl">Script type</div>
+        <select class="sel" id="ss-type"><option>Reality TV episode</option><option>Movie script (short film)</option><option>Documentary</option><option>Music video concept</option><option>Talk show episode</option></select>
+      </div>
+      <div class="field"><div class="fl">Title / show name</div><input class="inp" id="ss-title" placeholder="e.g. Baddie House, The Luxe Life"/></div>
+      <div class="field"><div class="fl">Central story / arc</div><textarea class="inp" id="ss-story" placeholder="What happens? Who's in it? What's the drama or message?"></textarea></div>
+      <button class="btn stu" onclick="genScriptMobile()">Generate script ↗</button>
+      <div class="lbar mt8" id="ss-lbar"><div class="lbar-fill" style="background:rgba(255,255,255,0.7)"></div></div>
+      <div class="ai-out" id="ss-out"><div class="ai-lbl stu">Script</div><div class="ai-text" id="ss-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('ss-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- CHARACTER BUILDER -->
+    <div id="tool-stu-character" class="panel" style="display:none;border-color:rgba(255,255,255,0.12)">
+      <div class="ptitle stu">AI Character Builder</div>
+      <div class="field"><div class="fl">Character name</div><input class="inp" id="sc-name" placeholder="e.g. Luxe Envi, Marcus Reed"/></div>
+      <div class="field"><div class="fl">Appearance & style</div><input class="inp" id="sc-appear" placeholder="e.g. Black woman, 28, deep brown skin, natural locs, luxury fashion"/></div>
+      <div class="field"><div class="fl">Personality & energy</div><input class="inp" id="sc-personality" placeholder="e.g. bold, ambitious, charismatic, commanding"/></div>
+      <div class="field"><div class="fl">Backstory</div><textarea class="inp" id="sc-story" placeholder="Where are they from? What drives them?"></textarea></div>
+      <button class="btn stu" onclick="genCharacterMobile()">Build character ↗</button>
+      <div class="lbar mt8" id="sc-lbar"><div class="lbar-fill" style="background:rgba(255,255,255,0.7)"></div></div>
+      <div class="ai-out" id="sc-out"><div class="ai-lbl stu">Character Profile</div><div class="ai-text" id="sc-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('sc-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- SCENE BUILDER -->
+    <div id="tool-stu-scene" class="panel" style="display:none;border-color:rgba(255,255,255,0.12)">
+      <div class="ptitle stu">Scene Builder</div>
+      <div class="field"><div class="fl">Scene & characters</div><input class="inp" id="sb-chars" placeholder="e.g. Luxe Envi, Marcus Reed — rooftop confrontation"/></div>
+      <div class="field"><div class="fl">Setting & mood</div><input class="inp" id="sb-setting" placeholder="e.g. NYC rooftop, golden hour, dramatic and tense"/></div>
+      <div class="field"><div class="fl">What happens</div><textarea class="inp" id="sb-action" placeholder="What's the scene about? What do they say and do?"></textarea></div>
+      <button class="btn stu" onclick="genSceneMobile()">Build scene + video prompt ↗</button>
+      <div class="lbar mt8" id="sbs-lbar"><div class="lbar-fill" style="background:rgba(255,255,255,0.7)"></div></div>
+      <div class="ai-out" id="sbs-out"><div class="ai-lbl stu">Scene + Video Prompt</div><div class="ai-text" id="sbs-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('sbs-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- PODCAST / TALK SHOW -->
+    <div id="tool-stu-podcast" class="panel" style="display:none;border-color:rgba(255,255,255,0.12)">
+      <div class="ptitle stu">Podcast / Talk Show Script</div>
+      <div class="field"><div class="fl">Show type</div>
+        <select class="sel" id="sp-type"><option>Podcast episode</option><option>Talk show episode</option></select>
+      </div>
+      <div class="field"><div class="fl">Show name & host</div><input class="inp" id="sp-show" placeholder="e.g. The Creator Files, hosted by Luxe Envi"/></div>
+      <div class="field"><div class="fl">Episode topic</div><input class="inp" id="sp-topic" placeholder="e.g. How I made $10k with POD and AI in 90 days"/></div>
+      <button class="btn stu" onclick="genPodcastMobile()">Generate episode script ↗</button>
+      <div class="lbar mt8" id="sp-lbar"><div class="lbar-fill" style="background:rgba(255,255,255,0.7)"></div></div>
+      <div class="ai-out" id="sp-out"><div class="ai-lbl stu">Episode Script</div><div class="ai-text" id="sp-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('sp-txt')">Copy ↗</button></div></div>
+    </div>
+  </div>
+
+  <!-- CINEFLOW AI -->
+  <div class="pg" id="pg-cineflow">
+    <div class="pg-title">CineFlow <span class="hi cf">AI™</span></div>
+    <div class="pg-sub">Create cinematic prompts, generate your calendar, write hooks and captions — your daily content machine on mobile.</div>
+
+    <div class="sec-hdr"><div class="sec-hdr-line"></div><div class="sec-hdr-text">Quick create</div><div class="sec-hdr-line"></div></div>
+    <div class="tool-grid">
+      <div class="tool-btn cf" onclick="showTool('cf-prompt')"><div class="tb-icon" style="color:var(--cf)">◈</div><div class="tb-name">Video Prompt</div><div class="tb-desc">Cinematic builder</div></div>
+      <div class="tool-btn cf" onclick="showTool('cf-hook')"><div class="tb-icon" style="color:var(--cf)">⊳</div><div class="tb-name">Hook Generator</div><div class="tb-desc">10 scroll-stoppers</div></div>
+      <div class="tool-btn cf" onclick="showTool('cf-caption')"><div class="tb-icon" style="color:var(--cf)">◷</div><div class="tb-name">Caption Writer</div><div class="tb-desc">All platforms</div></div>
+      <div class="tool-btn cf" onclick="showTool('cf-calendar')"><div class="tb-icon" style="color:var(--cf)">⊹</div><div class="tb-name">7-Day Calendar</div><div class="tb-desc">Daily content plan</div></div>
+    </div>
+
+    <!-- VIDEO PROMPT -->
+    <div id="tool-cf-prompt" class="panel cf-b" style="display:none">
+      <div class="ptitle cf">Cinematic Prompt Builder</div>
+      <div class="chip-row">
+        <div class="chip cf on" onclick="selChip(this,'cf')">UGC</div>
+        <div class="chip cf" onclick="selChip(this,'cf')">POV</div>
+        <div class="chip cf" onclick="selChip(this,'cf')">Lifestyle</div>
+        <div class="chip cf" onclick="selChip(this,'cf')">Product</div>
+        <div class="chip cf" onclick="selChip(this,'cf')">AI Influencer</div>
+        <div class="chip cf" onclick="selChip(this,'cf')">Black Film</div>
+        <div class="chip cf" onclick="selChip(this,'cf')">TikTok Viral</div>
+      </div>
+      <div class="field"><div class="fl">What to film / describe</div><textarea class="inp" id="vp-desc" placeholder="Describe your product, scene, character, or content idea..."></textarea></div>
+      <div class="field"><div class="fl">Platform</div>
+        <select class="sel" id="vp-platform"><option>TikTok (vertical)</option><option>Instagram Reels</option><option>All platforms</option></select>
+      </div>
+      <button class="btn cf" onclick="genPromptMobile()">Generate video prompt ↗</button>
+      <div class="lbar mt8" id="vp-lbar"><div class="lbar-fill" style="background:var(--cf)"></div></div>
+      <div class="ai-out" id="vp-out"><div class="ai-lbl cf">Video Prompt</div><div class="ai-text" id="vp-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('vp-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- HOOK GENERATOR -->
+    <div id="tool-cf-hook" class="panel cf-b" style="display:none">
+      <div class="ptitle cf">Hook Generator</div>
+      <div class="field"><div class="fl">Your niche</div>
+        <select class="sel" id="hk-niche"><option>POD / fashion business</option><option>AI influencer creator</option><option>Income & side hustle</option><option>Luxury lifestyle</option><option>Black women entrepreneurship</option></select>
+      </div>
+      <div class="field"><div class="fl">Hook type</div>
+        <select class="sel" id="hk-type"><option>Pattern interrupt — unexpected opener</option><option>Income reveal — "I made $X in X days"</option><option>POV hook</option><option>Hot take / controversial</option><option>Curiosity gap</option></select>
+      </div>
+      <button class="btn cf" onclick="genHooksMobile()">Generate 10 hooks ↗</button>
+      <div class="lbar mt8" id="hk-lbar"><div class="lbar-fill" style="background:var(--cf)"></div></div>
+      <div class="ai-out" id="hk-out"><div class="ai-lbl cf">10 Hooks</div><div class="ai-text" id="hk-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('hk-txt')">Copy all ↗</button></div></div>
+    </div>
+
+    <!-- CAPTION WRITER -->
+    <div id="tool-cf-caption" class="panel cf-b" style="display:none">
+      <div class="ptitle cf">Caption Writer</div>
+      <div class="field"><div class="fl">Platform</div>
+        <select class="sel" id="cap-platform"><option>TikTok</option><option>Instagram Reels</option><option>Instagram post</option><option>All platforms</option></select>
+      </div>
+      <div class="field"><div class="fl">What the video is about</div><textarea class="inp" id="cap-topic" placeholder="e.g. How I made $10k with POD using only AI tools, no inventory needed..."></textarea></div>
+      <div class="field"><div class="fl">CTA</div>
+        <select class="sel" id="cap-cta"><option>Link in bio — shop now</option><option>Follow for more</option><option>Comment below</option><option>DM me the word [keyword]</option><option>Save this post</option></select>
+      </div>
+      <button class="btn cf" onclick="genCaptionMobile()">Write caption ↗</button>
+      <div class="lbar mt8" id="cap-lbar"><div class="lbar-fill" style="background:var(--cf)"></div></div>
+      <div class="ai-out" id="cap-out"><div class="ai-lbl cf">Caption Ready</div><div class="ai-text" id="cap-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('cap-txt')">Copy ↗</button></div></div>
+    </div>
+
+    <!-- 7-DAY CALENDAR -->
+    <div id="tool-cf-calendar" class="panel cf-b" style="display:none">
+      <div class="ptitle cf">7-Day Content Calendar</div>
+      <div class="field"><div class="fl">Your niche</div>
+        <select class="sel" id="cal-niche"><option>POD / fashion business</option><option>AI influencer creator</option><option>Digital products & courses</option><option>Luxury lifestyle</option><option>Women entrepreneurship</option></select>
+      </div>
+      <div class="field"><div class="fl">Primary platform</div>
+        <select class="sel" id="cal-platform"><option>TikTok</option><option>Instagram</option><option>Both TikTok + Instagram</option></select>
+      </div>
+      <div class="field"><div class="fl">This week's goal</div>
+        <select class="sel" id="cal-goal"><option>Grow followers & reach</option><option>Drive sales & conversions</option><option>Build brand awareness</option></select>
+      </div>
+      <button class="btn cf" onclick="genCalendarMobile()">Build 7-day calendar ↗</button>
+      <div class="lbar mt8" id="cal-lbar"><div class="lbar-fill" style="background:var(--cf)"></div></div>
+      <div class="ai-out" id="cal-out"><div class="ai-lbl cf">7-Day Content Calendar</div><div class="ai-text" id="cal-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('cal-txt')">Copy calendar ↗</button></div></div>
+    </div>
+
+    <!-- AI HELP BOT -->
+    <div class="sec-hdr mt8"><div class="sec-hdr-line"></div><div class="sec-hdr-text">AI help bot</div><div class="sec-hdr-line"></div></div>
+    <div class="panel cf-b">
+      <div class="chat-msgs" id="mob-chat-msgs">
+        <div class="msg bot">Hey! I'm your CineFlow AI content assistant. What do you need right now?</div>
+      </div>
+      <div class="chip-row">
+        <div class="chip" onclick="mobChat('What should I post today on TikTok for my POD business?')">What to post today</div>
+        <div class="chip" onclick="mobChat('Give me 5 viral TikTok hooks for a POD fashion brand')">5 viral hooks</div>
+        <div class="chip" onclick="mobChat('Write a 30-second TikTok script about how I built my POD business')">Write a script</div>
+        <div class="chip" onclick="mobChat('How do I make my AI-generated videos look more real and cinematic?')">Make videos better</div>
+      </div>
+      <div class="chat-row">
+        <input class="inp" id="mob-chat-input" placeholder="Ask anything..." style="font-size:14px" onkeydown="if(event.key==='Enter')mobSendChat()"/>
+        <button class="btn cf" style="width:auto;padding:12px 16px;flex-shrink:0" onclick="mobSendChat()">↑</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFFILIATE / SUITE HUB -->
+  <div class="pg" id="pg-hub">
+    <div class="pg-title">Suite <span class="hi gold">Hub</span></div>
+    <div class="pg-sub">Credits, affiliate program, and suite-wide settings.</div>
+
+    <div class="panel gold-b">
+      <div class="ptitle gold">Credits remaining</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="text-align:center;padding:10px 8px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--w)">482</div><div style="font-size:9px;color:var(--mu3);font-family:'DM Mono',monospace">remaining</div></div>
+        <div style="text-align:center;padding:10px 8px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--w)">44</div><div style="font-size:9px;color:var(--mu3);font-family:'DM Mono',monospace">used today</div></div>
+        <div style="text-align:center;padding:10px 8px;background:var(--bg3);border-radius:var(--r)"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--gold)">1,500</div><div style="font-size:9px;color:var(--mu3);font-family:'DM Mono',monospace">monthly plan</div></div>
+      </div>
+      <div class="prog"><div class="prog-lbl"><span style="color:var(--pod)">POD Studio</span><span>186 used</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%;background:var(--pod)"></div></div></div>
+      <div class="prog"><div class="prog-lbl"><span style="color:var(--mu3)">AI Studios</span><span>124 used</span></div><div class="prog-bar"><div class="prog-fill" style="width:43%;background:rgba(255,255,255,0.4)"></div></div></div>
+      <div class="prog"><div class="prog-lbl"><span style="color:var(--cf)">CineFlow</span><span>247 used</span></div><div class="prog-bar"><div class="prog-fill" style="width:86%;background:var(--cf)"></div></div></div>
+    </div>
+
+    <div class="panel gold-b">
+      <div class="ptitle gold">Affiliate program</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--bg3);border-radius:var(--r);padding:10px;text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--gold)">$847</div><div style="font-size:9px;color:var(--mu3);font-family:'DM Mono',monospace">this month</div></div>
+        <div style="background:var(--bg3);border-radius:var(--r);padding:10px;text-align:center"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--w)">14</div><div style="font-size:9px;color:var(--mu3);font-family:'DM Mono',monospace">referrals</div></div>
+      </div>
+      <div class="ref-box">
+        <div style="font-size:10px;color:var(--mu3);font-family:'DM Mono',monospace;margin-bottom:4px">Your referral link</div>
+        <div class="ref-link">envilee.ai/ref/YOURTAG</div>
+      </div>
+      <button class="btn gold" onclick="navigator.clipboard&&navigator.clipboard.writeText('envilee.ai/ref/YOURTAG').then(()=>alert('Referral link copied!'))">Copy referral link ↗</button>
+      <div style="margin-top:10px">
+        <button class="btn" onclick="showTool('aff-content-mob')">Create promo content ↗</button>
+      </div>
+      <!-- AFFILIATE CONTENT ON MOBILE -->
+      <div id="tool-aff-content-mob" style="display:none;margin-top:10px">
+        <div class="field"><div class="fl">Platform</div>
+          <select class="sel" id="aff-plat"><option>TikTok script (30 sec)</option><option>Instagram caption</option><option>Email to list</option></select>
+        </div>
+        <div class="field"><div class="fl">Your wins to mention</div><input class="inp" id="aff-wins" placeholder="e.g. Made $10k with POD, got 3 brand deals..."/></div>
+        <button class="btn gold" onclick="genAffMobile()">Generate promo ↗</button>
+        <div class="lbar mt8" id="aff-lbar"><div class="lbar-fill" style="background:var(--gold)"></div></div>
+        <div class="ai-out" id="aff-out"><div class="ai-lbl gold">Affiliate Content</div><div class="ai-text" id="aff-txt"></div><div class="btn-row"><button class="btn ou" onclick="cp('aff-txt')">Copy ↗</button></div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle gold">Skool communities</div>
+      <div style="background:var(--gold2);border:0.5px solid var(--goldb);border-radius:var(--r);padding:13px;margin-bottom:8px">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w);margin-bottom:3px">✦ Envi Lee Baddie Academy</div>
+        <div style="font-size:11px;color:var(--mu3);margin-bottom:8px">2,847 members · Live coaching every Tuesday 7PM EST</div>
+        <button class="btn gold" style="font-size:12px;padding:10px">Join Baddie Academy ↗</button>
+      </div>
+      <div style="background:var(--pod2);border:0.5px solid rgba(0,245,255,0.2);border-radius:var(--r);padding:13px">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--w);margin-bottom:3px">◈ Envi Lee POD Academy</div>
+        <div style="font-size:11px;color:var(--mu3);margin-bottom:8px">1,240 members · Weekly office hours</div>
+        <button class="btn" style="background:var(--pod2);border-color:rgba(0,245,255,0.3);color:var(--pod);font-size:12px;padding:10px">Join POD Academy ↗</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle gold">Plan & settings</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">Current plan</span><span class="pill pill-gold">Boss — $67/mo</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">Monthly credits</span><span style="font-size:12px;color:var(--gold);font-family:'DM Mono',monospace">1,500/mo</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--w2)">Next billing</span><span style="font-size:12px;color:var(--mu3);font-family:'DM Mono',monospace">June 1, 2026</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><span style="font-size:12px;color:var(--w2)">Affiliate earnings</span><span style="font-size:12px;color:var(--gold);font-family:'DM Mono',monospace">$847 this month</span></div>
+    </div>
+  </div>
+
+</div><!-- end scroll area -->
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bnav">
+  <button class="bni on" onclick="nav('home')"><div class="icon hub">⬡</div><div class="label">Home</div></button>
+  <button class="bni" onclick="nav('pod')"><div class="icon pod">◈</div><div class="label">POD</div></button>
+  <button class="bni" onclick="nav('studios')"><div class="icon stu">◉</div><div class="label">Studios</div></button>
+  <button class="bni" onclick="nav('cineflow')"><div class="icon cf">⊳</div><div class="label">CineFlow</div></button>
+  <button class="bni" onclick="nav('hub')"><div class="icon gold">✦</div><div class="label">Hub</div></button>
+</nav>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const MDL='claude-sonnet-4-20250514';
+async function ai(prompt,txtId,lbarId,outId){
+  const txt=document.getElementById(txtId),lb=lbarId?document.getElementById(lbarId):null,out=outId?document.getElementById(outId):null;
+  if(lb)lb.classList.add('go');if(txt)txt.textContent='Generating…';
+  if(out){out.style.display='block';out.classList.add('show')}
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    if(txt)txt.textContent=d.content&&d.content[0]?d.content[0].text:'Generation failed.';
+  }catch(e){if(txt)txt.textContent='Connection error. Try again.'}
+  if(lb)lb.classList.remove('go');
+  // Scroll to output on mobile
+  if(out)setTimeout(()=>out.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+function g(id){return document.getElementById(id)?.value||''}
+function cp(id){const el=document.getElementById(id);if(el&&navigator.clipboard)navigator.clipboard.writeText(el.textContent).then(()=>{const o=el.style.color;el.style.color='var(--gold)';setTimeout(()=>el.style.color=o,700)});else if(el){const r=document.createRange();r.selectNode(el);window.getSelection().removeAllRanges();window.getSelection().addRange(r);document.execCommand('copy')}}
+
+// NAV
+function nav(k){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.bni').forEach(b=>b.classList.remove('on'));
+  const pgMap={home:'home',pod:'pod',studios:'studios',cineflow:'cineflow',hub:'hub'};
+  const pg=document.getElementById('pg-'+pgMap[k]);if(pg)pg.classList.add('on');
+  document.querySelectorAll('.bni').forEach((b,i)=>{const keys=['home','pod','studios','cineflow','hub'];if(keys[i]===k)b.classList.add('on')});
+  // scroll to top
+  document.querySelector('.scroll-area').scrollTop=0;
+  // close all tools
+  document.querySelectorAll('[id^="tool-"]').forEach(t=>t.style.display='none');
+}
+
+// TOOL TOGGLE
+function showTool(id){
+  const el=document.getElementById('tool-'+id);
+  if(!el)return;
+  const isOpen=el.style.display!=='none';
+  // close all tools in same app
+  const prefix=id.split('-')[0];
+  document.querySelectorAll('[id^="tool-'+prefix+'-"]').forEach(t=>t.style.display='none');
+  el.style.display=isOpen?'none':'block';
+  if(!isOpen)setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+// CHIP SELECT
+function selChip(el,color){
+  const row=el.closest('.chip-row');
+  row.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// PROFIT CALCULATOR
+function calcProfit(){
+  const cost=parseFloat(g('pc-cost'))||14,price=parseFloat(g('pc-price'))||35,fee=parseFloat(g('pc-fee'))||6.5;
+  const feeAmt=price*(fee/100),profit=price-cost-feeAmt,margin=(profit/price)*100;
+  const fmt=n=>'$'+(Math.max(0,n)).toFixed(2);
+  const el=id=>document.getElementById(id);
+  if(el('r-profit'))el('r-profit').textContent=fmt(profit);
+  if(el('r-margin'))el('r-margin').textContent=margin.toFixed(1)+'%';
+  if(el('r-breakdown'))el('r-breakdown').textContent=`Sale ${fmt(price)} · Cost −${fmt(cost)} · Fee −${fmt(feeAmt)} = ${fmt(profit)}`;
+}
+setTimeout(calcProfit,200);
+
+// AI FUNCTIONS
+async function genMockupPrompt(){
+  const product=g('m-product'),design=g('m-design'),setting=g('m-setting');
+  await ai(`Generate a professional AI image prompt for a POD product mockup.\n\nProduct: ${product}\nDesign: ${design||'custom design'}\nModel/setting: ${setting}\n\nWrite:\n1. MAIN PROMPT — ready for Midjourney/DALL-E. Include: the ${product}, design description, model details, setting, lighting, camera angle, quality modifiers. Make it look like a professional product photo.\n2. KLING/RUNWAY VIDEO PROMPT — for a short product reveal video\n3. ALT PROMPT — different angle, same product\n\nUnder 250 words.`,'m-txt','m-lbar','m-out');
+}
+async function genListing(){
+  const name=g('pl-name'),details=g('pl-details'),platform=g('pl-platform');
+  await ai(`Write a complete ${platform} product listing for a POD product.\n\nProduct: ${name||'POD clothing item'}\nDetails: ${details||'stylish fashion item'}\n\nWrite:\nTITLE: Optimized for ${platform} search (under 80 chars)\nDESCRIPTION: Compelling product description (3-4 sentences)\nBULLETS: 5 key features/benefits\nSEO TAGS: 10 relevant search tags\nTIKTOK CAPTION: A short TikTok caption to promote this product\n\nUnder 300 words. Make it convert.`,'pl-txt','pl-lbar','pl-out');
+}
+async function genPricingAdviceMobile(){
+  const cost=g('pc-cost')||'14',price=g('pc-price')||'35';
+  await ai(`Give specific pricing advice for a POD product.\n\nCost: $${cost} | Current price: $${price}\n\nProvide:\n1. VERDICT — is this price right, too low, or could be higher?\n2. RECOMMENDED PRICE — one specific number\n3. REASONING — why this price works for this margin\n4. QUICK TIP — one pricing trick to increase revenue\n\nUnder 200 words. Be direct.`,'pca-txt','pca-lbar','pca-out');
+}
+async function genPitchMobile(){
+  const brand=g('bp-brand'),type=g('bp-type'),details=g('bp-details');
+  await ai(`Write a brand pitch email for Envi Lee — a POD brand owner and AI influencer creator.\n\nPitching to: ${brand||'a fashion brand'}\nDeal type: ${type}\nAudience/rate: ${details||'85k TikTok, 42k Instagram'}\n\nWrite a complete pitch email:\nSUBJECT: Compelling subject line\n\nEMAIL:\n- Personal opening referencing the brand\n- Who Envi Lee is (2 sentences)\n- Why this brand + her audience = perfect match\n- The ask and rate\n- Clear next step CTA\n\nConfident tone. Equal partners. Under 180 words.`,'bp-txt','bp-lbar','bp-out');
+}
+async function genScriptMobile(){
+  const type=g('ss-type'),title=g('ss-title'),story=g('ss-story');
+  await ai(`Write a ${type} script.\n\nTitle/show: ${title||'untitled'}\nStory/arc: ${story||'drama and conflict unfold'}\n\nInclude:\n- Opening hook/cold open\n- Main scenes with dialogue\n- Dramatic moments and character reactions\n- Cliffhanger or strong ending\n\nFormat like a real script. Under 400 words. Make it dramatic and engaging.`,'ss-txt','ss-lbar','ss-out');
+}
+async function genCharacterMobile(){
+  const name=g('sc-name')||'AI Character',appear=g('sc-appear'),personality=g('sc-personality'),story=g('sc-story');
+  await ai(`Build a complete AI character profile.\n\nName: ${name}\nAppearance: ${appear||'distinctive and memorable'}\nPersonality: ${personality||'bold and charismatic'}\nBackstory: ${story||'driven and ambitious'}\n\nGenerate:\n1. CHARACTER OVERVIEW — who they are in 3 sentences\n2. APPEARANCE PROMPT — Midjourney/DALL-E ready description\n3. VOICE NOTES — for ElevenLabs\n4. SIGNATURE PHRASES — 3 things they always say\n5. CONSISTENCY SEED — short phrase for all prompts\n\nUnder 300 words. Make them feel real and memorable.`,'sc-txt','sc-lbar','sc-out');
+}
+async function genSceneMobile(){
+  const chars=g('sb-chars'),setting=g('sb-setting'),action=g('sb-action');
+  await ai(`Build a complete scene package.\n\nCharacters/premise: ${chars||'main characters'}\nSetting/mood: ${setting||'cinematic setting'}\nWhat happens: ${action||'dramatic interaction'}\n\nWrite:\nSCENE HEADER: INT/EXT format\nACTION: 2 lines setting the scene\nDIALOGUE: Key exchange with action beats\nCAMERA: 2 key shot directions\n\nVIDEO PROMPT (Kling/Runway ready): Complete copy-paste prompt for AI video generation.\n\nUnder 300 words.`,'sbs-txt','sbs-lbar','sbs-out');
+}
+async function genPodcastMobile(){
+  const type=g('sp-type'),show=g('sp-show'),topic=g('sp-topic');
+  await ai(`Write a ${type} script.\n\nShow/host: ${show||'The Creator Show hosted by Luxe Envi'}\nTopic: ${topic||'building a creator business'}\n\nInclude:\n- Intro hook that grabs attention\n- 3-4 key talking points with substance\n- Natural conversation flow (if podcast)\n- Sponsor break placeholder\n- Outro with clear CTA\n\nWrite actual dialogue. Warm and engaging voice. Under 400 words.`,'sp-txt','sp-lbar','sp-out');
+}
+async function genPromptMobile(){
+  const type=document.querySelector('.chip-row .chip.on')?.textContent||'UGC';
+  const desc=g('vp-desc'),platform=g('vp-platform');
+  await ai(`Generate a cinematic ${type} video prompt.\n\nContent: ${desc||'a creator showcasing their work'}\nPlatform: ${platform}\n\nWrite:\nMAIN VIDEO PROMPT — detailed, ready for Kling AI or Runway Gen-3. Include: character/subject, wardrobe, setting, lighting, camera movement, mood, visual style.\n\nHOOK — The first 2 seconds that stop the scroll\n\nCAPTION STARTER — First line of the caption\n\nUnder 250 words. Make it cinematic.`,'vp-txt','vp-lbar','vp-out');
+}
+async function genHooksMobile(){
+  const niche=g('hk-niche'),type=g('hk-type');
+  await ai(`Generate 10 scroll-stopping hooks.\n\nNiche: ${niche}\nHook type: ${type}\n\nWrite exactly 10 hooks. For each:\nHOOK [N]: [The exact hook — 1-2 sentences]\nWHY IT WORKS: [One sentence psychology]\n\nMix of: POV hooks, income reveals, curiosity gaps, hot takes, and emotional hooks.\nEvery hook specific to ${niche}.\n\nUnder 350 words.`,'hk-txt','hk-lbar','hk-out');
+}
+async function genCaptionMobile(){
+  const platform=g('cap-platform'),topic=g('cap-topic'),cta=g('cap-cta');
+  await ai(`Write a ${platform} caption for this content: ${topic||'building a creator business'}.\n\nCTA goal: ${cta}\n\nWrite:\nHOOK: First line that stops the scroll\nBODY: 2-3 lines of content\nCTA: The specific action\n${platform!=='Instagram post'?'HASHTAGS: 8-10 relevant ones':''}\n\nBrand voice: Envi Lee — luxury, confident, aspirational. Under 200 words.`,'cap-txt','cap-lbar','cap-out');
+}
+async function genCalendarMobile(){
+  const niche=g('cal-niche'),platform=g('cal-platform'),goal=g('cal-goal');
+  await ai(`Build a 7-day content calendar.\n\nNiche: ${niche}\nPlatform: ${platform}\nGoal: ${goal}\n\nFor each day (Day 1–7):\nDAY [X]: [Video idea — specific]\nHOOK: [Opening line]\nCAPTION: [2-3 line ready-to-post caption]\nCTA: [The action]\nHASHTAGS: [5 tags]\nPOSTING TIME: [Best time]\nVIDEO PROMPT: [One-sentence Kling/Runway prompt]\n\nMix content types: education, entertainment, promotion, and behind-the-scenes.\nUnder 500 words. Every day specific and actionable.`,'cal-txt','cal-lbar','cal-out');
+}
+async function genAffMobile(){
+  const platform=g('aff-plat'),wins=g('aff-wins');
+  await ai(`Write affiliate promotional content for the Envi Lee AI Creator Suite.\n\nPlatform: ${platform}\nPersonal wins: ${wins||'I use this suite to build my POD and AI influencer business'}\nReferral link: envilee.ai/ref/YOURTAG\n\nThe suite: 3 AI apps (POD Pro Studio, AI Studios, CineFlow AI) for Black women creators.\n\nWrite the complete content:\n- Hook that grabs attention immediately\n- What the suite does (specific and exciting)\n- Personal recommendation\n- CTA with the referral link\n${platform.includes('caption')?'- Include hashtags':''}\n${platform.includes('Email')?'- Include subject line':''}\n\nAuthentic tone — sharing genuinely, not selling. Under 250 words.`,'aff-txt','aff-lbar','aff-out');
+}
+
+// MOBILE CHAT
+async function mobSendChat(){
+  const input=document.getElementById('mob-chat-input');
+  const msg=input.value.trim();if(!msg)return;
+  input.value='';
+  const msgs=document.getElementById('mob-chat-msgs');
+  const u=document.createElement('div');u.className='msg user';u.textContent=msg;msgs.appendChild(u);
+  const b=document.createElement('div');b.className='msg bot';b.innerHTML='<span style="color:var(--cf)">●●●</span>';msgs.appendChild(b);
+  msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MDL,max_tokens:400,messages:[{role:'user',content:`You are CineFlow AI — a content strategy assistant for Envi Lee who runs a POD business and AI influencer brand. Be helpful, specific, and direct. Under 150 words.\n\nUser: ${msg}`}]})});
+    const d=await r.json();
+    b.innerHTML='';b.textContent=d.content&&d.content[0]?d.content[0].text:'Try again.';
+  }catch(e){b.textContent='Connection error. Try again.'}
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function mobChat(msg){document.getElementById('mob-chat-input').value=msg;mobSendChat();}
+</script>
+</body>
+</html>
